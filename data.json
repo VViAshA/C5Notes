@@ -1,0 +1,1214 @@
+{
+  "Linking Words": [
+    {
+      "word": "Moreover",
+      "translation": "Более того, кроме того",
+      "transcription_uk": "/mɔːˈrəʊ.vər/",
+      "transcription_us": "/mɔːrˈoʊ.vɚ/",
+      "example": "The hotel is too expensive. Moreover, it is very far from the beach.",
+      "example_translation": "Отель слишком дорогой. Более того, он находится очень далеко от пляжа."
+    },
+    {
+      "word": "However",
+      "translation": "Однако, тем не менее",
+      "transcription_uk": "/haʊˈev.ər/",
+      "transcription_us": "/haʊˈev.ɚ/",
+      "example": "I wanted to go out. However, it was raining heavily.",
+      "example_translation": "Я хотел выйти на улицу. Однако шел сильный дождь."
+    },
+    {
+      "word": "Therefore",
+      "translation": "Следовательно, поэтому",
+      "transcription_uk": "/ˈðeə.fɔːr/",
+      "transcription_us": "/ˈðer.fɔːr/",
+      "example": "He studied very hard. Therefore, he passed the exam.",
+      "example_translation": "Он очень усердно учился. Следовательно, он сдал экзамен."
+    },
+    {
+      "word": "Furthermore",
+      "translation": "Более того, к тому же",
+      "transcription_uk": "/ˌfɜː.ðəˈmɔːr/",
+      "transcription_us": "/ˌfɝː.ðəˈmɔːr/",
+      "example": "She is very smart. Furthermore, she is very kind.",
+      "example_translation": "Она очень умная. Более того, она очень добрая."
+    },
+    {
+      "word": "Consequently",
+      "translation": "В результате, следовательно",
+      "transcription_uk": "/ˈkɒn.sɪ.kwənt.li/",
+      "transcription_us": "/ˈkɑːn.sə.kwənt.li/",
+      "example": "He broke the rules. Consequently, he lost his job.",
+      "example_translation": "Он нарушил правила. В результате он потерял работу."
+    },
+    {
+      "word": "Nevertheless",
+      "translation": "Тем не менее, несмотря на",
+      "transcription_uk": "/ˌnev.ə.ðəˈles/",
+      "transcription_us": "/ˌnev.ɚ.ðəˈles/",
+      "example": "The task was very hard. Nevertheless, we finished it.",
+      "example_translation": "Задание было очень сложным. Тем не менее, мы его закончили."
+    },
+    {
+      "word": "On the other hand",
+      "translation": "С другой стороны",
+      "transcription_uk": "/ɒn ðiː ˈʌð.ə hænd/",
+      "transcription_us": "/ɑːn ðiː ˈʌð.ɚ hænd/",
+      "example": "This car is cheap. On the other hand, it is not safe.",
+      "example_translation": "Эта машина дешевая. С другой стороны, она не безопасная."
+    },
+    {
+      "word": "Thus",
+      "translation": "Таким образом, следовательно",
+      "transcription_uk": "/ðʌs/",
+      "transcription_us": "/ðʌs/",
+      "example": "The prices fell. Thus, more people bought houses.",
+      "example_translation": "Цены упали. Таким образом, больше людей купили дома."
+    },
+    {
+      "word": "In addition",
+      "translation": "В дополнение, кроме того",
+      "transcription_uk": "/ɪn əˈdɪʃ.ən/",
+      "transcription_us": "/ɪn əˈdɪʃ.ən/",
+      "example": "He gave me money. In addition, he offered me a job.",
+      "example_translation": "Он дал мне деньги. В дополнение, он предложил мне работу."
+    },
+    {
+      "word": "Meanwhile",
+      "translation": "Тем временем, между тем",
+      "transcription_uk": "/ˈmiːn.waɪl/",
+      "transcription_us": "/ˈmiːn.waɪl/",
+      "example": "I was cooking dinner. Meanwhile, the kids were watching TV.",
+      "example_translation": "Я готовил ужин. Тем временем дети смотрели телевизор."
+    },
+    {
+      "word": "Otherwise",
+      "translation": "Иначе, в противном случае",
+      "transcription_uk": "/ˈʌð.ə.waɪz/",
+      "transcription_us": "/ˈʌð.ɚ.waɪz/",
+      "example": "Hurry up. Otherwise, you will be late for school.",
+      "example_translation": "Поторопись. Иначе ты опоздаешь в школу."
+    },
+    {
+      "word": "For instance",
+      "translation": "Например",
+      "transcription_uk": "/fɔːr ˈɪn.stəns/",
+      "transcription_us": "/fɔːr ˈɪn.stəns/",
+      "example": "I love art. For instance, I visit museums every week.",
+      "example_translation": "Я люблю искусство. Например, я хожу в музеи каждую неделю."
+    },
+    {
+      "word": "As a result",
+      "translation": "В результате",
+      "transcription_uk": "/æz ə rɪˈzʌlt/",
+      "transcription_us": "/æz ə rɪˈzʌlt/",
+      "example": "She didn't sleep well. As a result, she was very tired.",
+      "example_translation": "Она плохо спала. В результате она была очень уставшей."
+    },
+    {
+      "word": "Although",
+      "translation": "Хотя, несмотря на то что",
+      "transcription_uk": "/ɔːlˈðəʊ/",
+      "transcription_us": "/ɑːlˈðoʊ/",
+      "example": "Although it was cold, she didn't wear a jacket.",
+      "example_translation": "Хотя было холодно, она не надела куртку."
+    },
+    {
+      "word": "In contrast",
+      "translation": "В отличие, напротив",
+      "transcription_uk": "/ɪn ˈkɒn.trɑːst/",
+      "transcription_us": "/ɪn ˈkɑːn.træst/",
+      "example": "In contrast to her brother, she loves reading books.",
+      "example_translation": "В отличие от своего брата, она любит читать книги."
+    },
+    {
+      "word": "Similarly",
+      "translation": "Аналогично, подобным образом",
+      "transcription_uk": "/ˈsɪm.ɪ.lə.li/",
+      "transcription_us": "/ˈsɪm.ə.lər.li/",
+      "example": "You must arrive on time. Similarly, you must dress well.",
+      "example_translation": "Вы должны прибыть вовремя. Аналогично, вы должны хорошо одеваться."
+    },
+    {
+      "word": "Despite",
+      "translation": "Несмотря на",
+      "transcription_uk": "/dɪˈspaɪt/",
+      "transcription_us": "/dɪˈspaɪt/",
+      "example": "Despite the rain, we went to the park.",
+      "example_translation": "Несмотря на дождь, мы пошли в парк."
+    },
+    {
+      "word": "Firstly",
+      "translation": "Во-первых",
+      "transcription_uk": "/ˈfɜːst.li/",
+      "transcription_us": "/ˈfɝːst.li/",
+      "example": "Firstly, boil the water. Secondly, add the pasta.",
+      "example_translation": "Во-первых, вскипятите воду. Во-вторых, добавьте макароны."
+    },
+    {
+      "word": "Nonetheless",
+      "translation": "Тем не менее, несмотря на это",
+      "transcription_uk": "/ˌnʌn.ðəˈles/",
+      "transcription_us": "/ˌnʌn.ðəˈles/",
+      "example": "The weather was terrible. Nonetheless, we enjoyed our trip.",
+      "example_translation": "Погода была ужасная. Тем не менее, нам понравилась наша поездка."
+    },
+    {
+      "word": "In order to",
+      "translation": "Для того чтобы",
+      "transcription_uk": "/ɪn ˈɔː.də tuː/",
+      "transcription_us": "/ɪn ˈɔːr.dɚ tuː/",
+      "example": "In order to stay healthy, you must exercise regularly.",
+      "example_translation": "Для того чтобы оставаться здоровым, вы должны регулярно заниматься спортом."
+    }
+  ],
+  "Medicine": [
+    {
+      "word": "ANTIBIOTIC",
+      "translation": "Антибиотик",
+      "transcription_uk": "/ˌæn.ti.baɪˈɒt.ɪk/",
+      "transcription_us": "/ˌæn.t̬i.baɪˈɑː.t̬ɪk/",
+      "example": "You must finish the entire course of antibiotics even if you feel better.",
+      "example_translation": "Вы должны пройти полный курс антибиотиков, даже если чувствуете себя лучше."
+    },
+    {
+      "word": "BED REST",
+      "translation": "Постельный режим",
+      "transcription_uk": "/ˈbed ˌrest/",
+      "transcription_us": "/ˈbed ˌrest/",
+      "example": "The doctor prescribed two weeks of bed rest after the surgery.",
+      "example_translation": "Врач прописал две недели постельного режима после операции."
+    },
+    {
+      "word": "BLOOD TEST",
+      "translation": "Анализ крови",
+      "transcription_uk": "/ˈblʌd ˌtest/",
+      "transcription_us": "/ˈblʌd ˌtest/",
+      "example": "The blood test showed that my iron levels were too low.",
+      "example_translation": "Анализ крови показал, что уровень железа у меня слишком низкий."
+    },
+    {
+      "word": "CHECK-UP",
+      "translation": "Медицинский осмотр",
+      "transcription_uk": "/ˈtʃek.ʌp/",
+      "transcription_us": "/ˈtʃek.ʌp/",
+      "example": "I go to the dentist for a check-up twice a year.",
+      "example_translation": "Я хожу к стоматологу на плановый осмотр два раза в год."
+    },
+    {
+      "word": "CONCUSSION",
+      "translation": "Сотрясение мозга",
+      "transcription_uk": "/kənˈkʌʃ.ən/",
+      "transcription_us": "/kənˈkʌʃ.ən/",
+      "example": "He suffered a concussion when he fell off his bike.",
+      "example_translation": "Он получил сотрясение мозга, когда упал с велосипеда."
+    },
+    {
+      "word": "CONTAGIOUS",
+      "translation": "Заразный",
+      "transcription_uk": "/kənˈteɪ.dʒəs/",
+      "transcription_us": "/kənˈteɪ.dʒəs/",
+      "example": "The flu is highly contagious, so stay home if you are sick.",
+      "example_translation": "Грипп очень заразен, поэтому оставайтесь дома, если вы больны."
+    },
+    {
+      "word": "DIAGNOSIS",
+      "translation": "Диагноз",
+      "transcription_uk": "/daɪ.əɡˈnəʊ.siːz/",
+      "transcription_us": "/ˌdaɪ.əɡˈnoʊ.siːz/",
+      "example": "Early diagnosis of the disease can save lives.",
+      "example_translation": "Ранняя диагностика этого заболевания может спасти жизни."
+    },
+    {
+      "word": "DIZZINESS",
+      "translation": "Головокружение",
+      "transcription_uk": "/ˈdɪz.i.nəs/",
+      "transcription_us": "/ˈdɪz.i.nəs/",
+      "example": "The medication caused dizziness and drowsiness.",
+      "example_translation": "Лекарство вызвало головокружение и сонливость."
+    },
+    {
+      "word": "DOSAGE",
+      "translation": "Дозировка",
+      "transcription_uk": "/ˈdəʊ.sɪdʒ/",
+      "transcription_us": "/ˈdoʊ.sɪdʒ/",
+      "example": "Never exceed the recommended dosage on the bottle.",
+      "example_translation": "Никогда не превышайте рекомендованную дозировку на флаконе."
+    },
+    {
+      "word": "EMERGENCY ROOM",
+      "translation": "Отделение неотложной помощи",
+      "transcription_uk": "/ɪˈmɜː.dʒən.si ˌruːm/",
+      "transcription_us": "/ɪˈmɝː.dʒən.si ˌruːm/",
+      "example": "She was taken to the emergency room after the car accident.",
+      "example_translation": "Ее доставили в отделение неотложной помощи после аварии."
+    },
+    {
+      "word": "FEVER",
+      "translation": "Температура",
+      "transcription_uk": "/ˈfiː.vər/",
+      "transcription_us": "/ˈfiː.vɚ/",
+      "example": "The child has a high fever and a sore throat.",
+      "example_translation": "У ребенка высокая температура и болит горло."
+    },
+    {
+      "word": "GENERAL PRACTITIONER",
+      "translation": "Терапевт, врач общей практики",
+      "transcription_uk": "/ˌdʒen.ər.əl prækˈtɪʃ.ən.ər/",
+      "transcription_us": "/ˌdʒen.ɚ.əl prækˈtɪʃ.ən.ɚ/",
+      "example": "You should see your general practitioner before seeing a specialist.",
+      "example_translation": "Вам следует сначала обратиться к терапевту, прежде чем идти к узкому специалисту."
+    },
+    {
+      "word": "HEART ATTACK",
+      "translation": "Инфаркт",
+      "transcription_uk": "/ˈhɑːt əˌtæk/",
+      "transcription_us": "/ˈhɑːrt əˌtæk/",
+      "example": "He was lucky to survive his heart attack.",
+      "example_translation": "Ему повезло, что он выжил после сердечного приступа."
+    },
+    {
+      "word": "INFLAMED",
+      "translation": "Воспаленный",
+      "transcription_uk": "/ɪnˈfleɪmd/",
+      "transcription_us": "/ɪnˈfleɪmd/",
+      "example": "My throat is inflamed, so it hurts to swallow.",
+      "example_translation": "Мое горло воспалено, поэтому мне больно глотать."
+    },
+    {
+      "word": "INTENSIVE CARE UNIT",
+      "translation": "Отделение интенсивной терапии (реанимация)",
+      "transcription_uk": "/ɪnˌten.sɪv ˈkeə ˌjuː.nɪt/",
+      "transcription_us": "/ɪnˌten.sɪv ˈker ˌjuː.nɪt/",
+      "example": "After the stroke, he was in the intensive care unit for three days.",
+      "example_translation": "После инсульта он провел три дня в реанимации."
+    },
+    {
+      "word": "NAUSEA",
+      "translation": "Тошнота",
+      "transcription_uk": "/ˈnɔː.si.ə/",
+      "transcription_us": "/ˈnɑː.ʒə/",
+      "example": "The pregnant woman experienced nausea every morning.",
+      "example_translation": "Беременная женщина испытывала тошноту каждое утро."
+    },
+    {
+      "word": "OUTPATIENT",
+      "translation": "Амбулаторный пациент",
+      "transcription_uk": "/ˈaʊt.peɪ.ʃənt/",
+      "transcription_us": "/ˈaʊt.peɪ.ʃənt/",
+      "example": "The surgery was minor, so I was treated as an outpatient.",
+      "example_translation": "Операция была небольшой, поэтому меня лечили амбулаторно."
+    },
+    {
+      "word": "PAINKILLER",
+      "translation": "Обезболивающее",
+      "transcription_uk": "/ˈpeɪnˌkɪl.ər/",
+      "transcription_us": "/ˈpeɪnˌkɪl.ɚ/",
+      "example": "I took a painkiller for my headache, and it helped.",
+      "example_translation": "Я принял обезболивающее от головной боли, и это помогло."
+    },
+    {
+      "word": "PRESCRIPTION",
+      "translation": "Рецепт на лекарства",
+      "transcription_uk": "/prɪˈskrɪp.ʃən/",
+      "transcription_us": "/prɪˈskrɪp.ʃən/",
+      "example": "You need a prescription from a doctor to buy these antibiotics.",
+      "example_translation": "Вам нужен рецепт от врача, чтобы купить эти антибиотики."
+    },
+    {
+      "word": "RASH",
+      "translation": "Сыпь",
+      "transcription_uk": "/ræʃ/",
+      "transcription_us": "/ræʃ/",
+      "example": "He developed a red rash on his arms after eating seafood.",
+      "example_translation": "У него появилась красная сыпь на руках после того, как он съел морепродукты."
+    },
+    {
+      "word": "SIDE EFFECT",
+      "translation": "Побочный эффект",
+      "transcription_uk": "/ˈsaɪd ɪˌfekt/",
+      "transcription_us": "/ˈsaɪd ɪˌfekt/",
+      "example": "Dizziness is a common side effect of this painkiller.",
+      "example_translation": "Головокружение — это частый побочный эффект этого обезболивающего."
+    },
+    {
+      "word": "STITCH",
+      "translation": "Шов",
+      "transcription_uk": "/stɪtʃ/",
+      "transcription_us": "/stɪtʃ/",
+      "example": "The cut was deep, so the doctor put five stitches on his hand.",
+      "example_translation": "Порез был глубоким, поэтому врач наложил пять швов на его руку."
+    },
+    {
+      "word": "STROKE",
+      "translation": "Инсульт",
+      "transcription_uk": "/strəʊk/",
+      "transcription_us": "/stroʊk/",
+      "example": "Fast treatment is very important when someone has a stroke.",
+      "example_translation": "Быстрое лечение очень важно, когда у кого-то случается инсульт."
+    },
+    {
+      "word": "SURGEON",
+      "translation": "Хирург",
+      "transcription_uk": "/ˈsɜː.dʒən/",
+      "transcription_us": "/ˈsɝː.dʒən/",
+      "example": "The surgeon explained the risks of the operation.",
+      "example_translation": "Хирург объяснил риски операции."
+    },
+    {
+      "word": "SURGERY",
+      "translation": "Хирургическая операция",
+      "transcription_uk": "/ˈsɜː.dʒər.i/",
+      "transcription_us": "/ˈsɝː.dʒər.i/",
+      "example": "He needs surgery to repair his broken knee.",
+      "example_translation": "Ему нужна операция, чтобы восстановить сломанное колено."
+    },
+    {
+      "word": "SWELLING",
+      "translation": "Отек, припухлость",
+      "transcription_uk": "/ˈswel.ɪŋ/",
+      "transcription_us": "/ˈswel.ɪŋ/",
+      "example": "The doctor recommended ice for the swelling on my ankle.",
+      "example_translation": "Врач рекомендовал лед для снятия отека на моей лодыжке."
+    },
+    {
+      "word": "SYMPTOM",
+      "translation": "Симптом",
+      "transcription_uk": "/ˈsɪmp.təm/",
+      "transcription_us": "/ˈsɪmp.təm/",
+      "example": "A high fever is a common symptom of the flu.",
+      "example_translation": "Высокая температура — это распространенный симптом гриппа."
+    },
+    {
+      "word": "VACCINE",
+      "translation": "Вакцина",
+      "transcription_uk": "/ˈvæk.siːn/",
+      "transcription_us": "/vækˈsiːn/",
+      "example": "The new vaccine protects against several strains of the flu.",
+      "example_translation": "Новая вакцина защищает от нескольких штаммов гриппа."
+    },
+    {
+      "word": "WARD",
+      "translation": "Больничная палата",
+      "transcription_uk": "/wɔːd/",
+      "transcription_us": "/wɔːrd/",
+      "example": "After the surgery, they took him to the recovery ward.",
+      "example_translation": "После операции его перевели в реабилитационную палату."
+    },
+    {
+      "word": "X-RAY",
+      "translation": "Рентген",
+      "transcription_uk": "/ˈeks.reɪ/",
+      "transcription_us": "/ˈeks.reɪ/",
+      "example": "The X-ray showed that his leg was not broken.",
+      "example_translation": "Рентген показал, что его нога не сломана."
+    }
+  ],
+  "Slang": [
+    {
+      "word": "Lit",
+      "translation": "огонь, очень круто",
+      "transcription_uk": "/lɪt/",
+      "transcription_us": "/lɪt/",
+      "example": "Last night was lit.",
+      "example_translation": "Прошлая ночь была огонь."
+    },
+    {
+      "word": "Cool",
+      "translation": "классный",
+      "transcription_uk": "/kuːl/",
+      "transcription_us": "/kuːl/",
+      "example": "Your brother is cool.",
+      "example_translation": "Твой брат классный."
+    },
+    {
+      "word": "Bro",
+      "translation": "братан",
+      "transcription_uk": "/brəʊ/",
+      "transcription_us": "/broʊ/",
+      "example": "Let's go, bro.",
+      "example_translation": "Погнали, братан."
+    },
+    {
+      "word": "Noob",
+      "translation": "нуб, новичок",
+      "transcription_uk": "/nuːb/",
+      "transcription_us": "/nuːb/",
+      "example": "Don't be a noob.",
+      "example_translation": "Не будь нубом."
+    },
+    {
+      "word": "Savage",
+      "translation": "жесткий, дерзкий",
+      "transcription_uk": "/ˈsæv.ɪdʒ/",
+      "transcription_us": "/ˈsæv.ɪdʒ/",
+      "example": "That was savage.",
+      "example_translation": "Это было жестко."
+    },
+    {
+      "word": "Flex",
+      "translation": "хвастаться",
+      "transcription_uk": "/fleks/",
+      "transcription_us": "/fleks/",
+      "example": "He likes to flex.",
+      "example_translation": "Он любит хвастаться."
+    },
+    {
+      "word": "Ghost",
+      "translation": "резко прекратить общение, игнорировать",
+      "transcription_uk": "/ɡəʊst/",
+      "transcription_us": "/ɡoʊst/",
+      "example": "Don't ghost me.",
+      "example_translation": "Не игнорируй меня (не пропадай резко)."
+    },
+    {
+      "word": "Cringe",
+      "translation": "кринж, испанский стыд",
+      "transcription_uk": "/krɪndʒ/",
+      "transcription_us": "/krɪndʒ/",
+      "example": "This is so cringe.",
+      "example_translation": "Это такой кринж."
+    },
+    {
+      "word": "Sus",
+      "translation": "подозрительный",
+      "transcription_uk": "/sʌs/",
+      "transcription_us": "/sʌs/",
+      "example": "Something is sus here.",
+      "example_translation": "Здесь что-то подозрительное."
+    },
+    {
+      "word": "GOAT",
+      "translation": "лучший всех времен",
+      "transcription_uk": "/ɡəʊt/",
+      "transcription_us": "/ɡoʊt/",
+      "example": "She is the GOAT.",
+      "example_translation": "Она лучшая всех времен."
+    },
+    {
+      "word": "Bae",
+      "translation": "любимый человек",
+      "transcription_uk": "/beɪ/",
+      "transcription_us": "/beɪ/",
+      "example": "See you later, bae.",
+      "example_translation": "Увидимся позже, любимый."
+    },
+    {
+      "word": "Salty",
+      "translation": "обиженный, раздраженный",
+      "transcription_uk": "/ˈsɒl.ti/",
+      "transcription_us": "/ˈsɑːl.t̬i/",
+      "example": "Why are you salty?",
+      "example_translation": "Почему ты обижен?"
+    },
+    {
+      "word": "Low-key",
+      "translation": "немного, по-тихому",
+      "transcription_uk": "/ˌləʊˈkiː/",
+      "transcription_us": "/ˌloʊˈkiː/",
+      "example": "I low-key agree.",
+      "example_translation": "Я по-тихому согласен."
+    },
+    {
+      "word": "Hype",
+      "translation": "ажиотаж, хайп",
+      "transcription_uk": "/haɪp/",
+      "transcription_us": "/haɪp/",
+      "example": "The hype is real.",
+      "example_translation": "Хайп реален."
+    },
+    {
+      "word": "Woke",
+      "translation": "социально осознанный",
+      "transcription_uk": "/wəʊk/",
+      "transcription_us": "/woʊk/",
+      "example": "Stay woke.",
+      "example_translation": "Будь социально осознанным (не будь наивным)."
+    }
+  ],
+  "Phrasal Verbs": [
+    {
+      "word": "Get up",
+      "translation": "вставать, подниматься (с постели)",
+      "transcription_uk": "/ˈɡet ʌp/",
+      "transcription_us": "/ˈɡet ʌp/",
+      "example": "I get up at 7 AM every day.",
+      "example_translation": "Я встаю в 7 утра каждый день."
+    },
+    {
+      "word": "Come back",
+      "translation": "возвращаться, вспоминаться",
+      "transcription_uk": "/kʌm ˈbæk/",
+      "transcription_us": "/ˈkəm ˈbæk/",
+      "example": "Please come back soon.",
+      "example_translation": "Пожалуйста, возвращайся скоро."
+    },
+    {
+      "word": "Turn on",
+      "translation": "включать, открывать (кран)",
+      "transcription_uk": "/tɜːn ɒn/",
+      "transcription_us": "/ˈtɜːn ɑːn/",
+      "example": "Please turn on the light.",
+      "example_translation": "Пожалуйста, включи свет."
+    },
+    {
+      "word": "Turn off",
+      "translation": "выключать, сворачивать",
+      "transcription_uk": "/ˈtɜːnɒf/",
+      "transcription_us": "/ˈtɜːn ˈɒf/",
+      "example": "Turn off the light.",
+      "example_translation": "Выключи свет."
+    },
+    {
+      "word": "Put on",
+      "translation": "надевать, включать",
+      "transcription_uk": "/ˈpʊt ɒn/",
+      "transcription_us": "/ˈpʊt ɑːn/",
+      "example": "Put on your coat.",
+      "example_translation": "Надень пальто."
+    },
+    {
+      "word": "Take off",
+      "translation": "снимать (одежду), взлетать",
+      "transcription_uk": "/ˈteɪkɒf/",
+      "transcription_us": "/ˈteɪk ˈɒf/",
+      "example": "Take off your shoes.",
+      "example_translation": "Сними обувь."
+    },
+    {
+      "word": "Look for",
+      "translation": "искать, ожидать",
+      "transcription_uk": "/lʊk fɔ/",
+      "transcription_us": "/lʊk fɔr/",
+      "example": "I look for my phone.",
+      "example_translation": "Я ищу свой телефон."
+    },
+    {
+      "word": "Look after",
+      "translation": "заботиться, присматривать",
+      "transcription_uk": "/lʊk ˈɑftə/",
+      "transcription_us": "/lʊk ˌæftər/",
+      "example": "She looks after her grandma.",
+      "example_translation": "Она заботится о бабушке."
+    },
+    {
+      "word": "Run out",
+      "translation": "закончиться (без остатка)",
+      "transcription_uk": "/rən ˈaʊt/",
+      "transcription_us": "/rən ˈaʊt/",
+      "example": "We ran out of milk.",
+      "example_translation": "У нас закончилось молоко."
+    },
+    {
+      "word": "Give up",
+      "translation": "сдаваться, бросать (привычку)",
+      "transcription_uk": "/ɡɪv ʌp/",
+      "transcription_us": "/ˈɡɪv ʌp/",
+      "example": "Never give up.",
+      "example_translation": "Никогда не сдавайся."
+    },
+    {
+      "word": "Pick up",
+      "translation": "забирать, поднимать",
+      "transcription_uk": "/pɪk ʌp/",
+      "transcription_us": "/ˈpɪk ʌp/",
+      "example": "I'll pick you up.",
+      "example_translation": "Я заберу тебя."
+    },
+    {
+      "word": "Drop off",
+      "translation": "высаживать, засыпать",
+      "transcription_uk": "/ˈdrɒpɒf/",
+      "transcription_us": "/ˈdrɑːp ˈɒf/",
+      "example": "Drop me off here.",
+      "example_translation": "Высади меня здесь."
+    },
+    {
+      "word": "Turn up",
+      "translation": "появляться, увеличивать",
+      "transcription_uk": "/ˈtɜːnʌp/",
+      "transcription_us": "/ˈtərn ˌəp/",
+      "example": "Turn up the volume.",
+      "example_translation": "Сделай громче."
+    },
+    {
+      "word": "Turn down",
+      "translation": "отказываться, уменьшать",
+      "transcription_uk": "/tɜːn daʊn/",
+      "transcription_us": "/ˈtɜːn ˈdaʊn/",
+      "example": "Turn down the music.",
+      "example_translation": "Сделай музыку тише."
+    },
+    {
+      "word": "Find out",
+      "translation": "узнавать, выяснять",
+      "transcription_uk": "/faɪnd ˈaʊt/",
+      "transcription_us": "/ˈfaɪnd ˈaʊt/",
+      "example": "I want to find out the truth.",
+      "example_translation": "Я хочу узнать правду."
+    },
+    {
+      "word": "Figure out",
+      "translation": "понять, разобраться",
+      "transcription_uk": "/ˈfɪɡə ˈaʊt/",
+      "transcription_us": "/ˈfɪɡjər ˈaʊt/",
+      "example": "I can't figure it out.",
+      "example_translation": "Я не могу понять это."
+    },
+    {
+      "word": "Go on",
+      "translation": "продолжаться, происходить",
+      "transcription_uk": "/ɡəʊ ɒn/",
+      "transcription_us": "/ˈɡəʊ ɑːn/",
+      "example": "The show goes on.",
+      "example_translation": "Шоу продолжается."
+    },
+    {
+      "word": "Come in",
+      "translation": "входить, занимать место",
+      "transcription_uk": "/kʌm ɪn/",
+      "transcription_us": "/ˈkəm ɪn/",
+      "example": "Please come in.",
+      "example_translation": "Пожалуйста, входите."
+    },
+    {
+      "word": "Sit down",
+      "translation": "садиться",
+      "transcription_uk": "/sɪt daʊn/",
+      "transcription_us": "/ˈsɪt ˌdaʊn/",
+      "example": "Sit down, please.",
+      "example_translation": "Садитесь, пожалуйста."
+    },
+    {
+      "word": "Stand up",
+      "translation": "вставать",
+      "transcription_uk": "/ˈstænd ʌp/",
+      "transcription_us": "/ˈstænd ʌp/",
+      "example": "Stand up straight.",
+      "example_translation": "Встань ровно."
+    },
+    {
+      "word": "Hurry up",
+      "translation": "торопиться, ускорять",
+      "transcription_uk": "/ˈhʌri ʌp/",
+      "transcription_us": "/ˈhɜːri/",
+      "example": "Hurry up, please.",
+      "example_translation": "Поторопись, пожалуйста."
+    },
+    {
+      "word": "Slow down",
+      "translation": "замедляться, расслабляться",
+      "transcription_uk": "/ˈsləʊdaʊn/",
+      "transcription_us": "/ˈsloʊdaʊn/",
+      "example": "Slow down here.",
+      "example_translation": "Притормози здесь."
+    },
+    {
+      "word": "Calm down",
+      "translation": "успокаиваться",
+      "transcription_uk": "/kɑːm daʊn/",
+      "transcription_us": "/kɑːm daʊn/",
+      "example": "Calm down, it's OK.",
+      "example_translation": "Успокойся, всё нормально."
+    },
+    {
+      "word": "Break down",
+      "translation": "ломаться, разбирать",
+      "transcription_uk": "/breɪk daʊn/",
+      "transcription_us": "/ˈbreɪk ˈdaʊn/",
+      "example": "My car broke down.",
+      "example_translation": "Моя машина сломалась."
+    },
+    {
+      "word": "Grow up",
+      "translation": "взрослеть",
+      "transcription_uk": "/ɡrəʊ ʌp/",
+      "transcription_us": "/ˈɡrəʊ ʌp/",
+      "example": "He grew up fast.",
+      "example_translation": "Он вырос быстро."
+    }
+  ],
+  "Top 30 Verbs": [
+    {
+      "word": "BE",
+      "translation": "Быть, находиться",
+      "transcription_uk": "/biː/",
+      "transcription_us": "/biː/",
+      "example": "I want to be a doctor.",
+      "example_translation": "Я хочу быть врачом."
+    },
+    {
+      "word": "HAVE",
+      "translation": "Иметь",
+      "transcription_uk": "/hæv/",
+      "transcription_us": "/hæv/",
+      "example": "They have a new car.",
+      "example_translation": "У них есть новая машина."
+    },
+    {
+      "word": "DO",
+      "translation": "Делать",
+      "transcription_uk": "/duː/",
+      "transcription_us": "/duː/",
+      "example": "What do you do?",
+      "example_translation": "Чем ты занимаешься? (Что ты делаешь?)"
+    },
+    {
+      "word": "SAY",
+      "translation": "Сказать, говорить",
+      "transcription_uk": "/seɪ/",
+      "transcription_us": "/seɪ/",
+      "example": "Please say it again.",
+      "example_translation": "Пожалуйста, скажи это снова."
+    },
+    {
+      "word": "GO",
+      "translation": "Идти, ехать",
+      "transcription_uk": "/ɡəʊ/",
+      "transcription_us": "/ɡoʊ/",
+      "example": "Let's go to the park.",
+      "example_translation": "Давай пойдем в парк."
+    },
+    {
+      "word": "GET",
+      "translation": "Получать, становиться",
+      "transcription_uk": "/ɡet/",
+      "transcription_us": "/ɡet/",
+      "example": "I need to get some sleep.",
+      "example_translation": "Мне нужно поспать."
+    },
+    {
+      "word": "MAKE",
+      "translation": "Делать, изготавливать",
+      "transcription_uk": "/meɪk/",
+      "transcription_us": "/meɪk/",
+      "example": "Can you make coffee?",
+      "example_translation": "Ты можешь сделать кофе?"
+    },
+    {
+      "word": "KNOW",
+      "translation": "Знать",
+      "transcription_uk": "/nəʊ/",
+      "transcription_us": "/noʊ/",
+      "example": "I know the answer.",
+      "example_translation": "Я знаю ответ."
+    },
+    {
+      "word": "THINK",
+      "translation": "Думать",
+      "transcription_uk": "/θɪŋk/",
+      "transcription_us": "/θɪŋk/",
+      "example": "I think it's a good idea.",
+      "example_translation": "Я думаю, это хорошая идея."
+    },
+    {
+      "word": "SEE",
+      "translation": "Видеть",
+      "transcription_uk": "/siː/",
+      "transcription_us": "/siː/",
+      "example": "I see a bird.",
+      "example_translation": "Я вижу птицу."
+    },
+    {
+      "word": "COME",
+      "translation": "Приходить",
+      "transcription_uk": "/kʌm/",
+      "transcription_us": "/kʌm/",
+      "example": "Please come here.",
+      "example_translation": "Пожалуйста, иди сюда."
+    },
+    {
+      "word": "WANT",
+      "translation": "Хотеть",
+      "transcription_uk": "/wɒnt/",
+      "transcription_us": "/wɑːnt/",
+      "example": "I want some water.",
+      "example_translation": "Я хочу воды."
+    },
+    {
+      "word": "USE",
+      "translation": "Использовать",
+      "transcription_uk": "/juːz/",
+      "transcription_us": "/juːz/",
+      "example": "Can I use your phone?",
+      "example_translation": "Могу я воспользоваться твоим телефоном?"
+    },
+    {
+      "word": "FIND",
+      "translation": "Находить",
+      "transcription_uk": "/faɪnd/",
+      "transcription_us": "/faɪnd/",
+      "example": "I can't find my keys.",
+      "example_translation": "Я не могу найти свои ключи."
+    },
+    {
+      "word": "GIVE",
+      "translation": "Давать",
+      "transcription_uk": "/ɡɪv/",
+      "transcription_us": "/ɡɪv/",
+      "example": "Give me a pen, please.",
+      "example_translation": "Дай мне ручку, пожалуйста."
+    },
+    {
+      "word": "TELL",
+      "translation": "Рассказывать",
+      "transcription_uk": "/tel/",
+      "transcription_us": "/tel/",
+      "example": "Tell me a story.",
+      "example_translation": "Расскажи мне историю."
+    },
+    {
+      "word": "WORK",
+      "translation": "Работать",
+      "transcription_uk": "/wɜːk/",
+      "transcription_us": "/wɜːrk/",
+      "example": "I work in an office.",
+      "example_translation": "Я работаю в офисе."
+    },
+    {
+      "word": "CALL",
+      "translation": "Звонить, называть",
+      "transcription_uk": "/kɔːl/",
+      "transcription_us": "/kɔːl/",
+      "example": "Please call me tomorrow.",
+      "example_translation": "Пожалуйста, позвони мне завтра."
+    },
+    {
+      "word": "TRY",
+      "translation": "Пробовать, пытаться",
+      "transcription_uk": "/traɪ/",
+      "transcription_us": "/traɪ/",
+      "example": "Try this cake.",
+      "example_translation": "Попробуй этот торт."
+    },
+    {
+      "word": "ASK",
+      "translation": "Спрашивать",
+      "transcription_uk": "/ɑːsk/",
+      "transcription_us": "/æsk/",
+      "example": "Ask the teacher.",
+      "example_translation": "Спроси учителя."
+    },
+    {
+      "word": "NEED",
+      "translation": "Нуждаться",
+      "transcription_uk": "/niːd/",
+      "transcription_us": "/niːd/",
+      "example": "I need help.",
+      "example_translation": "Мне нужна помощь."
+    },
+    {
+      "word": "FEEL",
+      "translation": "Чувствовать",
+      "transcription_uk": "/fiːl/",
+      "transcription_us": "/fiːl/",
+      "example": "I feel happy.",
+      "example_translation": "Я чувствую себя счастливым."
+    },
+    {
+      "word": "BECOME",
+      "translation": "Становиться",
+      "transcription_uk": "/bɪˈkʌm/",
+      "transcription_us": "/bɪˈkʌm/",
+      "example": "It will become cold.",
+      "example_translation": "Станет холодно."
+    },
+    {
+      "word": "LEAVE",
+      "translation": "Покидать, уезжать",
+      "transcription_uk": "/liːv/",
+      "transcription_us": "/liːv/",
+      "example": "What time will you leave?",
+      "example_translation": "Во сколько ты уедешь?"
+    },
+    {
+      "word": "PUT",
+      "translation": "Класть, ставить",
+      "transcription_uk": "/pʊt/",
+      "transcription_us": "/pʊt/",
+      "example": "Put the book on the table.",
+      "example_translation": "Положи книгу на стол."
+    },
+    {
+      "word": "MEAN",
+      "translation": "Значить, подразумевать",
+      "transcription_uk": "/miːn/",
+      "transcription_us": "/miːn/",
+      "example": "What does this word mean?",
+      "example_translation": "Что означает это слово?"
+    },
+    {
+      "word": "KEEP",
+      "translation": "Держать, хранить",
+      "transcription_uk": "/kiːp/",
+      "transcription_us": "/kiːp/",
+      "example": "Keep the change.",
+      "example_translation": "Сдачу оставьте себе."
+    },
+    {
+      "word": "LET",
+      "translation": "Позволять",
+      "transcription_uk": "/let/",
+      "transcription_us": "/let/",
+      "example": "Let me help you.",
+      "example_translation": "Позволь мне помочь тебе."
+    },
+    {
+      "word": "SEEM",
+      "translation": "Казаться",
+      "transcription_uk": "/siːm/",
+      "transcription_us": "/siːm/",
+      "example": "You seem tired.",
+      "example_translation": "Ты кажешься уставшим."
+    },
+    {
+      "word": "HELP",
+      "translation": "Помогать",
+      "transcription_uk": "/help/",
+      "transcription_us": "/help/",
+      "example": "Can you help me?",
+      "example_translation": "Ты можешь мне помочь?"
+    }
+  ],
+  "Travel": [
+    {
+      "word": "Journey",
+      "translation": "путешествие, поездка, путь",
+      "transcription_uk": "/ˈdʒɜː.ni/",
+      "transcription_us": "/ˈdʒɝː.ni/",
+      "example": "Our journey to Paris was amazing.",
+      "example_translation": "Наше путешествие в Париж было потрясающим."
+    },
+    {
+      "word": "Trip",
+      "translation": "поездка, вояж",
+      "transcription_uk": "/trɪp/",
+      "transcription_us": "/trɪp/",
+      "example": "We took a day trip to the beach.",
+      "example_translation": "Мы съездили на пляж на один день."
+    },
+    {
+      "word": "Voyage",
+      "translation": "морское путешествие, плавание, рейс",
+      "transcription_uk": "/ˈvɔɪ.ɪdʒ/",
+      "transcription_us": "/ˈvɔɪ.ɪdʒ/",
+      "example": "The voyage across the Atlantic took 2 weeks.",
+      "example_translation": "Плавание через Атлантику заняло 2 недели."
+    },
+    {
+      "word": "Itinerary",
+      "translation": "маршрут, план поездки, график",
+      "transcription_uk": "/aɪˈtɪn.ər.ər.i/",
+      "transcription_us": "/aɪˈtɪn.ə.rer.i/",
+      "example": "Check the itinerary before we leave.",
+      "example_translation": "Проверь маршрут перед выездом."
+    },
+    {
+      "word": "Accommodation",
+      "translation": "жильё, размещение, ночлег",
+      "transcription_uk": "/əˌkɒm.əˈdeɪ.ʃən/",
+      "transcription_us": "/əˌkɑː.məˈdeɪ.ʃən/",
+      "example": "We booked accommodation in a hostel.",
+      "example_translation": "Мы забронировали жильё в хостеле."
+    },
+    {
+      "word": "Luggage",
+      "translation": "багаж, чемоданы",
+      "transcription_uk": "/ˈlʌɡ.ɪdʒ/",
+      "transcription_us": "/ˈlʌɡ.ɪdʒ/",
+      "example": "How many pieces of luggage do you have?",
+      "example_translation": "Сколько у вас мест багажа?"
+    },
+    {
+      "word": "Backpack",
+      "translation": "рюкзак, туристический рюкзак",
+      "transcription_uk": "/ˈbæk.pæk/",
+      "transcription_us": "/ˈbæk.pæk/",
+      "example": "He carried a heavy backpack.",
+      "example_translation": "Он нёс тяжёлый рюкзак."
+    },
+    {
+      "word": "Passport",
+      "translation": "паспорт, загранпаспорт, удостоверение личности",
+      "transcription_uk": "/ˈpɑːs.pɔːt/",
+      "transcription_us": "/ˈpæs.pɔːrt/",
+      "example": "Don't forget your passport at security.",
+      "example_translation": "Не забудь паспорт на контроле безопасности."
+    },
+    {
+      "word": "Visa",
+      "translation": "виза, разрешение на въезд, въездной документ",
+      "transcription_uk": "/ˈviː.zə/",
+      "transcription_us": "/ˈviː.zə/",
+      "example": "You need a visa to enter India.",
+      "example_translation": "Для въезда в Индию нужна виза."
+    },
+    {
+      "word": "Boarding pass",
+      "translation": "посадочный талон",
+      "transcription_uk": "/ˈbɔː.dɪŋ ˌpɑːs/",
+      "transcription_us": "/ˈbɔːr.dɪŋ ˌpæs/",
+      "example": "Scan your boarding pass at the gate.",
+      "example_translation": "Отсканируйте посадочный талон у выхода на посадку."
+    },
+    {
+      "word": "Destination",
+      "translation": "пункт назначения, место назначения, цель поездки",
+      "transcription_uk": "/ˌdes.tɪˈneɪ.ʃən/",
+      "transcription_us": "/ˌdes.tɪˈneɪ.ʃən/",
+      "example": "Our destination is Barcelona.",
+      "example_translation": "Наш пункт назначения — Барселона."
+    },
+    {
+      "word": "Departure",
+      "translation": "отправление, вылет, отъезд",
+      "transcription_uk": "/dɪˈpɑː.tʃər/",
+      "transcription_us": "/dɪˈpɑːr.tʃər/",
+      "example": "The departure time is 6 AM.",
+      "example_translation": "Время отправления — 6 утра."
+    },
+    {
+      "word": "Arrival",
+      "translation": "прибытие, прилёт, приезд",
+      "transcription_uk": "/əˈraɪ.vəl/",
+      "transcription_us": "/əˈraɪ.vəl/",
+      "example": "Arrival is scheduled for 10 PM.",
+      "example_translation": "Прибытие запланировано на 22:00."
+    },
+    {
+      "word": "Layover",
+      "translation": "пересадка, стыковка, ожидание между рейсами",
+      "transcription_uk": "/ˈleɪ.əʊ.vər/",
+      "transcription_us": "/ˈleɪ.oʊ.vɚ/",
+      "example": "We had a 5-hour layover in Dubai.",
+      "example_translation": "У нас была 5-часовая пересадка в Дубае."
+    },
+    {
+      "word": "Carry-on",
+      "translation": "ручная кладь, вещь в салон, багаж в салон",
+      "transcription_uk": "/ˈkær.i.ɒn/",
+      "transcription_us": "/ˈker.i.ɑːn/",
+      "example": "My carry-on fits under the seat.",
+      "example_translation": "Моя ручная кладь помещается под сиденьем."
+    },
+    {
+      "word": "Turbulence",
+      "translation": "турбулентность",
+      "transcription_uk": "/ˈtɜː.bjə.ləns/",
+      "transcription_us": "/ˈtɝː.bjə.ləns/",
+      "example": "The turbulence made me nervous.",
+      "example_translation": "Турбулентность меня напугала."
+    },
+    {
+      "word": "Cruise",
+      "translation": "круиз, морское путешествие, плавание",
+      "transcription_uk": "/kruːz/",
+      "transcription_us": "/kruːz/",
+      "example": "We went on a Mediterranean cruise.",
+      "example_translation": "Мы отправились в круиз по Средиземноморью."
+    },
+    {
+      "word": "Hitchhike",
+      "translation": "путешествовать автостопом",
+      "transcription_uk": "/ˈhɪtʃ.haɪk/",
+      "transcription_us": "/ˈhɪtʃ.haɪk/",
+      "example": "Is it safe to hitchhike here?",
+      "example_translation": "Здесь безопасно путешествовать автостопом?"
+    },
+    {
+      "word": "Souvenir",
+      "translation": "сувенир, памятный подарок",
+      "transcription_uk": "/ˌsuː.vəˈnɪər/",
+      "transcription_us": "/ˌsuː.vəˈnɪr/",
+      "example": "I bought a souvenir from Rome.",
+      "example_translation": "Я купил сувенир из Рима."
+    },
+    {
+      "word": "Currency exchange",
+      "translation": "обмен валюты",
+      "transcription_uk": "/ˈkʌr.ən.si ɪksˈtʃeɪndʒ/",
+      "transcription_us": "/ˈkʌr.ən.si ɪksˈtʃeɪndʒ/",
+      "example": "Where is the currency exchange desk?",
+      "example_translation": "Где находится пункт обмена валюты?"
+    },
+    {
+      "word": "Jet lag",
+      "translation": "джетлаг, смена часовых поясов, нарушение режима после перелёта",
+      "transcription_uk": "/ˈdʒet ˌlæɡ/",
+      "transcription_us": "/ˈdʒet ˌlæɡ/",
+      "example": "I feel terrible from jet lag.",
+      "example_translation": "Я ужасно себя чувствую из-за джетлага."
+    },
+    {
+      "word": "Scenery",
+      "translation": "пейзаж, вид, ландшафт",
+      "transcription_uk": "/ˈsiː.nər.i/",
+      "transcription_us": "/ˈsiː.nər.i/",
+      "example": "The scenery in Switzerland is breathtaking.",
+      "example_translation": "Пейзаж в Швейцарии захватывает дух."
+    },
+    {
+      "word": "All-inclusive",
+      "translation": "всё включено",
+      "transcription_uk": "/ˌɔːl.ɪnˈkluː.sɪv/",
+      "transcription_us": "/ˌɔːl.ɪnˈkluː.sɪv/",
+      "example": "We booked an all-inclusive resort.",
+      "example_translation": "Мы забронировали отель \"всё включено\"."
+    },
+    {
+      "word": "Check-in desk",
+      "translation": "стойка регистрации, ресепшн, стойка заселения",
+      "transcription_uk": "/ˈtʃek ɪn ˌdesk/",
+      "transcription_us": "/ˈtʃek ɪn ˌdesk/",
+      "example": "Go to the check-in desk first.",
+      "example_translation": "Сначала подойдите к стойке регистрации."
+    },
+    {
+      "word": "Sightseeing",
+      "translation": "осмотр достопримечательностей, экскурсии, туризм",
+      "transcription_uk": "/ˈsaɪtˌsiː.ɪŋ/",
+      "transcription_us": "/ˈsaɪtˌsiː.ɪŋ/",
+      "example": "We did some sightseeing in London.",
+      "example_translation": "Мы осматривали достопримечательности Лондона."
+    },
+    {
+      "word": "Guidebook",
+      "translation": "путеводитель, гид, справочник",
+      "transcription_uk": "/ˈɡaɪd.bʊk/",
+      "transcription_us": "/ˈɡaɪd.bʊk/",
+      "example": "The guidebook lists all museums.",
+      "example_translation": "В путеводителе перечислены все музеи."
+    },
+    {
+      "word": "Wander",
+      "translation": "бродить, гулять без цели, слоняться",
+      "transcription_uk": "/ˈwɒn.dər/",
+      "transcription_us": "/ˈwɑːn.dɚ/",
+      "example": "We wandered through the old town.",
+      "example_translation": "Мы бродили по старому городу."
+    },
+    {
+      "word": "Booking",
+      "translation": "бронирование, бронь, предварительный заказ",
+      "transcription_uk": "/ˈbʊk.ɪŋ/",
+      "transcription_us": "/ˈbʊk.ɪŋ/",
+      "example": "I have a booking for two nights.",
+      "example_translation": "У меня бронь на две ночи."
+    },
+    {
+      "word": "Landmark",
+      "translation": "достопримечательность, ориентир, знаковое место",
+      "transcription_uk": "/ˈlænd.mɑːk/",
+      "transcription_us": "/ˈlænd.mɑːrk/",
+      "example": "The Eiffel Tower is a famous landmark.",
+      "example_translation": "Эйфелева башня — известная достопримечательность."
+    },
+    {
+      "word": "Fare",
+      "translation": "плата за проезд, стоимость билета, тариф",
+      "transcription_uk": "/feər/",
+      "transcription_us": "/fer/",
+      "example": "The bus fare is $2.50.",
+      "example_translation": "Проезд на автобусе стоит 2,50 доллара."
+    }
+  ]
+}

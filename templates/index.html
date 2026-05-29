@@ -1528,12 +1528,57 @@ Awesome::потрясающий::/ˈɔː.səm/::/ˈɑː.səm/::This is awesome!:
         }
         
         function playAudio(type) {
-            if (!currentCard) return;
-            let word = currentCard.word.toLowerCase().replace(/ /g, '_');
-            const audioFile = type === 'uk' ? `${word}_uk.mp3` : `${word}_us.mp3`;
-            const audio = new Audio(`/static/audio/${audioFile}`);
-            audio.play().catch(e => console.log('Аудио не найдено:', audioFile));
+    if (!currentCard) return;
+    
+    let word = currentCard.word.toLowerCase().trim();
+    
+    // Специальные замены для сложных слов
+    const specialCases = {
+        "on the other hand": "on_the_other_hand",
+        "in addition": "in_addition",
+        "as a result": "as_a_result",
+        "for instance": "for_instance",
+        "in contrast": "in_contrast",
+        "in order to": "in_order_to",
+        "boarding pass": "boarding_pass",
+        "carry-on": "carry_on",
+        "check-in desk": "check_in_desk",
+        "currency exchange": "currency_exchange",
+        "jet lag": "jet_lag",
+        "all-inclusive": "all_inclusive",
+        "low-key": "low_key"
+    };
+    
+    if (specialCases[word]) {
+        word = specialCases[word];
+    } else {
+        word = word.replace(/ /g, "_").replace(/-/g, "_");
+    }
+    
+    // Пробуем разные варианты названий файлов
+    const typeLower = type.toLowerCase();  // "uk" или "us"
+    const typeUpper = type.toUpperCase();  // "UK" или "US"
+    const wordCap = word.charAt(0).toUpperCase() + word.slice(1);
+    
+    const urls = [
+        `/static/audio/${word}_${typeLower}.mp3`,   // lit_uk.mp3
+        `/static/audio/${word}_${typeUpper}.mp3`,   // lit_UK.mp3
+        `/static/audio/${wordCap}_${typeLower}.mp3`, // Lit_uk.mp3
+        `/static/audio/${wordCap}_${typeUpper}.mp3`, // Lit_UK.mp3
+        `/static/audio/${word}.mp3`                  // lit.mp3
+    ];
+    
+    function tryPlay(index) {
+        if (index >= urls.length) {
+            console.log("Audio not found for:", word);
+            return;
         }
+        const audio = new Audio(urls[index]);
+        audio.play().catch(() => tryPlay(index + 1));
+    }
+    
+    tryPlay(0);
+}
         
         function addToTodayStats(word, isCorrect) {
             const status = isCorrect ? 'correct' : 'wrong';

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, session
 import json
 import os
 from datetime import datetime, timedelta
@@ -141,6 +141,7 @@ def update_progress():
         'today_cards': user_stats.get('today_cards', 0),
         'today_mistakes': user_stats.get('today_mistakes', 0)
     })
+
 if __name__ == '__main__':
     import os
     port = int(os.environ.get('PORT', 5000))

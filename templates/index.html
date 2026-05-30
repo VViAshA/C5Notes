@@ -123,6 +123,34 @@
             z-index: 3;
         }
 
+        /* Смешанный режим - кнопка */
+        .mixed-mode-btn {
+            position: absolute;
+            top: 25px;
+            right: 40px;
+            background-color: #174E9C;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-family: 'Playpen Sans', cursive;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            z-index: 3;
+        }
+
+        .mixed-mode-btn:hover {
+            background-color: #0f3a73;
+            transform: scale(1.02);
+        }
+
+        .mixed-mode-active {
+            background-color: #9ADCDE;
+            color: #021939;
+        }
+
         .word {
             text-align: center;
             font-size: 72px;
@@ -289,7 +317,6 @@
             margin-top: 12px;
         }
 
-        /* SRS индикатор */
         .srs-indicator {
             position: fixed;
             bottom: 20px;
@@ -963,7 +990,6 @@
             display: none;
         }
 
-        /* SRS уведомление */
         .srs-notification {
             position: fixed;
             bottom: 80px;
@@ -984,6 +1010,53 @@
             10% { opacity: 1; transform: translateY(0); }
             90% { opacity: 1; transform: translateY(0); }
             100% { opacity: 0; transform: translateY(-20px); }
+        }
+
+        /* Модальное окно выбора колод для смешанного режима */
+        .deck-selector-modal .modal-content {
+            max-width: 500px;
+        }
+
+        .deck-checkbox-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin: 20px 0;
+        }
+
+        .deck-checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .deck-checkbox-item input {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .deck-checkbox-item label {
+            flex: 1;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .deck-checkbox-item .deck-count {
+            color: #174E9C;
+            font-size: 14px;
+        }
+
+        .select-all-btn {
+            background-color: #9ADCDE;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Playpen Sans', cursive;
+            font-size: 14px;
+            margin-right: 10px;
         }
 
         @media (max-width: 1100px) {
@@ -1010,6 +1083,7 @@
             .avatar-container { flex-direction: column; text-align: center; }
             .user-name { font-size: 24px; }
             .modal-content { padding: 20px; }
+            .mixed-mode-btn { top: 15px; right: 15px; font-size: 12px; padding: 6px 12px; }
         }
 
         @media (max-width: 600px) {
@@ -1056,6 +1130,7 @@
                 <div class="card-container">
                     <div class="card-content">
                         <div class="card-counter" id="card-counter">1/20</div>
+                        <button class="mixed-mode-btn" id="mixed-mode-btn">🎲 Смешанный режим</button>
                         <div class="word" id="current-word">Loading...</div>
                         <div class="transcription">
                             <span id="transcription-uk"></span>
@@ -1266,6 +1341,28 @@
         </div>
     </div>
 
+    <!-- Модальное окно выбора колод для смешанного режима -->
+    <div id="mixed-mode-modal" class="modal deck-selector-modal">
+        <div class="modal-content">
+            <h3>🎲 Смешанный режим</h3>
+            <p style="margin-bottom: 15px;">Выберите колоды для изучения:</p>
+            
+            <div>
+                <button class="select-all-btn" id="select-all-decks">✅ Выбрать все</button>
+                <button class="select-all-btn" id="deselect-all-decks" style="background-color: #F8D9D7;">⬜ Снять все</button>
+            </div>
+            
+            <div id="deck-selector-list" class="deck-checkbox-list">
+                <!-- Список колод будет загружен сюда -->
+            </div>
+            
+            <div class="modal-buttons">
+                <button class="modal-cancel" id="mixed-mode-cancel">Отмена</button>
+                <button class="modal-save" id="mixed-mode-start">🚀 Начать изучение</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Модальное окно редактирования профиля -->
     <div id="profile-edit-modal" class="modal">
         <div class="modal-content profile-modal-content">
@@ -1312,8 +1409,159 @@
         let searchQuery = "";
         let tempWords = [];
         
-        // ========== SRS (INTERVALLENDE WIEDERHOLUNG) ==========
-        let srsQueue = [];      // Очередь слов для повторения { deck, word, nextReview, correctCount }
+        // ========== СМЕШАННЫЙ РЕЖИМ (MIXED MODE) ==========
+        let isMixedMode = false;
+        let mixedCards = [];      // Все слова из выбранных колод
+        let mixedCardsShuffled = []; // Перемешанные слова
+        let originalMixedDeck = null; // Сохраняем исходную колоду для выхода
+        let originalMixedIndex = null;
+        
+        // Функция загрузки всех слов из выбранных колод
+        async function loadAllCardsFromSelectedDecks(selectedDeckNames) {
+            const allWords = [];
+            for (const deckName of selectedDeckNames) {
+                let deckCards = [];
+                // Проверяем, пользовательская ли колода
+                if (window.customCardsData && window.customCardsData[deckName]) {
+                    deckCards = window.customCardsData[deckName];
+                } else {
+                    try {
+                        const res = await fetch(`/api/cards/${deckName}`);
+                        deckCards = await res.json();
+                    } catch(e) {
+                        console.error("Error loading deck:", deckName, e);
+                        continue;
+                    }
+                }
+                // Добавляем все слова с указанием колоды (для SRS)
+                deckCards.forEach(card => {
+                    allWords.push({
+                        ...card,
+                        sourceDeck: deckName
+                    });
+                });
+            }
+            return allWords;
+        }
+        
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        
+        async function startMixedMode(selectedDecks) {
+            if (!selectedDecks || selectedDecks.length === 0) {
+                alert("Выберите хотя бы одну колоду!");
+                return false;
+            }
+            
+            // Сохраняем текущую колоду для возможности выхода
+            if (!isMixedMode) {
+                originalMixedDeck = currentDeck;
+                originalMixedIndex = currentIndex;
+            }
+            
+            // Загружаем все слова
+            const allWords = await loadAllCardsFromSelectedDecks(selectedDecks);
+            if (allWords.length === 0) {
+                alert("В выбранных колодах нет слов!");
+                return false;
+            }
+            
+            // Перемешиваем
+            mixedCards = allWords;
+            mixedCardsShuffled = shuffleArray([...allWords]);
+            
+            // Активируем смешанный режим
+            isMixedMode = true;
+            currentDeck = "__MIXED_MODE__";
+            cards = mixedCardsShuffled;
+            currentIndex = 0;
+            updateCard();
+            
+            // Меняем вид кнопки
+            const mixedBtn = document.getElementById('mixed-mode-btn');
+            if (mixedBtn) {
+                mixedBtn.textContent = '🎲 Выйти из смешанного режима';
+                mixedBtn.classList.add('mixed-mode-active');
+            }
+            
+            showSRSNotification(`🎲 Смешанный режим: ${mixedCardsShuffled.length} слов из ${selectedDecks.length} колод`);
+            return true;
+        }
+        
+        function exitMixedMode() {
+            if (originalMixedDeck) {
+                isMixedMode = false;
+                currentDeck = originalMixedDeck;
+                cards = window.__savedCardsForDeck?.[originalMixedDeck] || [];
+                currentIndex = originalMixedIndex || 0;
+                updateCard();
+                originalMixedDeck = null;
+                originalMixedIndex = null;
+            } else {
+                // Если нет сохранённой колоды, просто обновляем страницу
+                isMixedMode = false;
+                location.reload();
+            }
+            
+            const mixedBtn = document.getElementById('mixed-mode-btn');
+            if (mixedBtn) {
+                mixedBtn.textContent = '🎲 Смешанный режим';
+                mixedBtn.classList.remove('mixed-mode-active');
+            }
+            
+            showSRSNotification("🎲 Выход из смешанного режима");
+        }
+        
+        // Открыть модальное окно выбора колод
+        function openDeckSelector() {
+            // Собираем все колоды
+            const allDecksList = [...defaultDecks, ...customDecks];
+            
+            const container = document.getElementById('deck-selector-list');
+            container.innerHTML = allDecksList.map(deck => `
+                <div class="deck-checkbox-item">
+                    <input type="checkbox" id="deck_${deck.name.replace(/[^a-zA-Z0-9]/g, '_')}" value="${deck.name}" class="deck-checkbox">
+                    <label for="deck_${deck.name.replace(/[^a-zA-Z0-9]/g, '_')}">${deck.name}</label>
+                    <span class="deck-count">${deck.count} слов</span>
+                </div>
+            `).join('');
+            
+            document.getElementById('mixed-mode-modal').style.display = 'flex';
+        }
+        
+        // Запуск смешанного режима из модального окна
+        document.getElementById('mixed-mode-start')?.addEventListener('click', async () => {
+            const checkboxes = document.querySelectorAll('.deck-checkbox');
+            const selectedDecks = [];
+            checkboxes.forEach(cb => {
+                if (cb.checked) selectedDecks.push(cb.value);
+            });
+            
+            document.getElementById('mixed-mode-modal').style.display = 'none';
+            await startMixedMode(selectedDecks);
+        });
+        
+        document.getElementById('select-all-decks')?.addEventListener('click', () => {
+            document.querySelectorAll('.deck-checkbox').forEach(cb => cb.checked = true);
+        });
+        
+        document.getElementById('deselect-all-decks')?.addEventListener('click', () => {
+            document.querySelectorAll('.deck-checkbox').forEach(cb => cb.checked = false);
+        });
+        
+        document.getElementById('mixed-mode-cancel')?.addEventListener('click', () => {
+            document.getElementById('mixed-mode-modal').style.display = 'none';
+        });
+        
+        // ========== КОНЕЦ СМЕШАННОГО РЕЖИМА ==========
+        
+        // ========== SRS (ИНТЕРВАЛЬНЫЕ ПОВТОРЕНИЯ) ==========
+        let srsQueue = [];
         let srsInterval = null;
         
         function loadSRS() {
@@ -1332,8 +1580,7 @@
         function addToSRS(deckName, wordData) {
             const existing = srsQueue.find(item => item.deck === deckName && item.word === wordData.word);
             if (existing) {
-                // Обновляем время следующего повторения
-                existing.nextReview = Date.now() + 10 * 60 * 1000; // 10 минут
+                existing.nextReview = Date.now() + 10 * 60 * 1000;
                 existing.correctCount = 0;
             } else {
                 srsQueue.push({
@@ -1353,16 +1600,13 @@
                 if (isCorrect) {
                     srsQueue[index].correctCount++;
                     if (srsQueue[index].correctCount >= 3) {
-                        // Слово выучено, удаляем из очереди
                         srsQueue.splice(index, 1);
                         showSRSNotification(`✅ "${word}" выучено! Оно больше не будет повторяться.`);
                     } else {
-                        // Если ответил правильно, откладываем на 10 минут
                         srsQueue[index].nextReview = Date.now() + 10 * 60 * 1000;
                         showSRSNotification(`👍 "${word}" повторено! Следующее повторение через 10 минут.`);
                     }
                 } else {
-                    // Если ответил неправильно, сбрасываем счётчик и снова добавляем
                     srsQueue[index].correctCount = 0;
                     srsQueue[index].nextReview = Date.now() + 10 * 60 * 1000;
                     showSRSNotification(`🔄 "${word}" будет повторено через 10 минут`);
@@ -1388,7 +1632,6 @@
         }
         
         function showSRSNotification(message) {
-            // Удаляем старые уведомления
             const oldNotif = document.querySelector('.srs-notification');
             if (oldNotif) oldNotif.remove();
             
@@ -1399,7 +1642,6 @@
             setTimeout(() => notif.remove(), 5000);
         }
         
-        // Проверка очереди повторений каждую минуту
         function startSRSWatcher() {
             if (srsInterval) clearInterval(srsInterval);
             srsInterval = setInterval(() => {
@@ -1407,7 +1649,6 @@
             }, 60000);
         }
         
-        // Показать уведомление о словах для повторения и предложить переключиться на колоду повторений
         function suggestReview() {
             const dueWords = getDueWords();
             if (dueWords.length > 0) {
@@ -1415,71 +1656,55 @@
             }
         }
         
-        // Переключиться на колоду для повторения
-        function startReviewSession() {
+        async function startReviewSession() {
             const dueWords = getDueWords();
             if (dueWords.length === 0) {
                 showSRSNotification("✨ Нет слов для повторения!");
                 return;
             }
             
-            // Создаём временную колоду "Мои повторения"
             const reviewWords = [];
             for (const item of dueWords) {
-                // Находим оригинальное слово в соответствующей колоде
                 let fullCards = [];
-                if (item.deck === "Linking Words" || item.deck === "Medicine" || item.deck === "Slang" || 
-                    item.deck === "Phrasal Verbs" || item.deck === "Top 30 Verbs" || item.deck === "Travel") {
-                    // Для дефолтных колод нужно загрузить данные из data.json
-                    fetch(`/api/cards/${item.deck}`).then(res => res.json()).then(cards => {
-                        const found = cards.find(c => c.word === item.word);
-                        if (found && !reviewWords.find(r => r.word === item.word)) {
-                            reviewWords.push(found);
-                        }
-                        if (reviewWords.length === dueWords.length) {
-                            startReviewDeck(reviewWords);
-                        }
-                    });
-                } else {
-                    // Для пользовательских колод
-                    if (window.customCardsData && window.customCardsData[item.deck]) {
-                        const found = window.customCardsData[item.deck].find(c => c.word === item.word);
-                        if (found && !reviewWords.find(r => r.word === item.word)) {
-                            reviewWords.push(found);
-                        }
-                        if (reviewWords.length === dueWords.length) {
-                            startReviewDeck(reviewWords);
-                        }
+                if (defaultDecks.some(d => d.name === item.deck)) {
+                    const res = await fetch(`/api/cards/${item.deck}`);
+                    const cardsData = await res.json();
+                    const found = cardsData.find(c => c.word === item.word);
+                    if (found && !reviewWords.find(r => r.word === item.word)) {
+                        reviewWords.push({ ...found, sourceDeck: item.deck });
+                    }
+                } else if (window.customCardsData && window.customCardsData[item.deck]) {
+                    const found = window.customCardsData[item.deck].find(c => c.word === item.word);
+                    if (found && !reviewWords.find(r => r.word === item.word)) {
+                        reviewWords.push({ ...found, sourceDeck: item.deck });
                     }
                 }
             }
             
             if (reviewWords.length === 0 && dueWords.length > 0) {
-                // Если не нашли слова, просто пробуем через секунду
                 setTimeout(() => startReviewSession(), 500);
+                return;
             }
-        }
-        
-        function startReviewDeck(words) {
-            // Сохраняем текущую колоду во временную переменную
-            window.previousDeck = currentDeck;
-            window.previousCards = cards;
-            window.previousIndex = currentIndex;
             
-            // Создаём временную колоду для повторения
+            // Сохраняем текущую колоду
+            if (!isMixedMode) {
+                window.previousDeck = currentDeck;
+                window.previousCards = cards;
+                window.previousIndex = currentIndex;
+            }
+            
             const reviewDeckName = "__SRS_Review__";
             if (!window.customCardsData) window.customCardsData = {};
-            window.customCardsData[reviewDeckName] = words;
+            window.customCardsData[reviewDeckName] = reviewWords;
             currentDeck = reviewDeckName;
-            cards = words;
+            cards = reviewWords;
             currentIndex = 0;
             updateCard();
             showPage('home');
-            showSRSNotification(`📖 Начинаем повторение ${words.length} слов!`);
+            showSRSNotification(`📖 Начинаем повторение ${reviewWords.length} слов!`);
         }
         
         function finishReview() {
-            // Возвращаемся к предыдущей колоде
             if (window.previousDeck) {
                 currentDeck = window.previousDeck;
                 cards = window.previousCards;
@@ -1490,17 +1715,6 @@
                 window.previousIndex = null;
             }
             showSRSNotification("✅ Сеанс повторения завершён!");
-        }
-        
-        // Модифицируем handleAnswer для работы с SRS
-        const originalHandleAnswer = null;
-        
-        // Переопределяем handleAnswer для поддержки SRS
-        function setupSRSIntegration() {
-            // Сохраняем оригинальную функцию, если её ещё нет
-            if (!window._originalHandleAnswer) {
-                window._originalHandleAnswer = window.handleAnswer;
-            }
         }
         
         // ========== КОНЕЦ SRS ==========
@@ -1616,6 +1830,10 @@
             document.querySelectorAll('.deck-card').forEach(card => {
                 card.addEventListener('click', (e) => {
                     if (e.target.classList.contains('favorite-icon')) return;
+                    // При выборе колоды выходим из смешанного режима, если он был активен
+                    if (isMixedMode) {
+                        exitMixedMode();
+                    }
                     currentDeck = card.dataset.deckName;
                     currentIndex = 0;
                     loadCards();
@@ -1786,8 +2004,12 @@
             document.getElementById('example').textContent = currentCard.example;
             document.getElementById('example-translation').textContent = currentCard.example_translation;
             document.getElementById('translation').textContent = currentCard.translation;
-            document.getElementById('card-counter').textContent = `${currentIndex + 1}/${cards.length}`;
-            const progress = ((currentIndex + 1) / cards.length) * 100;
+            
+            const total = cards.length;
+            const current = currentIndex + 1;
+            document.getElementById('card-counter').textContent = `${current}/${total}`;
+            
+            const progress = (current / total) * 100;
             document.getElementById('progress-bar').style.width = `${progress}%`;
         }
         
@@ -1891,14 +2113,15 @@
         async function handleAnswer(know) {
             if (!currentCard) return;
             
-            // Добавляем в SRS, если ответили НЕ ЗНАЮ
+            // Определяем название колоды для SRS (в смешанном режиме используем sourceDeck)
+            const deckForSRS = currentCard.sourceDeck || currentDeck;
+            
             if (!know) {
-                addToSRS(currentDeck, currentCard);
+                addToSRS(deckForSRS, currentCard);
             } else {
-                // Если ответили ЗНАЮ, проверяем, есть ли слово в SRS
-                const srsItem = srsQueue.find(item => item.deck === currentDeck && item.word === currentCard.word);
+                const srsItem = srsQueue.find(item => item.deck === deckForSRS && item.word === currentCard.word);
                 if (srsItem) {
-                    markInSRS(currentDeck, currentCard.word, true);
+                    markInSRS(deckForSRS, currentCard.word, true);
                 }
             }
             
@@ -1910,11 +2133,17 @@
             });
             loadStats();
             loadProfileStats();
-            if (currentIndex + 1 < cards.length) { currentIndex++; updateCard(); }
-            else { 
-                // Если это была колода повторений, завершаем сеанс
+            
+            if (currentIndex + 1 < cards.length) {
+                currentIndex++;
+                updateCard();
+            } else {
                 if (currentDeck === "__SRS_Review__") {
                     finishReview();
+                } else if (currentDeck === "__MIXED_MODE__") {
+                    alert('🎉 Поздравляем! Вы завершили все слова в смешанном режиме! 🎉\nНажмите "Смешанный режим" для выхода.');
+                    currentIndex = 0;
+                    updateCard();
                 } else {
                     alert('🎉 Поздравляем! Вы завершили колоду! 🎉');
                 }
@@ -1975,6 +2204,15 @@
         document.getElementById('modal-cancel')?.addEventListener('click', () => { document.getElementById('new-deck-modal').style.display = 'none'; tempWords = []; renderWordsPreview(); });
         document.getElementById('modal-save')?.addEventListener('click', createNewDeck);
         
+        // Кнопка смешанного режима
+        document.getElementById('mixed-mode-btn')?.addEventListener('click', () => {
+            if (isMixedMode) {
+                exitMixedMode();
+            } else {
+                openDeckSelector();
+            }
+        });
+        
         // SRS индикатор
         document.getElementById('srs-indicator')?.addEventListener('click', () => {
             startReviewSession();
@@ -2018,8 +2256,10 @@
         
         window.addEventListener('click', (e) => {
             const modal = document.getElementById('new-deck-modal');
+            const mixedModal = document.getElementById('mixed-mode-modal');
             const profileModalElem = document.getElementById('profile-edit-modal');
             if (e.target === modal) modal.style.display = 'none';
+            if (e.target === mixedModal) mixedModal.style.display = 'none';
             if (e.target === profileModalElem) profileModalElem.style.display = 'none';
         });
         
@@ -2038,10 +2278,13 @@
             if (saved) window.customAudioData = JSON.parse(saved);
         }
         
+        // Сохраняем карты для колод, чтобы можно было восстановиться
+        window.__savedCardsForDeck = {};
+        
         // Запуск SRS
         loadSRS();
         startSRSWatcher();
-        setInterval(() => suggestReview(), 10 * 60 * 1000); // Каждые 10 минут напоминать
+        setInterval(() => suggestReview(), 10 * 60 * 1000);
         
         loadCustomAudioData();
         loadCustomDecks();

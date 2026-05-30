@@ -90,7 +90,6 @@
             overflow-y: auto;
         }
 
-        /* СТРАНИЦА ГЛАВНАЯ */
         .card-container {
             position: relative;
             min-height: 70vh;
@@ -290,7 +289,6 @@
             margin-top: 12px;
         }
 
-        /* СТРАНИЦА ПОВТОРЕНИЕ */
         .review-stats {
             display: flex;
             gap: 25px;
@@ -503,7 +501,6 @@
             font-size: 18px;
         }
 
-        /* СТРАНИЦА КОЛОДЫ */
         .decks-header {
             display: flex;
             justify-content: space-between;
@@ -650,7 +647,6 @@
             text-shadow: 0 0 2px #000;
         }
 
-        /* ========== СТРАНИЦА ПРОФИЛЬ ========== */
         .profile-header {
             display: flex;
             justify-content: flex-end;
@@ -820,11 +816,6 @@
             max-width: 500px;
         }
 
-        .modal-content label {
-            color: white;
-            font-weight: bold;
-        }
-
         .modal {
             display: none;
             position: fixed;
@@ -854,15 +845,27 @@
             font-size: 28px;
         }
 
-        .modal-content input {
+        .modal-content h4 {
+            color: #021939;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .modal-content input, .modal-content textarea {
             width: 100%;
-            padding: 15px;
-            margin: 12px 0;
-            border-radius: 20px;
+            padding: 12px;
+            margin: 5px 0 10px 0;
+            border-radius: 15px;
             border: none;
             font-family: 'Playpen Sans', cursive;
             background-color: white;
-            font-size: 16px;
+            font-size: 15px;
+        }
+
+        .modal-content label {
+            color: #021939;
+            font-weight: bold;
+            font-size: 14px;
         }
 
         .modal-buttons {
@@ -892,11 +895,46 @@
             color: #021939;
         }
 
-        .profile-info {
-            background-color: #D9D9D9;
-            border-radius: 25px;
-            padding: 40px;
-            margin-top: 30px;
+        #add-word-btn {
+            background-color: #9ADCDE;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Playpen Sans', cursive;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        #add-word-btn:hover {
+            background-color: #7bc0c2;
+        }
+
+        .remove-word-btn {
+            background: #F8D9D7;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Playpen Sans', cursive;
+        }
+
+        .words-preview {
+            max-height: 200px;
+            overflow-y: auto;
+            background: rgba(255,255,255,0.5);
+            border-radius: 15px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        .word-preview-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            border-bottom: 1px solid #ccc;
         }
 
         .hidden {
@@ -904,108 +942,42 @@
         }
 
         @media (max-width: 1100px) {
-            .sidebar {
-                width: 240px;
-            }
-            .nav-item {
-                padding: 12px 20px;
-                font-size: 18px;
-            }
-            .decks-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .main-content {
-                padding: 20px 25px;
-            }
-            .word {
-                font-size: 56px;
-            }
-            .profile-stats-row {
-                gap: 15px;
-            }
-            .profile-stat-number {
-                font-size: 42px;
-            }
+            .sidebar { width: 240px; }
+            .nav-item { padding: 12px 20px; font-size: 18px; }
+            .decks-grid { grid-template-columns: repeat(2, 1fr); }
+            .main-content { padding: 20px 25px; }
+            .word { font-size: 56px; }
+            .profile-stats-row { gap: 15px; }
+            .profile-stat-number { font-size: 42px; }
         }
 
         @media (max-width: 800px) {
-            .sidebar {
-                width: 80px;
-                padding: 20px 0;
-            }
-            .nav-item span {
-                display: none;
-            }
-            .nav-item {
-                justify-content: center;
-                padding: 15px 0;
-            }
-            .logo-container {
-                padding: 10px;
-            }
-            .app-logo {
-                width: 50px;
-            }
-            .decks-grid {
-                grid-template-columns: 1fr;
-            }
-            .card-content {
-                padding: 80px 30px 40px 30px;
-            }
-            .word {
-                font-size: 40px;
-            }
-            .action-btn {
-                padding: 12px 28px;
-                font-size: 18px;
-            }
-            .profile-stats-row {
-                flex-direction: column;
-            }
-            .avatar-container {
-                flex-direction: column;
-                text-align: center;
-            }
-            .user-name {
-                font-size: 24px;
-            }
+            .sidebar { width: 80px; padding: 20px 0; }
+            .nav-item span { display: none; }
+            .nav-item { justify-content: center; padding: 15px 0; }
+            .logo-container { padding: 10px; }
+            .app-logo { width: 50px; }
+            .decks-grid { grid-template-columns: 1fr; }
+            .card-content { padding: 80px 30px 40px 30px; }
+            .word { font-size: 40px; }
+            .action-btn { padding: 12px 28px; font-size: 18px; }
+            .profile-stats-row { flex-direction: column; }
+            .avatar-container { flex-direction: column; text-align: center; }
+            .user-name { font-size: 24px; }
+            .modal-content { padding: 20px; }
         }
 
         @media (max-width: 600px) {
-            .main-content {
-                padding: 15px;
-            }
-            .card-container {
-                min-height: 60vh;
-            }
-            .card-content {
-                min-height: 60vh;
-                padding: 70px 20px 30px 20px;
-            }
-            .word {
-                font-size: 32px;
-            }
-            .transcription {
-                font-size: 16px;
-                gap: 12px;
-            }
-            .pronounce-btn {
-                font-size: 14px;
-                padding: 6px 12px;
-            }
-            .example-text {
-                font-size: 15px;
-            }
-            .translation-text {
-                font-size: 22px;
-            }
-            .action-btn {
-                padding: 10px 20px;
-                font-size: 16px;
-            }
-            .deck-name {
-                font-size: 20px;
-            }
+            .main-content { padding: 15px; }
+            .card-container { min-height: 60vh; }
+            .card-content { min-height: 60vh; padding: 70px 20px 30px 20px; }
+            .word { font-size: 32px; }
+            .transcription { font-size: 16px; gap: 12px; }
+            .pronounce-btn { font-size: 14px; padding: 6px 12px; }
+            .example-text { font-size: 15px; }
+            .translation-text { font-size: 22px; }
+            .action-btn { padding: 10px 20px; font-size: 16px; }
+            .deck-name { font-size: 20px; }
         }
     </style>
 </head>
@@ -1015,7 +987,6 @@
             <div class="logo-container">
                 <img src="/static/images/C5_Logo.png" class="app-logo" alt="C5 Notes Logo">
             </div>
-            
             <div class="nav-item" data-page="home">
                 <div class="circle-icon" id="home-circle"></div>
                 <span>Главная</span>
@@ -1035,6 +1006,7 @@
         </div>
 
         <div class="main-content">
+            <!-- Главная -->
             <div id="home-page">
                 <div class="card-container">
                     <div class="card-content">
@@ -1074,6 +1046,7 @@
                 </div>
             </div>
 
+            <!-- Повторение -->
             <div id="review-page" class="hidden">
                 <div class="review-stats">
                     <div class="stat-card studied">
@@ -1115,6 +1088,7 @@
                 </div>
             </div>
 
+            <!-- Колоды -->
             <div id="decks-page" class="hidden">
                 <div class="decks-header">
                     <div class="decks-tabs">
@@ -1130,6 +1104,7 @@
                 <div class="decks-grid" id="decks-grid"></div>
             </div>
 
+            <!-- Профиль -->
             <div id="profile-page" class="hidden">
                 <div class="profile-header">
                     <button class="edit-profile-btn" id="edit-profile-btn">✎ Редактировать</button>
@@ -1169,30 +1144,92 @@
         </div>
     </div>
 
+    <!-- НОВОЕ Модальное окно для создания колоды с отдельными полями -->
     <div id="new-deck-modal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 700px;">
             <h3>📚 Создать новую колоду</h3>
-            <input type="text" id="new-deck-name" placeholder="Название колоды" maxlength="50">
-            <textarea id="new-deck-words" placeholder="Добавьте слова в формате:
-слово::перевод::транскрипция UK::транскрипция US::пример::перевод примера
-
-Пример:
-Awesome::потрясающий::/ˈɔː.səm/::/ˈɑː.səm/::This is awesome!::Это потрясающе!"></textarea>
+            
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 200px;">
+                    <label>Название колоды</label>
+                    <input type="text" id="new-deck-name" placeholder="Например: My Verbs" maxlength="50">
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px; border-top: 1px solid #ccc; padding-top: 15px;">
+                <h4>➕ Добавить слово</h4>
+                
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 200px;">
+                        <label>Слово *</label>
+                        <input type="text" id="new-word" placeholder="Например: Awesome">
+                    </div>
+                    <div style="flex: 1; min-width: 200px;">
+                        <label>Перевод *</label>
+                        <input type="text" id="new-translation" placeholder="Например: потрясающий">
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 200px;">
+                        <label>Транскрипция UK</label>
+                        <input type="text" id="new-transcription-uk" placeholder="/ˈɔː.səm/">
+                    </div>
+                    <div style="flex: 1; min-width: 200px;">
+                        <label>Транскрипция US</label>
+                        <input type="text" id="new-transcription-us" placeholder="/ˈɑː.səm/">
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 200px;">
+                        <label>Аудио UK (MP3)</label>
+                        <input type="file" id="new-audio-uk" accept=".mp3">
+                    </div>
+                    <div style="flex: 1; min-width: 200px;">
+                        <label>Аудио US (MP3)</label>
+                        <input type="file" id="new-audio-us" accept=".mp3">
+                    </div>
+                </div>
+                
+                <div style="margin-top: 10px;">
+                    <label>Пример предложения</label>
+                    <textarea id="new-example" rows="2" placeholder="This is awesome!"></textarea>
+                </div>
+                
+                <div style="margin-top: 10px;">
+                    <label>Перевод примера</label>
+                    <textarea id="new-example-translation" rows="2" placeholder="Это потрясающе!"></textarea>
+                </div>
+                
+                <div style="margin-top: 15px;">
+                    <button id="add-word-btn">➕ Добавить слово в колоду</button>
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px; border-top: 1px solid #ccc; padding-top: 15px;">
+                <h4>📝 Слова в колоде (<span id="words-count">0</span>/30)</h4>
+                <div id="words-preview-list" class="words-preview">
+                    <div style="color: #666; text-align: center;">Нет добавленных слов</div>
+                </div>
+            </div>
+            
             <div class="modal-buttons">
                 <button class="modal-cancel" id="modal-cancel">Отмена</button>
-                <button class="modal-save" id="modal-save">Создать</button>
+                <button class="modal-save" id="modal-save">💾 Сохранить колоду</button>
             </div>
         </div>
     </div>
 
+    <!-- Модальное окно редактирования профиля -->
     <div id="profile-edit-modal" class="modal">
         <div class="modal-content profile-modal-content">
             <h3>✎ Редактировать профиль</h3>
-            <label style="font-weight: bold; color: white; display: block; margin-bottom: 5px;">Имя пользователя</label>
+            <label>Имя пользователя</label>
             <input type="text" id="edit-username" placeholder="Ваше имя">
-            <label style="font-weight: bold; color: white; display: block; margin-top: 15px; margin-bottom: 5px;">Электронная почта</label>
+            <label>Электронная почта</label>
             <input type="email" id="edit-email" placeholder="Email для сохранения прогресса">
-            <label style="font-weight: bold; color: white; display: block; margin-top: 15px; margin-bottom: 5px;">Выберите аватар</label>
+            <label>Выберите аватар</label>
             <div class="avatar-options">
                 <img src="/static/images/default.png" class="avatar-option" data-avatar="default">
                 <img src="/static/images/1.png" class="avatar-option" data-avatar="1">
@@ -1209,12 +1246,8 @@ Awesome::потрясающий::/ˈɔː.səm/::/ˈɑː.səm/::This is awesome!:
 
     <script>
         const leafTextures = [
-            '/static/images/leaf_1.png',
-            '/static/images/leaf_2.png',
-            '/static/images/leaf_3.png',
-            '/static/images/leaf_4.png',
-            '/static/images/leaf_5.png',
-            '/static/images/leaf_6.png'
+            '/static/images/leaf_1.png', '/static/images/leaf_2.png', '/static/images/leaf_3.png',
+            '/static/images/leaf_4.png', '/static/images/leaf_5.png', '/static/images/leaf_6.png'
         ];
         
         let defaultDecks = [
@@ -1229,20 +1262,15 @@ Awesome::потрясающий::/ˈɔː.səm/::/ˈɑː.səm/::This is awesome!:
         let customDecks = [];
         let currentTab = "all";
         let searchQuery = "";
+        let tempWords = [];
         
-        const levelRequirements = [
-            0, 100, 250, 450, 700, 1000, 1350, 1750, 2200, 2700,
-            3300, 4000, 4800, 5700, 6700, 7800, 9000, 10300, 11700, 13200
-        ];
+        const levelRequirements = [0, 100, 250, 450, 700, 1000, 1350, 1750, 2200, 2700, 3300, 4000, 4800, 5700, 6700, 7800, 9000, 10300, 11700, 13200];
         
         function getLevelAndProgress(exp) {
             let level = 1;
             for (let i = 1; i < levelRequirements.length; i++) {
-                if (exp >= levelRequirements[i]) {
-                    level = i + 1;
-                } else {
-                    break;
-                }
+                if (exp >= levelRequirements[i]) level = i + 1;
+                else break;
             }
             const currentLevelExp = levelRequirements[level - 1];
             const nextLevelExp = levelRequirements[level] || levelRequirements[levelRequirements.length - 1] + 500;
@@ -1258,8 +1286,7 @@ Awesome::потрясающий::/ˈɔː.səm/::/ˈɑː.səm/::This is awesome!:
                 const profile = JSON.parse(savedProfile);
                 document.getElementById('profile-username').textContent = profile.username || "C5 Notes";
                 document.getElementById('profile-email').textContent = profile.email || "C5NotesPochta@gmail.com";
-                const avatarSrc = profile.avatar ? `/static/images/${profile.avatar}.png` : '/static/images/default.png';
-                document.getElementById('profile-avatar').src = avatarSrc;
+                document.getElementById('profile-avatar').src = profile.avatar ? `/static/images/${profile.avatar}.png` : '/static/images/default.png';
                 document.getElementById('edit-username').value = profile.username || "";
                 document.getElementById('edit-email').value = profile.email || "";
                 return profile;
@@ -1284,9 +1311,6 @@ Awesome::потрясающий::/ˈɔː.səm/::/ˈɑː.səm/::This is awesome!:
             document.getElementById('profile-level').textContent = stats.level || 1;
             const exp = stats.experience || 0;
             const { level, progress, currentExp, expForNext, nextLevelExp } = getLevelAndProgress(exp);
-            if (level !== stats.level) {
-                document.getElementById('profile-level').textContent = level;
-            }
             document.getElementById('exp-bar-fill').style.width = `${progress}%`;
             document.getElementById('exp-text').textContent = `${currentExp} / ${expForNext} опыта (до ${nextLevelExp})`;
         }
@@ -1326,9 +1350,7 @@ Awesome::потрясающий::/ˈɔː.səm/::/ˈɑː.səm/::This is awesome!:
             let allDecks = [...defaultDecks, ...customDecks];
             if (currentTab === "my") allDecks = customDecks;
             else if (currentTab === "favorites") allDecks = allDecks.filter(deck => deck.isFavorite);
-            if (searchQuery) {
-                allDecks = allDecks.filter(deck => deck.name.toLowerCase().includes(searchQuery.toLowerCase()));
-            }
+            if (searchQuery) allDecks = allDecks.filter(deck => deck.name.toLowerCase().includes(searchQuery.toLowerCase()));
             return allDecks;
         }
         
@@ -1341,23 +1363,19 @@ Awesome::потрясающий::/ˈɔː.səm/::/ˈɑː.səm/::This is awesome!:
                 return;
             }
             grid.innerHTML = decks.map((deck, idx) => {
-                const textureIndex = idx % leafTextures.length;
-                const texture = leafTextures[textureIndex];
+                const texture = leafTextures[idx % leafTextures.length];
                 return `
                     <div class="deck-card" style="background-image: url('${texture}');" data-deck-name="${deck.name}">
                         <div class="deck-name">${deck.name}</div>
                         <div class="deck-card-count">📖 ${deck.count} карточек</div>
-                        <div class="favorite-icon ${deck.isFavorite ? 'favorited' : ''}" data-deck="${deck.name}" onclick="event.stopPropagation(); toggleFavorite('${deck.name}')">
-                            ${deck.isFavorite ? '★' : '☆'}
-                        </div>
+                        <div class="favorite-icon ${deck.isFavorite ? 'favorited' : ''}" onclick="event.stopPropagation(); toggleFavorite('${deck.name}')">${deck.isFavorite ? '★' : '☆'}</div>
                     </div>
                 `;
             }).join('');
             document.querySelectorAll('.deck-card').forEach(card => {
                 card.addEventListener('click', (e) => {
                     if (e.target.classList.contains('favorite-icon')) return;
-                    const deckName = card.dataset.deckName;
-                    currentDeck = deckName;
+                    currentDeck = card.dataset.deckName;
                     currentIndex = 0;
                     loadCards();
                     showPage('home');
@@ -1374,42 +1392,114 @@ Awesome::потрясающий::/ˈɔː.səm/::/ˈɑː.səm/::This is awesome!:
             }
         }
         
+        function renderWordsPreview() {
+            const container = document.getElementById('words-preview-list');
+            const countSpan = document.getElementById('words-count');
+            countSpan.textContent = tempWords.length;
+            if (tempWords.length === 0) {
+                container.innerHTML = '<div style="color: #666; text-align: center;">Нет добавленных слов</div>';
+                return;
+            }
+            container.innerHTML = tempWords.map((word, idx) => `
+                <div class="word-preview-item">
+                    <div style="flex: 1;">
+                        <strong>${word.word}</strong> — ${word.translation}
+                        <div style="font-size: 12px; color: #666;">UK: ${word.transcription_uk || '-'} | US: ${word.transcription_us || '-'}</div>
+                    </div>
+                    <button class="remove-word-btn" data-index="${idx}">✗</button>
+                </div>
+            `).join('');
+            document.querySelectorAll('.remove-word-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const idx = parseInt(btn.dataset.index);
+                    tempWords.splice(idx, 1);
+                    renderWordsPreview();
+                });
+            });
+        }
+        
+        function readFileAsBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+        
+        document.getElementById('add-word-btn')?.addEventListener('click', async () => {
+            const word = document.getElementById('new-word').value.trim();
+            const translation = document.getElementById('new-translation').value.trim();
+            if (!word || !translation) {
+                alert('Введите слово и перевод!');
+                return;
+            }
+            if (tempWords.length >= 30) {
+                alert('Максимум 30 слов в колоде');
+                return;
+            }
+            const transcription_uk = document.getElementById('new-transcription-uk').value.trim();
+            const transcription_us = document.getElementById('new-transcription-us').value.trim();
+            const example = document.getElementById('new-example').value.trim() || `${word} is great!`;
+            const example_translation = document.getElementById('new-example-translation').value.trim() || `${translation} — это здорово!`;
+            
+            let audio_uk_data = null;
+            let audio_us_data = null;
+            const audioUkFile = document.getElementById('new-audio-uk').files[0];
+            const audioUsFile = document.getElementById('new-audio-us').files[0];
+            if (audioUkFile) audio_uk_data = await readFileAsBase64(audioUkFile);
+            if (audioUsFile) audio_us_data = await readFileAsBase64(audioUsFile);
+            
+            tempWords.push({
+                word, translation, transcription_uk, transcription_us,
+                example, example_translation, audio_uk: audio_uk_data, audio_us: audio_us_data
+            });
+            
+            document.getElementById('new-word').value = '';
+            document.getElementById('new-translation').value = '';
+            document.getElementById('new-transcription-uk').value = '';
+            document.getElementById('new-transcription-us').value = '';
+            document.getElementById('new-example').value = '';
+            document.getElementById('new-example-translation').value = '';
+            document.getElementById('new-audio-uk').value = '';
+            document.getElementById('new-audio-us').value = '';
+            renderWordsPreview();
+        });
+        
         function createNewDeck() {
-            const nameInput = document.getElementById('new-deck-name');
-            const wordsInput = document.getElementById('new-deck-words');
-            const deckName = nameInput.value.trim();
-            const wordsText = wordsInput.value.trim();
+            const deckName = document.getElementById('new-deck-name').value.trim();
             if (!deckName) { alert('Введите название колоды'); return; }
             const existing = [...defaultDecks, ...customDecks].find(d => d.name === deckName);
             if (existing) { alert('Колода с таким названием уже существует'); return; }
-            const lines = wordsText.split('\n');
-            const words = [];
-            for (let line of lines) {
-                line = line.trim();
-                if (!line) continue;
-                const parts = line.split('::');
-                if (parts.length >= 6) {
-                    words.push({
-                        word: parts[0].trim(),
-                        translation: parts[1].trim(),
-                        transcription_uk: parts[2].trim(),
-                        transcription_us: parts[3].trim(),
-                        example: parts[4].trim(),
-                        example_translation: parts[5].trim()
-                    });
+            if (tempWords.length === 0) { alert('Добавьте хотя бы одно слово в колоду'); return; }
+            
+            const wordsWithAudio = tempWords.map(word => {
+                const newWord = { ...word };
+                if (newWord.audio_uk) {
+                    if (!window.customAudioData) window.customAudioData = {};
+                    window.customAudioData[`${deckName}_${newWord.word}_uk`] = newWord.audio_uk;
+                    delete newWord.audio_uk;
                 }
-            }
-            if (words.length === 0) { alert('Добавьте хотя бы одно слово'); return; }
-            if (words.length > 30) { alert('Максимум 30 слов в колоде'); return; }
-            const newDeck = { name: deckName, count: words.length, isDefault: false, isFavorite: false, words: words };
+                if (newWord.audio_us) {
+                    if (!window.customAudioData) window.customAudioData = {};
+                    window.customAudioData[`${deckName}_${newWord.word}_us`] = newWord.audio_us;
+                    delete newWord.audio_us;
+                }
+                return newWord;
+            });
+            
+            const newDeck = { name: deckName, count: wordsWithAudio.length, isDefault: false, isFavorite: false, words: wordsWithAudio };
             customDecks.push(newDeck);
             saveCustomDecks();
             saveFavorites();
-            if (typeof window.customCardsData === 'undefined') window.customCardsData = {};
-            window.customCardsData[deckName] = words;
+            if (!window.customCardsData) window.customCardsData = {};
+            window.customCardsData[deckName] = wordsWithAudio;
+            if (window.customAudioData) localStorage.setItem('customAudioData', JSON.stringify(window.customAudioData));
+            
             document.getElementById('new-deck-modal').style.display = 'none';
-            nameInput.value = '';
-            wordsInput.value = '';
+            document.getElementById('new-deck-name').value = '';
+            tempWords = [];
+            renderWordsPreview();
             renderDecks();
         }
         
@@ -1460,55 +1550,39 @@ Awesome::потрясающий::/ˈɔː.səm/::/ˈɑː.səm/::This is awesome!:
             document.getElementById('progress-bar').style.width = `${progress}%`;
         }
         
-        // ========== ИСПРАВЛЕННАЯ ФУНКЦИЯ playAudio ==========
         function playAudio(type) {
             if (!currentCard) return;
-            
-            let word = currentCard.word.toLowerCase().trim();
-            
-            const specialCases = {
-                "on the other hand": "on_the_other_hand",
-                "in addition": "in_addition",
-                "as a result": "as_a_result",
-                "for instance": "for_instance",
-                "in contrast": "in_contrast",
-                "in order to": "in_order_to",
-                "boarding pass": "boarding_pass",
-                "carry-on": "carry_on",
-                "check-in desk": "check_in_desk",
-                "currency exchange": "currency_exchange",
-                "jet lag": "jet_lag",
-                "all-inclusive": "all_inclusive",
-                "low-key": "low_key"
-            };
-            
-            if (specialCases[word]) {
-                word = specialCases[word];
-            } else {
-                word = word.replace(/ /g, "_").replace(/-/g, "_");
+            const audioKey = `${currentDeck}_${currentCard.word}_${type}`;
+            if (window.customAudioData && window.customAudioData[audioKey]) {
+                const audio = new Audio(window.customAudioData[audioKey]);
+                audio.play().catch(e => console.log('Audio play error:', e));
+                return;
             }
-            
+            let word = currentCard.word.toLowerCase().trim();
+            const specialCases = {
+                "on the other hand": "on_the_other_hand", "in addition": "in_addition",
+                "as a result": "as_a_result", "for instance": "for_instance",
+                "in contrast": "in_contrast", "in order to": "in_order_to",
+                "boarding pass": "boarding_pass", "carry-on": "carry_on",
+                "check-in desk": "check_in_desk", "currency exchange": "currency_exchange",
+                "jet lag": "jet_lag", "all-inclusive": "all_inclusive", "low-key": "low_key"
+            };
+            if (specialCases[word]) word = specialCases[word];
+            else word = word.replace(/ /g, "_").replace(/-/g, "_");
             const typeUpper = type.toUpperCase();
             const typeLower = type.toLowerCase();
-            
             const urls = [
                 `/static/audio/${word}_${typeUpper}.mp3`,
                 `/static/audio/${word}_${typeLower}.mp3`,
                 `/static/audio/${word}.mp3`
             ];
-            
-            function tryPlay(index) {
-                if (index >= urls.length) {
-                    console.log("Audio not found for:", word);
-                    return;
-                }
-                const audio = new Audio(urls[index]);
-                audio.play().catch(() => tryPlay(index + 1));
+            function tryPlay(idx) {
+                if (idx >= urls.length) { console.log("Audio not found for:", word); return; }
+                const audio = new Audio(urls[idx]);
+                audio.play().catch(() => tryPlay(idx + 1));
             }
-            
             tryPlay(0);
         }
-        // ========== КОНЕЦ ИСПРАВЛЕННОЙ ФУНКЦИИ ==========
         
         function addToTodayStats(word, isCorrect) {
             const status = isCorrect ? 'correct' : 'wrong';
@@ -1520,7 +1594,7 @@ Awesome::потрясающий::/ˈɔː.səm/::/ˈɑː.səm/::This is awesome!:
                     todayStats.studied++;
                 }
             } else {
-                todayWords.push({ word: word, status: status });
+                todayWords.push({ word, status });
                 if (isCorrect) todayStats.studied++;
                 else {
                     todayStats.mistakes++;
@@ -1537,9 +1611,8 @@ Awesome::потрясающий::/ˈɔː.səm/::/ˈɑː.səm/::This is awesome!:
             if (todayMistakesEl) todayMistakesEl.textContent = todayStats.mistakes;
             const todayWordsContainer = document.getElementById('today-words-list');
             if (todayWordsContainer) {
-                if (todayWords.length === 0) {
-                    todayWordsContainer.innerHTML = '<div class="no-mistakes">Пока нет изученных слов</div>';
-                } else {
+                if (todayWords.length === 0) todayWordsContainer.innerHTML = '<div class="no-mistakes">Пока нет изученных слов</div>';
+                else {
                     todayWordsContainer.innerHTML = todayWords.map(item => `
                         <div class="today-word-item">
                             <div class="word-info">
@@ -1553,9 +1626,8 @@ Awesome::потрясающий::/ˈɔː.səm/::/ˈɑː.səm/::This is awesome!:
             }
             const mistakesContainer = document.getElementById('mistakes-list');
             if (mistakesContainer) {
-                if (mistakesList.length === 0) {
-                    mistakesContainer.innerHTML = '<div class="no-mistakes">✨ Пока нет ошибок! Так держать!</div>';
-                } else {
+                if (mistakesList.length === 0) mistakesContainer.innerHTML = '<div class="no-mistakes">✨ Пока нет ошибок! Так держать!</div>';
+                else {
                     mistakesContainer.innerHTML = mistakesList.map(word => `
                         <div class="mistake-item">
                             <span class="mistake-word">${word}</span>
@@ -1568,20 +1640,11 @@ Awesome::потрясающий::/ˈɔː.səm/::/ˈɑː.səm/::This is awesome!:
         
         window.repeatWord = function(word) {
             const cardIndex = cards.findIndex(c => c.word === word);
-            if (cardIndex !== -1) {
-                currentIndex = cardIndex;
-                updateCard();
-                showPage('home');
-            }
+            if (cardIndex !== -1) { currentIndex = cardIndex; updateCard(); showPage('home'); }
         };
-        
         window.repeatMistake = function(word) {
             const cardIndex = cards.findIndex(c => c.word === word);
-            if (cardIndex !== -1) {
-                currentIndex = cardIndex;
-                updateCard();
-                showPage('home');
-            }
+            if (cardIndex !== -1) { currentIndex = cardIndex; updateCard(); showPage('home'); }
         };
         
         async function handleAnswer(know) {
@@ -1589,20 +1652,13 @@ Awesome::потрясающий::/ˈɔː.səm/::/ˈɑː.səm/::This is awesome!:
             addToTodayStats(currentCard.word, know);
             const action = know ? 'know' : 'dont_know';
             await fetch('/api/update_progress', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ action })
             });
             loadStats();
             loadProfileStats();
-            if (currentIndex + 1 < cards.length) {
-                currentIndex++;
-                updateCard();
-            } else {
-                alert('🎉 Поздравляем! Вы завершили колоду! 🎉');
-                currentIndex = 0;
-                updateCard();
-            }
+            if (currentIndex + 1 < cards.length) { currentIndex++; updateCard(); }
+            else { alert('🎉 Поздравляем! Вы завершили колоду! 🎉'); currentIndex = 0; updateCard(); }
         }
         
         async function loadStats() {
@@ -1631,27 +1687,15 @@ Awesome::потрясающий::/ˈɔː.səm/::/ˈɑː.səm/::This is awesome!:
             if (reviewPage) reviewPage.classList.add('hidden');
             if (decksPage) decksPage.classList.add('hidden');
             if (profilePage) profilePage.classList.add('hidden');
-            if (page === 'home' && homePage) homePage.classList.remove('hidden');
-            if (page === 'review' && reviewPage) {
-                reviewPage.classList.remove('hidden');
-                updateReviewPage();
-            }
-            if (page === 'decks' && decksPage) {
-                decksPage.classList.remove('hidden');
-                loadDeckStats();
-            }
-            if (page === 'profile' && profilePage) {
-                profilePage.classList.remove('hidden');
-                loadProfileStats();
-            }
+            if (page === 'home') homePage.classList.remove('hidden');
+            if (page === 'review') { reviewPage.classList.remove('hidden'); updateReviewPage(); }
+            if (page === 'decks') { decksPage.classList.remove('hidden'); loadDeckStats(); }
+            if (page === 'profile') { profilePage.classList.remove('hidden'); loadProfileStats(); }
             document.querySelectorAll('.nav-item').forEach((item, idx) => {
                 const circle = item.querySelector('.circle-icon');
                 const pages = ['home', 'review', 'decks', 'profile'];
-                if (pages[idx] === page) {
-                    if (circle) circle.style.backgroundImage = "url('/static/images/circle_1.png')";
-                } else {
-                    if (circle) circle.style.backgroundImage = "url('/static/images/circle.png')";
-                }
+                if (pages[idx] === page) circle.style.backgroundImage = "url('/static/images/circle_1.png')";
+                else circle.style.backgroundImage = "url('/static/images/circle.png')";
             });
         }
         
@@ -1664,34 +1708,10 @@ Awesome::потрясающий::/ˈɔː.səm/::/ˈɑː.səm/::This is awesome!:
             });
         });
         
-        const searchInput = document.getElementById('search-decks');
-        if (searchInput) {
-            searchInput.addEventListener('input', (e) => {
-                searchQuery = e.target.value;
-                renderDecks();
-            });
-        }
-        
-        const newDeckBtn = document.getElementById('new-deck-btn');
-        if (newDeckBtn) {
-            newDeckBtn.addEventListener('click', () => {
-                document.getElementById('new-deck-modal').style.display = 'flex';
-            });
-        }
-        
-        const modalCancel = document.getElementById('modal-cancel');
-        if (modalCancel) {
-            modalCancel.addEventListener('click', () => {
-                document.getElementById('new-deck-modal').style.display = 'none';
-                document.getElementById('new-deck-name').value = '';
-                document.getElementById('new-deck-words').value = '';
-            });
-        }
-        
-        const modalSave = document.getElementById('modal-save');
-        if (modalSave) {
-            modalSave.addEventListener('click', createNewDeck);
-        }
+        document.getElementById('search-decks')?.addEventListener('input', (e) => { searchQuery = e.target.value; renderDecks(); });
+        document.getElementById('new-deck-btn')?.addEventListener('click', () => { document.getElementById('new-deck-modal').style.display = 'flex'; });
+        document.getElementById('modal-cancel')?.addEventListener('click', () => { document.getElementById('new-deck-modal').style.display = 'none'; tempWords = []; renderWordsPreview(); });
+        document.getElementById('modal-save')?.addEventListener('click', createNewDeck);
         
         const editProfileBtn = document.getElementById('edit-profile-btn');
         const profileModal = document.getElementById('profile-edit-modal');
@@ -1719,12 +1739,7 @@ Awesome::потрясающий::/ˈɔː.səm/::/ˈɑː.səm/::This is awesome!:
             });
         });
         
-        if (profileModalCancel) {
-            profileModalCancel.addEventListener('click', () => {
-                profileModal.style.display = 'none';
-            });
-        }
-        
+        if (profileModalCancel) profileModalCancel.addEventListener('click', () => { profileModal.style.display = 'none'; });
         if (profileModalSave) {
             profileModalSave.addEventListener('click', () => {
                 const newUsername = document.getElementById('edit-username').value.trim() || "C5 Notes";
@@ -1746,16 +1761,17 @@ Awesome::потрясающий::/ˈɔː.səm/::/ˈɑː.səm/::This is awesome!:
             item.addEventListener('click', () => { showPage(pages[idx]); });
         });
         
-        const knowBtn = document.getElementById('know-btn');
-        const dontKnowBtn = document.getElementById('dont-know-btn');
-        const playUk = document.getElementById('play-uk');
-        const playUs = document.getElementById('play-us');
+        document.getElementById('know-btn').onclick = () => handleAnswer(true);
+        document.getElementById('dont-know-btn').onclick = () => handleAnswer(false);
+        document.getElementById('play-uk').onclick = () => playAudio('uk');
+        document.getElementById('play-us').onclick = () => playAudio('us');
         
-        if (knowBtn) knowBtn.onclick = () => handleAnswer(true);
-        if (dontKnowBtn) dontKnowBtn.onclick = () => handleAnswer(false);
-        if (playUk) playUk.onclick = () => playAudio('uk');
-        if (playUs) playUs.onclick = () => playAudio('us');
+        function loadCustomAudioData() {
+            const saved = localStorage.getItem('customAudioData');
+            if (saved) window.customAudioData = JSON.parse(saved);
+        }
         
+        loadCustomAudioData();
         loadCustomDecks();
         loadFavorites();
         loadUserProfile();

@@ -289,6 +289,28 @@
             margin-top: 12px;
         }
 
+        /* SRS индикатор */
+        .srs-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #174E9C;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .srs-indicator:hover {
+            background-color: #0f3a73;
+            transform: scale(1.02);
+        }
+
         .review-stats {
             display: flex;
             gap: 25px;
@@ -941,6 +963,29 @@
             display: none;
         }
 
+        /* SRS уведомление */
+        .srs-notification {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background-color: #9ADCDE;
+            color: #021939;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            animation: fadeInOut 5s ease-in-out;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(20px); }
+            10% { opacity: 1; transform: translateY(0); }
+            90% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+
         @media (max-width: 1100px) {
             .sidebar { width: 240px; }
             .nav-item { padding: 12px 20px; font-size: 18px; }
@@ -1144,7 +1189,7 @@
         </div>
     </div>
 
-    <!-- НОВОЕ Модальное окно для создания колоды с отдельными полями -->
+    <!-- Модальное окно для создания колоды -->
     <div id="new-deck-modal" class="modal">
         <div class="modal-content" style="max-width: 700px;">
             <h3>📚 Создать новую колоду</h3>
@@ -1244,6 +1289,9 @@
         </div>
     </div>
 
+    <!-- SRS индикатор -->
+    <div class="srs-indicator" id="srs-indicator" style="display: none;">⏰ Слова для повторения</div>
+
     <script>
         const leafTextures = [
             '/static/images/leaf_1.png', '/static/images/leaf_2.png', '/static/images/leaf_3.png',
@@ -1263,6 +1311,199 @@
         let currentTab = "all";
         let searchQuery = "";
         let tempWords = [];
+        
+        // ========== SRS (INTERVALLENDE WIEDERHOLUNG) ==========
+        let srsQueue = [];      // Очередь слов для повторения { deck, word, nextReview, correctCount }
+        let srsInterval = null;
+        
+        function loadSRS() {
+            const saved = localStorage.getItem('srsQueue');
+            if (saved) {
+                srsQueue = JSON.parse(saved);
+                updateSRSIndicator();
+            }
+        }
+        
+        function saveSRS() {
+            localStorage.setItem('srsQueue', JSON.stringify(srsQueue));
+            updateSRSIndicator();
+        }
+        
+        function addToSRS(deckName, wordData) {
+            const existing = srsQueue.find(item => item.deck === deckName && item.word === wordData.word);
+            if (existing) {
+                // Обновляем время следующего повторения
+                existing.nextReview = Date.now() + 10 * 60 * 1000; // 10 минут
+                existing.correctCount = 0;
+            } else {
+                srsQueue.push({
+                    deck: deckName,
+                    word: wordData.word,
+                    nextReview: Date.now() + 10 * 60 * 1000,
+                    correctCount: 0
+                });
+            }
+            saveSRS();
+            showSRSNotification(`📚 "${wordData.word}" добавлено в очередь повторений`);
+        }
+        
+        function markInSRS(deckName, word, isCorrect) {
+            const index = srsQueue.findIndex(item => item.deck === deckName && item.word === word);
+            if (index !== -1) {
+                if (isCorrect) {
+                    srsQueue[index].correctCount++;
+                    if (srsQueue[index].correctCount >= 3) {
+                        // Слово выучено, удаляем из очереди
+                        srsQueue.splice(index, 1);
+                        showSRSNotification(`✅ "${word}" выучено! Оно больше не будет повторяться.`);
+                    } else {
+                        // Если ответил правильно, откладываем на 10 минут
+                        srsQueue[index].nextReview = Date.now() + 10 * 60 * 1000;
+                        showSRSNotification(`👍 "${word}" повторено! Следующее повторение через 10 минут.`);
+                    }
+                } else {
+                    // Если ответил неправильно, сбрасываем счётчик и снова добавляем
+                    srsQueue[index].correctCount = 0;
+                    srsQueue[index].nextReview = Date.now() + 10 * 60 * 1000;
+                    showSRSNotification(`🔄 "${word}" будет повторено через 10 минут`);
+                }
+                saveSRS();
+            }
+        }
+        
+        function getDueWords() {
+            const now = Date.now();
+            return srsQueue.filter(item => item.nextReview <= now);
+        }
+        
+        function updateSRSIndicator() {
+            const dueWords = getDueWords();
+            const indicator = document.getElementById('srs-indicator');
+            if (dueWords.length > 0) {
+                indicator.style.display = 'flex';
+                indicator.innerHTML = `⏰ ${dueWords.length} слово(а) для повторения`;
+            } else {
+                indicator.style.display = 'none';
+            }
+        }
+        
+        function showSRSNotification(message) {
+            // Удаляем старые уведомления
+            const oldNotif = document.querySelector('.srs-notification');
+            if (oldNotif) oldNotif.remove();
+            
+            const notif = document.createElement('div');
+            notif.className = 'srs-notification';
+            notif.textContent = message;
+            document.body.appendChild(notif);
+            setTimeout(() => notif.remove(), 5000);
+        }
+        
+        // Проверка очереди повторений каждую минуту
+        function startSRSWatcher() {
+            if (srsInterval) clearInterval(srsInterval);
+            srsInterval = setInterval(() => {
+                updateSRSIndicator();
+            }, 60000);
+        }
+        
+        // Показать уведомление о словах для повторения и предложить переключиться на колоду повторений
+        function suggestReview() {
+            const dueWords = getDueWords();
+            if (dueWords.length > 0) {
+                showSRSNotification(`📢 У вас ${dueWords.length} слово(а) для повторения! Нажмите на индикатор в правом нижнем углу.`);
+            }
+        }
+        
+        // Переключиться на колоду для повторения
+        function startReviewSession() {
+            const dueWords = getDueWords();
+            if (dueWords.length === 0) {
+                showSRSNotification("✨ Нет слов для повторения!");
+                return;
+            }
+            
+            // Создаём временную колоду "Мои повторения"
+            const reviewWords = [];
+            for (const item of dueWords) {
+                // Находим оригинальное слово в соответствующей колоде
+                let fullCards = [];
+                if (item.deck === "Linking Words" || item.deck === "Medicine" || item.deck === "Slang" || 
+                    item.deck === "Phrasal Verbs" || item.deck === "Top 30 Verbs" || item.deck === "Travel") {
+                    // Для дефолтных колод нужно загрузить данные из data.json
+                    fetch(`/api/cards/${item.deck}`).then(res => res.json()).then(cards => {
+                        const found = cards.find(c => c.word === item.word);
+                        if (found && !reviewWords.find(r => r.word === item.word)) {
+                            reviewWords.push(found);
+                        }
+                        if (reviewWords.length === dueWords.length) {
+                            startReviewDeck(reviewWords);
+                        }
+                    });
+                } else {
+                    // Для пользовательских колод
+                    if (window.customCardsData && window.customCardsData[item.deck]) {
+                        const found = window.customCardsData[item.deck].find(c => c.word === item.word);
+                        if (found && !reviewWords.find(r => r.word === item.word)) {
+                            reviewWords.push(found);
+                        }
+                        if (reviewWords.length === dueWords.length) {
+                            startReviewDeck(reviewWords);
+                        }
+                    }
+                }
+            }
+            
+            if (reviewWords.length === 0 && dueWords.length > 0) {
+                // Если не нашли слова, просто пробуем через секунду
+                setTimeout(() => startReviewSession(), 500);
+            }
+        }
+        
+        function startReviewDeck(words) {
+            // Сохраняем текущую колоду во временную переменную
+            window.previousDeck = currentDeck;
+            window.previousCards = cards;
+            window.previousIndex = currentIndex;
+            
+            // Создаём временную колоду для повторения
+            const reviewDeckName = "__SRS_Review__";
+            if (!window.customCardsData) window.customCardsData = {};
+            window.customCardsData[reviewDeckName] = words;
+            currentDeck = reviewDeckName;
+            cards = words;
+            currentIndex = 0;
+            updateCard();
+            showPage('home');
+            showSRSNotification(`📖 Начинаем повторение ${words.length} слов!`);
+        }
+        
+        function finishReview() {
+            // Возвращаемся к предыдущей колоде
+            if (window.previousDeck) {
+                currentDeck = window.previousDeck;
+                cards = window.previousCards;
+                currentIndex = window.previousIndex;
+                updateCard();
+                window.previousDeck = null;
+                window.previousCards = null;
+                window.previousIndex = null;
+            }
+            showSRSNotification("✅ Сеанс повторения завершён!");
+        }
+        
+        // Модифицируем handleAnswer для работы с SRS
+        const originalHandleAnswer = null;
+        
+        // Переопределяем handleAnswer для поддержки SRS
+        function setupSRSIntegration() {
+            // Сохраняем оригинальную функцию, если её ещё нет
+            if (!window._originalHandleAnswer) {
+                window._originalHandleAnswer = window.handleAnswer;
+            }
+        }
+        
+        // ========== КОНЕЦ SRS ==========
         
         const levelRequirements = [0, 100, 250, 450, 700, 1000, 1350, 1750, 2200, 2700, 3300, 4000, 4800, 5700, 6700, 7800, 9000, 10300, 11700, 13200];
         
@@ -1649,6 +1890,18 @@
         
         async function handleAnswer(know) {
             if (!currentCard) return;
+            
+            // Добавляем в SRS, если ответили НЕ ЗНАЮ
+            if (!know) {
+                addToSRS(currentDeck, currentCard);
+            } else {
+                // Если ответили ЗНАЮ, проверяем, есть ли слово в SRS
+                const srsItem = srsQueue.find(item => item.deck === currentDeck && item.word === currentCard.word);
+                if (srsItem) {
+                    markInSRS(currentDeck, currentCard.word, true);
+                }
+            }
+            
             addToTodayStats(currentCard.word, know);
             const action = know ? 'know' : 'dont_know';
             await fetch('/api/update_progress', {
@@ -1658,7 +1911,16 @@
             loadStats();
             loadProfileStats();
             if (currentIndex + 1 < cards.length) { currentIndex++; updateCard(); }
-            else { alert('🎉 Поздравляем! Вы завершили колоду! 🎉'); currentIndex = 0; updateCard(); }
+            else { 
+                // Если это была колода повторений, завершаем сеанс
+                if (currentDeck === "__SRS_Review__") {
+                    finishReview();
+                } else {
+                    alert('🎉 Поздравляем! Вы завершили колоду! 🎉');
+                }
+                currentIndex = 0;
+                updateCard();
+            }
         }
         
         async function loadStats() {
@@ -1712,6 +1974,11 @@
         document.getElementById('new-deck-btn')?.addEventListener('click', () => { document.getElementById('new-deck-modal').style.display = 'flex'; });
         document.getElementById('modal-cancel')?.addEventListener('click', () => { document.getElementById('new-deck-modal').style.display = 'none'; tempWords = []; renderWordsPreview(); });
         document.getElementById('modal-save')?.addEventListener('click', createNewDeck);
+        
+        // SRS индикатор
+        document.getElementById('srs-indicator')?.addEventListener('click', () => {
+            startReviewSession();
+        });
         
         const editProfileBtn = document.getElementById('edit-profile-btn');
         const profileModal = document.getElementById('profile-edit-modal');
@@ -1770,6 +2037,11 @@
             const saved = localStorage.getItem('customAudioData');
             if (saved) window.customAudioData = JSON.parse(saved);
         }
+        
+        // Запуск SRS
+        loadSRS();
+        startSRSWatcher();
+        setInterval(() => suggestReview(), 10 * 60 * 1000); // Каждые 10 минут напоминать
         
         loadCustomAudioData();
         loadCustomDecks();

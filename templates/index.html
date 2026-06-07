@@ -4,30 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Language Cards</title>
-    <!-- Firebase SDK -->
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
-        import { getFirestore, doc, setDoc, getDoc, updateDoc, collection, query, where, getDocs } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
-        
-        // ВАША КОНФИГУРАЦИЯ FIREBASE (ВСТАВЛЕНА)
-        const firebaseConfig = {
-            apiKey: "AIzaSyD2T9e_S9uLq51tLBBlSYmIhNs45aG9mvE",
-            authDomain: "c5notes-language-cards.firebaseapp.com",
-            projectId: "c5notes-language-cards",
-            storageBucket: "c5notes-language-cards.firebasestorage.app",
-            messagingSenderId: "857023559106",
-            appId: "1:857023559106:web:0976fa8b5f873c4737125b",
-            measurementId: "G-4PCCK9BMPS"
-        };
-        
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const googleProvider = new GoogleAuthProvider();
-        
-        window.firebase = { auth, db, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, googleProvider, signInWithPopup, doc, setDoc, getDoc, updateDoc, collection, query, where, getDocs };
-    </script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background-color: #051F42; font-family: 'Playpen Sans', cursive; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 0; margin: 0; }
@@ -468,14 +444,13 @@
     <!-- SRS индикатор -->
     <div class="srs-indicator" id="srs-indicator" style="display: none;">⏰ Слова для повторения</div>
 
-    <script type="module">
-        // ========== ТЕКСТУРКИ ДЛЯ ЛИСТОЧКОВ ==========
+    <script>
+        // ========== 1. ОСНОВНЫЕ ПЕРЕМЕННЫЕ И УТИЛИТЫ ==========
         const leafTextures = [
             '/static/images/leaf_1.png', '/static/images/leaf_2.png', '/static/images/leaf_3.png',
             '/static/images/leaf_4.png', '/static/images/leaf_5.png', '/static/images/leaf_6.png'
         ];
         
-        // ========== ДЕФОЛТНЫЕ КОЛОДЫ ==========
         let defaultDecks = [
             { name: "Linking Words", count: 20, isDefault: true, isFavorite: false },
             { name: "Medicine", count: 30, isDefault: true, isFavorite: false },
@@ -490,10 +465,59 @@
         let searchQuery = "";
         let tempWords = [];
         
-        // ========== SRS (ИНТЕРВАЛЬНЫЕ ПОВТОРЕНИЯ) ==========
+        // Текущее состояние
+        let currentDeck = "Linking Words";
+        let cards = [];
+        let currentIndex = 0;
+        let currentCard = null;
+        let todayStats = { studied: 0, mistakes: 0 };
+        let todayWords = [];
+        let mistakesList = [];
+        
+        // SRS
         let srsQueue = [];
         let srsInterval = null;
         
+        // Смешанный режим
+        let isMixedMode = false;
+        let mixedCards = [];
+        let mixedCardsShuffled = [];
+        let originalMixedDeck = null;
+        let originalMixedIndex = null;
+        
+        // Firebase
+        let currentUser = null;
+        let isAuthModeLogin = true;
+        let selectedAvatar = "default";
+        
+        // Уровни опыта (20 уровней)
+        const levelRequirements = [0, 100, 250, 450, 700, 1000, 1350, 1750, 2200, 2700, 3300, 4000, 4800, 5700, 6700, 7800, 9000, 10300, 11700, 13200];
+        
+        function getLevelAndProgress(exp) {
+            let level = 1;
+            for (let i = 1; i < levelRequirements.length; i++) {
+                if (exp >= levelRequirements[i]) level = i + 1;
+                else break;
+            }
+            const currentLevelExp = levelRequirements[level - 1];
+            const nextLevelExp = levelRequirements[level] || levelRequirements[levelRequirements.length - 1] + 500;
+            const expForNext = nextLevelExp - currentLevelExp;
+            const currentExp = exp - currentLevelExp;
+            const progress = Math.min(100, Math.max(0, (currentExp / expForNext) * 100));
+            return { level, progress, currentExp, expForNext, nextLevelExp };
+        }
+        
+        function showSRSNotification(message) {
+            const oldNotif = document.querySelector('.srs-notification');
+            if (oldNotif) oldNotif.remove();
+            const notif = document.createElement('div');
+            notif.className = 'srs-notification';
+            notif.textContent = message;
+            document.body.appendChild(notif);
+            setTimeout(() => notif.remove(), 5000);
+        }
+        
+        // ========== 2. SRS ФУНКЦИИ ==========
         function loadSRS() {
             const saved = localStorage.getItem('srsQueue');
             if (saved) {
@@ -521,7 +545,7 @@
                 });
             }
             saveSRS();
-            showSRSNotification(`📚 "${wordData.word}" добавлено в очередь повторений`);
+            showSRSNotification(`📚 "${wordData.word}" добавлено в очередь повторений (через 10 минут)`);
         }
         
         function markInSRS(deckName, word, isCorrect) {
@@ -559,16 +583,6 @@
             } else {
                 indicator.style.display = 'none';
             }
-        }
-        
-        function showSRSNotification(message) {
-            const oldNotif = document.querySelector('.srs-notification');
-            if (oldNotif) oldNotif.remove();
-            const notif = document.createElement('div');
-            notif.className = 'srs-notification';
-            notif.textContent = message;
-            document.body.appendChild(notif);
-            setTimeout(() => notif.remove(), 5000);
         }
         
         function startSRSWatcher() {
@@ -638,13 +652,7 @@
             showSRSNotification("✅ Сеанс повторения завершён!");
         }
         
-        // ========== СМЕШАННЫЙ РЕЖИМ ==========
-        let isMixedMode = false;
-        let mixedCards = [];
-        let mixedCardsShuffled = [];
-        let originalMixedDeck = null;
-        let originalMixedIndex = null;
-        
+        // ========== 3. СМЕШАННЫЙ РЕЖИМ ==========
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -736,24 +744,7 @@
             document.getElementById('mixed-mode-modal').style.display = 'flex';
         }
         
-        // ========== УРОВНИ ОПЫТА ==========
-        const levelRequirements = [0, 100, 250, 450, 700, 1000, 1350, 1750, 2200, 2700, 3300, 4000, 4800, 5700, 6700, 7800, 9000, 10300, 11700, 13200];
-        
-        function getLevelAndProgress(exp) {
-            let level = 1;
-            for (let i = 1; i < levelRequirements.length; i++) {
-                if (exp >= levelRequirements[i]) level = i + 1;
-                else break;
-            }
-            const currentLevelExp = levelRequirements[level - 1];
-            const nextLevelExp = levelRequirements[level] || levelRequirements[levelRequirements.length - 1] + 500;
-            const expForNext = nextLevelExp - currentLevelExp;
-            const currentExp = exp - currentLevelExp;
-            const progress = Math.min(100, Math.max(0, (currentExp / expForNext) * 100));
-            return { level, progress, currentExp, expForNext, nextLevelExp };
-        }
-        
-        // ========== ПРОФИЛЬ (LOCALSTORAGE) ==========
+        // ========== 4. ПРОФИЛЬ И СТАТИСТИКА ==========
         function loadUserProfile() {
             const savedProfile = localStorage.getItem('userProfile');
             if (savedProfile) {
@@ -776,7 +767,6 @@
             document.getElementById('profile-avatar').src = `/static/images/${avatar}.png`;
         }
         
-        // ========== ЗАГРУЗКА СТАТИСТИКИ С СЕРВЕРА ==========
         async function loadProfileStats() {
             const res = await fetch('/api/stats');
             const stats = await res.json();
@@ -790,7 +780,18 @@
             document.getElementById('exp-text').textContent = `${currentExp} / ${expForNext} опыта (до ${nextLevelExp})`;
         }
         
-        // ========== ИЗБРАННОЕ ==========
+        async function loadStats() {
+            const res = await fetch('/api/stats');
+            const stats = await res.json();
+            document.getElementById('streak-days-review').textContent = stats.streak_days;
+            document.getElementById('streak-days-profile').innerHTML = `🔥 ${stats.streak_days} дней подряд`;
+            document.getElementById('cards-studied').innerHTML = `📖 ${stats.cards_studied} Карточек изучено`;
+            document.getElementById('total-days').innerHTML = `📅 ${stats.total_days} дней в приложении`;
+            document.getElementById('level').innerHTML = `⭐ Уровень: ${stats.level}`;
+            document.getElementById('exp').innerHTML = `📊 Опыт: ${stats.experience} / ${stats.max_exp}`;
+        }
+        
+        // ========== 5. ИЗБРАННОЕ ==========
         function loadFavorites() {
             const favorites = localStorage.getItem('favoriteDecks');
             if (favorites) {
@@ -806,7 +807,7 @@
             localStorage.setItem('favoriteDecks', JSON.stringify(favorites));
         }
         
-        // ========== ПОЛЬЗОВАТЕЛЬСКИЕ КОЛОДЫ ==========
+        // ========== 6. ПОЛЬЗОВАТЕЛЬСКИЕ КОЛОДЫ ==========
         function loadCustomDecks() {
             const saved = localStorage.getItem('customDecks');
             if (saved) {
@@ -870,7 +871,20 @@
             }
         }
         
-        // ========== СОЗДАНИЕ НОВОЙ КОЛОДЫ ==========
+        async function loadDeckStats() {
+            const res = await fetch('/api/decks');
+            const deckNames = await res.json();
+            for (let deck of defaultDecks) {
+                if (deckNames.includes(deck.name)) {
+                    const cardsRes = await fetch(`/api/cards/${deck.name}`);
+                    const cardsData = await cardsRes.json();
+                    deck.count = cardsData.length;
+                }
+            }
+            renderDecks();
+        }
+        
+        // ========== 7. СОЗДАНИЕ НОВОЙ КОЛОДЫ ==========
         function renderWordsPreview() {
             const container = document.getElementById('words-preview-list');
             const countSpan = document.getElementById('words-count');
@@ -982,28 +996,7 @@
             renderDecks();
         }
         
-        async function loadDeckStats() {
-            const res = await fetch('/api/decks');
-            const deckNames = await res.json();
-            for (let deck of defaultDecks) {
-                if (deckNames.includes(deck.name)) {
-                    const cardsRes = await fetch(`/api/cards/${deck.name}`);
-                    const cardsData = await cardsRes.json();
-                    deck.count = cardsData.length;
-                }
-            }
-            renderDecks();
-        }
-        
-        // ========== ОСНОВНЫЕ ПЕРЕМЕННЫЕ ==========
-        let currentDeck = "Linking Words";
-        let cards = [];
-        let currentIndex = 0;
-        let currentCard = null;
-        let todayStats = { studied: 0, mistakes: 0 };
-        let todayWords = [];
-        let mistakesList = [];
-        
+        // ========== 8. ОСНОВНЫЕ ФУНКЦИИ КАРТОЧЕК ==========
         async function loadCards() {
             if (window.customCardsData && window.customCardsData[currentDeck]) {
                 cards = window.customCardsData[currentDeck];
@@ -1025,10 +1018,8 @@
             document.getElementById('example').textContent = currentCard.example;
             document.getElementById('example-translation').textContent = currentCard.example_translation;
             document.getElementById('translation').textContent = currentCard.translation;
-            const total = cards.length;
-            const current = currentIndex + 1;
-            document.getElementById('card-counter').textContent = `${current}/${total}`;
-            const progress = (current / total) * 100;
+            document.getElementById('card-counter').textContent = `${currentIndex + 1}/${cards.length}`;
+            const progress = ((currentIndex + 1) / cards.length) * 100;
             document.getElementById('progress-bar').style.width = `${progress}%`;
         }
         
@@ -1087,10 +1078,8 @@
         }
         
         function updateReviewPage() {
-            const todayStudiedEl = document.getElementById('today-studied');
-            const todayMistakesEl = document.getElementById('today-mistakes');
-            if (todayStudiedEl) todayStudiedEl.textContent = todayStats.studied;
-            if (todayMistakesEl) todayMistakesEl.textContent = todayStats.mistakes;
+            document.getElementById('today-studied').textContent = todayStats.studied;
+            document.getElementById('today-mistakes').textContent = todayStats.mistakes;
             const todayWordsContainer = document.getElementById('today-words-list');
             if (todayWordsContainer) {
                 if (todayWords.length === 0) todayWordsContainer.innerHTML = '<div class="no-mistakes">Пока нет изученных слов</div>';
@@ -1124,6 +1113,7 @@
             const cardIndex = cards.findIndex(c => c.word === word);
             if (cardIndex !== -1) { currentIndex = cardIndex; updateCard(); showPage('home'); }
         };
+        
         window.repeatMistake = function(word) {
             const cardIndex = cards.findIndex(c => c.word === word);
             if (cardIndex !== -1) { currentIndex = cardIndex; updateCard(); showPage('home'); }
@@ -1154,29 +1144,14 @@
                     finishReview();
                 } else if (currentDeck === "__MIXED_MODE__") {
                     alert('🎉 Поздравляем! Вы завершили все слова в смешанном режиме! 🎉');
+                    currentIndex = 0;
+                    updateCard();
                 } else {
                     alert('🎉 Поздравляем! Вы завершили колоду! 🎉');
+                    currentIndex = 0;
+                    updateCard();
                 }
-                currentIndex = 0;
-                updateCard();
             }
-        }
-        
-        async function loadStats() {
-            const res = await fetch('/api/stats');
-            const stats = await res.json();
-            const streakReview = document.getElementById('streak-days-review');
-            const streakProfile = document.getElementById('streak-days-profile');
-            const cardsStudied = document.getElementById('cards-studied');
-            const totalDays = document.getElementById('total-days');
-            const level = document.getElementById('level');
-            const exp = document.getElementById('exp');
-            if (streakReview) streakReview.textContent = stats.streak_days;
-            if (streakProfile) streakProfile.innerHTML = `🔥 ${stats.streak_days} дней подряд`;
-            if (cardsStudied) cardsStudied.innerHTML = `📖 ${stats.cards_studied} Карточек изучено`;
-            if (totalDays) totalDays.innerHTML = `📅 ${stats.total_days} дней в приложении`;
-            if (level) level.innerHTML = `⭐ Уровень: ${stats.level}`;
-            if (exp) exp.innerHTML = `📊 Опыт: ${stats.experience} / ${stats.max_exp}`;
         }
         
         function showPage(page) {
@@ -1200,7 +1175,7 @@
             });
         }
         
-        // ========== ИНИЦИАЛИЗАЦИЯ ОСНОВНЫХ ОБРАБОТЧИКОВ ==========
+        // ========== 9. ОБРАБОТЧИКИ СОБЫТИЙ ==========
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -1227,12 +1202,11 @@
         document.getElementById('deselect-all-decks')?.addEventListener('click', () => { document.querySelectorAll('.deck-checkbox').forEach(cb => cb.checked = false); });
         document.getElementById('mixed-mode-cancel')?.addEventListener('click', () => { document.getElementById('mixed-mode-modal').style.display = 'none'; });
         
-        // ========== ПРОФИЛЬ (РЕДАКТИРОВАНИЕ) ==========
+        // ========== 10. ПРОФИЛЬ (РЕДАКТИРОВАНИЕ) ==========
         const editProfileBtn = document.getElementById('edit-profile-btn');
         const profileModal = document.getElementById('profile-edit-modal');
         const profileModalCancel = document.getElementById('profile-modal-cancel');
         const profileModalSave = document.getElementById('profile-modal-save');
-        let selectedAvatar = "default";
         
         if (editProfileBtn) {
             editProfileBtn.addEventListener('click', () => {
@@ -1280,6 +1254,212 @@
         }
         
         window.__savedCardsForDeck = {};
+        
+        // ========== 11. FIREBASE АУТЕНТИФИКАЦИЯ ==========
+        function initFirebaseAuth() {
+            console.log("Initializing Firebase...");
+            
+            // Функции для работы с Firebase
+            window.signInWithEmail = async (email, password) => {
+                const auth = window.FirebaseAuth;
+                if (!auth) throw new Error("Firebase not ready");
+                return signInWithEmailAndPassword(auth, email, password);
+            };
+            
+            window.createUserWithEmail = async (email, password) => {
+                const auth = window.FirebaseAuth;
+                if (!auth) throw new Error("Firebase not ready");
+                return createUserWithEmailAndPassword(auth, email, password);
+            };
+            
+            window.signOutUser = async () => {
+                const auth = window.FirebaseAuth;
+                if (!auth) throw new Error("Firebase not ready");
+                return signOut(auth);
+            };
+            
+            window.onAuthStateChanged = (callback) => {
+                const auth = window.FirebaseAuth;
+                if (!auth) throw new Error("Firebase not ready");
+                return onAuthStateChanged(auth, callback);
+            };
+            
+            window.signInWithGoogle = async () => {
+                const auth = window.FirebaseAuth;
+                const provider = new GoogleAuthProvider();
+                if (!auth) throw new Error("Firebase not ready");
+                return signInWithPopup(auth, provider);
+            };
+            
+            window.setDocFirestore = (docRef, data) => setDoc(docRef, data, { merge: true });
+            window.getDocFirestore = (docRef) => getDoc(docRef);
+            window.docFirestore = (path, id) => doc(db, path, id);
+            
+            // Элементы аутентификации
+            const authModal = document.getElementById('auth-modal');
+            const authBtn = document.getElementById('auth-btn');
+            const authModalCancel = document.getElementById('auth-modal-cancel');
+            const authSubmit = document.getElementById('auth-submit');
+            const authEmail = document.getElementById('auth-email');
+            const authPassword = document.getElementById('auth-password');
+            const authTitle = document.getElementById('auth-title');
+            const toggleAuthMode = document.getElementById('toggle-auth-mode');
+            const googleSignin = document.getElementById('google-signin');
+            
+            function updateAuthUI() {
+                if (currentUser) {
+                    authBtn.textContent = "🚪 Выйти";
+                    authBtn.classList.add('authenticated');
+                    document.getElementById('profile-username').textContent = currentUser.displayName || currentUser.email.split('@')[0] || "Пользователь";
+                    document.getElementById('profile-email').textContent = currentUser.email;
+                } else {
+                    authBtn.textContent = "🔑 Войти";
+                    authBtn.classList.remove('authenticated');
+                }
+            }
+            
+            async function signInWithEmailHandler(email, password) {
+                try {
+                    const userCredential = await window.signInWithEmail(email, password);
+                    currentUser = userCredential.user;
+                    updateAuthUI();
+                    authModal.style.display = 'none';
+                    showSRSNotification(`✅ Добро пожаловать, ${currentUser.email}!`);
+                } catch (error) {
+                    alert("Ошибка входа: " + error.message);
+                }
+            }
+            
+            async function signUpWithEmailHandler(email, password) {
+                try {
+                    const userCredential = await window.createUserWithEmail(email, password);
+                    currentUser = userCredential.user;
+                    updateAuthUI();
+                    authModal.style.display = 'none';
+                    showSRSNotification(`🎉 Аккаунт создан для ${currentUser.email}`);
+                } catch (error) {
+                    alert("Ошибка регистрации: " + error.message);
+                }
+            }
+            
+            async function signInWithGoogleHandler() {
+                try {
+                    const result = await window.signInWithGoogle();
+                    currentUser = result.user;
+                    updateAuthUI();
+                    authModal.style.display = 'none';
+                    showSRSNotification(`✅ Добро пожаловать, ${currentUser.displayName || currentUser.email}!`);
+                } catch (error) {
+                    alert("Ошибка входа через Google: " + error.message);
+                }
+            }
+            
+            async function signOutHandler() {
+                try {
+                    await window.signOutUser();
+                    currentUser = null;
+                    updateAuthUI();
+                    showSRSNotification("👋 Вы вышли из аккаунта");
+                } catch (error) {
+                    alert("Ошибка выхода: " + error.message);
+                }
+            }
+            
+            function handleAuthButtonClick() {
+                if (currentUser) {
+                    signOutHandler();
+                } else {
+                    authEmail.value = '';
+                    authPassword.value = '';
+                    authModal.style.display = 'flex';
+                }
+            }
+            
+            async function handleAuthSubmit() {
+                const email = authEmail.value.trim();
+                const password = authPassword.value;
+                if (!email || !password) { alert("Введите email и пароль"); return; }
+                if (isAuthModeLogin) {
+                    await signInWithEmailHandler(email, password);
+                } else {
+                    await signUpWithEmailHandler(email, password);
+                }
+            }
+            
+            function toggleAuthModeFunc() {
+                isAuthModeLogin = !isAuthModeLogin;
+                if (isAuthModeLogin) {
+                    authTitle.textContent = "🔑 Вход в аккаунт";
+                    toggleAuthMode.textContent = "Нет аккаунта? Зарегистрироваться";
+                    authSubmit.textContent = "Войти";
+                } else {
+                    authTitle.textContent = "📝 Регистрация";
+                    toggleAuthMode.textContent = "Уже есть аккаунт? Войти";
+                    authSubmit.textContent = "Зарегистрироваться";
+                }
+            }
+            
+            window.onAuthStateChanged((user) => {
+                currentUser = user;
+                updateAuthUI();
+            });
+            
+            authBtn?.addEventListener('click', handleAuthButtonClick);
+            authModalCancel?.addEventListener('click', () => { authModal.style.display = 'none'; });
+            authSubmit?.addEventListener('click', handleAuthSubmit);
+            toggleAuthMode?.addEventListener('click', (e) => { e.preventDefault(); toggleAuthModeFunc(); });
+            googleSignin?.addEventListener('click', async () => { authModal.style.display = 'none'; await signInWithGoogleHandler(); });
+            
+            window.addEventListener('click', (e) => {
+                if (e.target === authModal) authModal.style.display = 'none';
+            });
+        }
+        
+        // Загружаем Firebase скрипт динамически
+        const firebaseScript = document.createElement('script');
+        firebaseScript.type = 'module';
+        firebaseScript.innerHTML = `
+            import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+            import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+            import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+            
+            const firebaseConfig = {
+                apiKey: "AIzaSyD2T9e_S9uLq51tLBBlSYmIhNs45aG9mvE",
+                authDomain: "c5notes-language-cards.firebaseapp.com",
+                projectId: "c5notes-language-cards",
+                storageBucket: "c5notes-language-cards.firebasestorage.app",
+                messagingSenderId: "857023559106",
+                appId: "1:857023559106:web:0976fa8b5f873c4737125b",
+                measurementId: "G-4PCCK9BMPS"
+            };
+            
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            const db = getFirestore(app);
+            const googleProvider = new GoogleAuthProvider();
+            
+            window.FirebaseAuth = auth;
+            window.FirebaseDB = db;
+            window.signInWithEmailAndPassword = signInWithEmailAndPassword;
+            window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
+            window.signOut = signOut;
+            window.onAuthStateChanged = onAuthStateChanged;
+            window.GoogleAuthProvider = GoogleAuthProvider;
+            window.signInWithPopup = signInWithPopup;
+            window.doc = doc;
+            window.setDoc = setDoc;
+            window.getDoc = getDoc;
+            
+            window.dispatchEvent(new Event('firebase-loaded'));
+        `;
+        document.head.appendChild(firebaseScript);
+        
+        window.addEventListener('firebase-loaded', () => {
+            console.log("Firebase loaded, initializing auth...");
+            initFirebaseAuth();
+        });
+        
+        // ========== 12. ЗАПУСК ПРИЛОЖЕНИЯ ==========
         loadSRS();
         startSRSWatcher();
         setInterval(() => suggestReview(), 10 * 60 * 1000);
@@ -1291,348 +1471,6 @@
         showPage('home');
         loadStats();
         loadProfileStats();
-        
-        // ========== ЧАСТЬ 3 - FIREBASE АУТЕНТИФИКАЦИЯ И СИНХРОНИЗАЦИЯ ==========
-        
-        // Текущий пользователь
-        let currentUser = null;
-        let isAuthModeLogin = true; // true = вход, false = регистрация
-        
-        // Элементы модального окна аутентификации
-        const authModal = document.getElementById('auth-modal');
-        const authBtn = document.getElementById('auth-btn');
-        const authModalCancel = document.getElementById('auth-modal-cancel');
-        const authSubmit = document.getElementById('auth-submit');
-        const authEmail = document.getElementById('auth-email');
-        const authPassword = document.getElementById('auth-password');
-        const authTitle = document.getElementById('auth-title');
-        const toggleAuthMode = document.getElementById('toggle-auth-mode');
-        const googleSignin = document.getElementById('google-signin');
-        
-        // ========== ФУНКЦИИ СИНХРОНИЗАЦИИ С FIRESTORE ==========
-        
-        // Сохранение всех данных пользователя в Firestore
-        async function syncUserDataToFirestore(userId) {
-            if (!userId) return;
-            
-            const userData = {
-                profile: {
-                    username: document.getElementById('profile-username').textContent,
-                    email: document.getElementById('profile-email').textContent,
-                    avatar: selectedAvatar
-                },
-                customDecks: customDecks,
-                favorites: JSON.parse(localStorage.getItem('favoriteDecks') || '[]'),
-                srsQueue: srsQueue,
-                todayStats: todayStats,
-                todayWords: todayWords,
-                mistakesList: mistakesList,
-                lastUpdated: new Date().toISOString()
-            };
-            
-            try {
-                await setDoc(doc(db, "users", userId), userData, { merge: true });
-                console.log("Data synced to Firestore");
-            } catch (e) {
-                console.error("Error syncing to Firestore:", e);
-            }
-        }
-        
-        // Загрузка данных пользователя из Firestore
-        async function loadUserDataFromFirestore(userId) {
-            if (!userId) return false;
-            
-            try {
-                const docRef = doc(db, "users", userId);
-                const docSnap = await getDoc(docRef);
-                
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    
-                    // Загружаем профиль
-                    if (data.profile) {
-                        document.getElementById('profile-username').textContent = data.profile.username || "Пользователь";
-                        document.getElementById('profile-email').textContent = data.profile.email || currentUser?.email || "Email не указан";
-                        if (data.profile.avatar) {
-                            selectedAvatar = data.profile.avatar;
-                            document.getElementById('profile-avatar').src = `/static/images/${selectedAvatar}.png`;
-                        }
-                    }
-                    
-                    // Загружаем пользовательские колоды
-                    if (data.customDecks) {
-                        customDecks = data.customDecks;
-                        saveCustomDecks();
-                        // Восстанавливаем customCardsData
-                        if (!window.customCardsData) window.customCardsData = {};
-                        customDecks.forEach(deck => {
-                            if (deck.words) {
-                                window.customCardsData[deck.name] = deck.words;
-                            }
-                        });
-                    }
-                    
-                    // Загружаем избранное
-                    if (data.favorites) {
-                        localStorage.setItem('favoriteDecks', JSON.stringify(data.favorites));
-                        loadFavorites();
-                    }
-                    
-                    // Загружаем SRS очередь
-                    if (data.srsQueue) {
-                        srsQueue = data.srsQueue;
-                        saveSRS();
-                    }
-                    
-                    // Загружаем сегодняшнюю статистику
-                    if (data.todayStats) {
-                        todayStats = data.todayStats;
-                    }
-                    if (data.todayWords) {
-                        todayWords = data.todayWords;
-                    }
-                    if (data.mistakesList) {
-                        mistakesList = data.mistakesList;
-                    }
-                    
-                    updateReviewPage();
-                    renderDecks();
-                    updateSRSIndicator();
-                    
-                    console.log("Data loaded from Firestore");
-                    return true;
-                }
-            } catch (e) {
-                console.error("Error loading from Firestore:", e);
-            }
-            return false;
-        }
-        
-        // Автоматическая синхронизация при изменении данных
-        function setupAutoSync() {
-            // Отслеживаем изменения в localStorage и синхронизируем с Firestore
-            const originalSetItem = localStorage.setItem;
-            localStorage.setItem = function(key, value) {
-                originalSetItem.apply(this, arguments);
-                if (currentUser && (key === 'customDecks' || key === 'favoriteDecks' || key === 'srsQueue')) {
-                    syncUserDataToFirestore(currentUser.uid);
-                }
-            };
-        }
-        
-        // ========== ФУНКЦИИ АУТЕНТИФИКАЦИИ ==========
-        
-        // Обновление UI в зависимости от статуса авторизации
-        function updateAuthUI() {
-            if (currentUser) {
-                authBtn.textContent = "🚪 Выйти";
-                authBtn.classList.add('authenticated');
-                // Загружаем email в профиль, если он не был загружен
-                const emailEl = document.getElementById('profile-email');
-                if (emailEl.textContent === "Не авторизован" && currentUser.email) {
-                    emailEl.textContent = currentUser.email;
-                }
-            } else {
-                authBtn.textContent = "🔑 Войти";
-                authBtn.classList.remove('authenticated');
-            }
-        }
-        
-        // Вход по email/паролю
-        async function signInWithEmail(email, password) {
-            try {
-                const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                currentUser = userCredential.user;
-                await loadUserDataFromFirestore(currentUser.uid);
-                updateAuthUI();
-                authModal.style.display = 'none';
-                showSRSNotification(`✅ Добро пожаловать, ${currentUser.email}!`);
-                return true;
-            } catch (error) {
-                console.error("Sign in error:", error);
-                if (error.code === 'auth/user-not-found') {
-                    alert("Пользователь не найден. Зарегистрируйтесь.");
-                } else if (error.code === 'auth/wrong-password') {
-                    alert("Неверный пароль.");
-                } else {
-                    alert("Ошибка входа: " + error.message);
-                }
-                return false;
-            }
-        }
-        
-        // Регистрация по email/паролю
-        async function signUpWithEmail(email, password) {
-            try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                currentUser = userCredential.user;
-                // Сохраняем начальные данные
-                await syncUserDataToFirestore(currentUser.uid);
-                updateAuthUI();
-                authModal.style.display = 'none';
-                showSRSNotification(`🎉 Добро пожаловать! Аккаунт создан для ${currentUser.email}`);
-                return true;
-            } catch (error) {
-                console.error("Sign up error:", error);
-                if (error.code === 'auth/email-already-in-use') {
-                    alert("Этот email уже используется. Войдите в аккаунт.");
-                } else if (error.code === 'auth/weak-password') {
-                    alert("Пароль должен содержать минимум 6 символов.");
-                } else {
-                    alert("Ошибка регистрации: " + error.message);
-                }
-                return false;
-            }
-        }
-        
-        // Вход через Google
-        async function signInWithGoogle() {
-            try {
-                const result = await signInWithPopup(auth, googleProvider);
-                currentUser = result.user;
-                await loadUserDataFromFirestore(currentUser.uid);
-                updateAuthUI();
-                authModal.style.display = 'none';
-                showSRSNotification(`✅ Добро пожаловать, ${currentUser.displayName || currentUser.email}!`);
-                return true;
-            } catch (error) {
-                console.error("Google sign in error:", error);
-                alert("Ошибка входа через Google: " + error.message);
-                return false;
-            }
-        }
-        
-        // Выход из аккаунта
-        async function signOutUser() {
-            try {
-                // Синхронизируем данные перед выходом
-                if (currentUser) {
-                    await syncUserDataToFirestore(currentUser.uid);
-                }
-                await signOut(auth);
-                currentUser = null;
-                updateAuthUI();
-                showSRSNotification("👋 Вы вышли из аккаунта. Ваши данные сохранены локально.");
-                
-                // Перезагружаем локальные данные
-                loadCustomDecks();
-                loadFavorites();
-                loadSRS();
-                loadUserProfile();
-                renderDecks();
-                updateReviewPage();
-                updateSRSIndicator();
-            } catch (error) {
-                console.error("Sign out error:", error);
-                alert("Ошибка выхода: " + error.message);
-            }
-        }
-        
-        // Обработка нажатия на кнопку аутентификации
-        function handleAuthButtonClick() {
-            if (currentUser) {
-                signOutUser();
-            } else {
-                // Очищаем поля
-                authEmail.value = '';
-                authPassword.value = '';
-                authModal.style.display = 'flex';
-            }
-        }
-        
-        // Обработка отправки формы (вход/регистрация)
-        async function handleAuthSubmit() {
-            const email = authEmail.value.trim();
-            const password = authPassword.value;
-            
-            if (!email || !password) {
-                alert("Введите email и пароль");
-                return;
-            }
-            
-            if (isAuthModeLogin) {
-                await signInWithEmail(email, password);
-            } else {
-                await signUpWithEmail(email, password);
-            }
-        }
-        
-        // Переключение между входом и регистрацией
-        function toggleAuthModeFunc() {
-            isAuthModeLogin = !isAuthModeLogin;
-            if (isAuthModeLogin) {
-                authTitle.textContent = "🔑 Вход в аккаунт";
-                toggleAuthMode.textContent = "Нет аккаунта? Зарегистрироваться";
-                authSubmit.textContent = "Войти";
-            } else {
-                authTitle.textContent = "📝 Регистрация";
-                toggleAuthMode.textContent = "Уже есть аккаунт? Войти";
-                authSubmit.textContent = "Зарегистрироваться";
-            }
-        }
-        
-        // ========== НАБЛЮДАТЕЛЬ СОСТОЯНИЯ АУТЕНТИФИКАЦИИ ==========
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                currentUser = user;
-                updateAuthUI();
-                await loadUserDataFromFirestore(user.uid);
-                // Обновляем email в профиле, если он пустой
-                const emailEl = document.getElementById('profile-email');
-                if (emailEl.textContent === "Не авторизован" && user.email) {
-                    emailEl.textContent = user.email;
-                }
-            } else {
-                currentUser = null;
-                updateAuthUI();
-                // Загружаем локальные данные
-                loadCustomDecks();
-                loadFavorites();
-                loadSRS();
-                loadUserProfile();
-                renderDecks();
-                updateReviewPage();
-                updateSRSIndicator();
-            }
-        });
-        
-        // ========== ПОДКЛЮЧАЕМ ОБРАБОТЧИКИ ==========
-        authBtn?.addEventListener('click', handleAuthButtonClick);
-        authModalCancel?.addEventListener('click', () => { authModal.style.display = 'none'; });
-        authSubmit?.addEventListener('click', handleAuthSubmit);
-        toggleAuthMode?.addEventListener('click', (e) => {
-            e.preventDefault();
-            toggleAuthModeFunc();
-        });
-        googleSignin?.addEventListener('click', async () => {
-            authModal.style.display = 'none';
-            await signInWithGoogle();
-        });
-        
-        // Закрытие модального окна по клику вне его
-        window.addEventListener('click', (e) => {
-            const modal = document.getElementById('new-deck-modal');
-            const mixedModal = document.getElementById('mixed-mode-modal');
-            const profileModalElem = document.getElementById('profile-edit-modal');
-            const authModalElem = document.getElementById('auth-modal');
-            if (e.target === modal) modal.style.display = 'none';
-            if (e.target === mixedModal) mixedModal.style.display = 'none';
-            if (e.target === profileModalElem) profileModalElem.style.display = 'none';
-            if (e.target === authModalElem) authModalElem.style.display = 'none';
-        });
-        
-        // Настройка автоматической синхронизации
-        setupAutoSync();
-        
-        // Сохраняем данные при закрытии страницы
-        window.addEventListener('beforeunload', () => {
-            if (currentUser) {
-                syncUserDataToFirestore(currentUser.uid);
-            }
-        });
-        
-        console.log("Firebase auth initialized");
     </script>
 </body>
 </html>
-```

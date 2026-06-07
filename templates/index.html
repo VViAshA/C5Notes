@@ -154,29 +154,13 @@
 <body>
     <div class="app-container">
         <div class="sidebar">
-            <div class="logo-container">
-                <img src="/static/images/C5_Logo.png" class="app-logo" alt="C5 Notes Logo">
-            </div>
-            <div class="nav-item" data-page="home">
-                <div class="circle-icon" id="home-circle"></div>
-                <span>Главная</span>
-            </div>
-            <div class="nav-item" data-page="review">
-                <div class="circle-icon" id="review-circle"></div>
-                <span>Повторение</span>
-            </div>
-            <div class="nav-item" data-page="decks">
-                <div class="circle-icon" id="decks-circle"></div>
-                <span>Колоды</span>
-            </div>
-            <div class="nav-item" data-page="profile">
-                <div class="circle-icon" id="profile-circle"></div>
-                <span>Профиль</span>
-            </div>
+            <div class="logo-container"><img src="/static/images/C5_Logo.png" class="app-logo" alt="C5 Notes Logo"></div>
+            <div class="nav-item" data-page="home"><div class="circle-icon" id="home-circle"></div><span>Главная</span></div>
+            <div class="nav-item" data-page="review"><div class="circle-icon" id="review-circle"></div><span>Повторение</span></div>
+            <div class="nav-item" data-page="decks"><div class="circle-icon" id="decks-circle"></div><span>Колоды</span></div>
+            <div class="nav-item" data-page="profile"><div class="circle-icon" id="profile-circle"></div><span>Профиль</span></div>
         </div>
-
         <div class="main-content">
-            <!-- Главная -->
             <div id="home-page">
                 <div class="card-container">
                     <div class="card-content">
@@ -202,1275 +186,385 @@
                     </div>
                 </div>
                 <div class="action-buttons">
-                    <button class="action-btn btn-dont-know" id="dont-know-btn">
-                        <span class="cross-mark">✗</span>
-                        НЕ ЗНАЮ
-                    </button>
-                    <button class="action-btn btn-know" id="know-btn">
-                        <span class="check-mark">✓</span>
-                        ЗНАЮ
-                    </button>
+                    <button class="action-btn btn-dont-know" id="dont-know-btn"><span class="cross-mark">✗</span>НЕ ЗНАЮ</button>
+                    <button class="action-btn btn-know" id="know-btn"><span class="check-mark">✓</span>ЗНАЮ</button>
                 </div>
-                <div class="progress-section">
-                    <div>📊 Прогресс в колоде</div>
-                    <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
-                </div>
+                <div class="progress-section"><div>📊 Прогресс в колоде</div><div class="progress-bar" id="progress-bar" style="width: 0%"></div></div>
             </div>
-
-            <!-- Повторение -->
             <div id="review-page" class="hidden">
                 <div class="review-stats">
-                    <div class="stat-card studied">
-                        <img src="/static/images/days.png" alt="">
-                        <div class="stat-content">
-                            <div class="stat-number" id="today-studied">0</div>
-                            <div class="stat-label">карточек изучено сегодня</div>
-                        </div>
-                    </div>
-                    <div class="stat-card mistakes">
-                        <img src="/static/images/mistakes.png" alt="">
-                        <div class="stat-content">
-                            <div class="stat-number" id="today-mistakes">0</div>
-                            <div class="stat-label">ошибок сегодня</div>
-                        </div>
-                    </div>
-                    <div class="stat-card streak">
-                        <img src="/static/images/dayss.png" alt="">
-                        <div class="stat-content">
-                            <div class="stat-number" id="streak-days-review">0</div>
-                            <div class="stat-label">дней подряд</div>
-                        </div>
-                    </div>
+                    <div class="stat-card studied"><img src="/static/images/days.png" alt=""><div class="stat-content"><div class="stat-number" id="today-studied">0</div><div class="stat-label">карточек изучено сегодня</div></div></div>
+                    <div class="stat-card mistakes"><img src="/static/images/mistakes.png" alt=""><div class="stat-content"><div class="stat-number" id="today-mistakes">0</div><div class="stat-label">ошибок сегодня</div></div></div>
+                    <div class="stat-card streak"><img src="/static/images/dayss.png" alt=""><div class="stat-content"><div class="stat-number" id="streak-days-review">0</div><div class="stat-label">дней подряд</div></div></div>
                 </div>
-                <div class="today-words-section">
-                    <div class="today-words-title">📋 Сегодня изученные слова</div>
-                    <div class="words-scroll" id="today-words-list">
-                        <div class="no-mistakes">Пока нет изученных слов</div>
-                    </div>
-                </div>
-                <div class="mistakes-section">
-                    <div class="mistakes-header">
-                        <div class="mistakes-icon"></div>
-                        <div class="mistakes-title">Мои ошибки</div>
-                    </div>
-                    <div id="mistakes-list">
-                        <div class="no-mistakes">✨ Пока нет ошибок! Так держать!</div>
-                    </div>
-                </div>
+                <div class="today-words-section"><div class="today-words-title">📋 Сегодня изученные слова</div><div class="words-scroll" id="today-words-list"><div class="no-mistakes">Пока нет изученных слов</div></div></div>
+                <div class="mistakes-section"><div class="mistakes-header"><div class="mistakes-icon"></div><div class="mistakes-title">Мои ошибки</div></div><div id="mistakes-list"><div class="no-mistakes">✨ Пока нет ошибок! Так держать!</div></div></div>
             </div>
-
-            <!-- Колоды -->
             <div id="decks-page" class="hidden">
                 <div class="decks-header">
-                    <div class="decks-tabs">
-                        <button class="tab-btn active" data-tab="all">Все колоды</button>
-                        <button class="tab-btn" data-tab="my">Мои колоды</button>
-                        <button class="tab-btn" data-tab="favorites">Избранные</button>
-                    </div>
-                    <div class="search-bar">
-                        <input type="text" class="search-input" id="search-decks" placeholder="🔍 Поиск колод...">
-                    </div>
+                    <div class="decks-tabs"><button class="tab-btn active" data-tab="all">Все колоды</button><button class="tab-btn" data-tab="my">Мои колоды</button><button class="tab-btn" data-tab="favorites">Избранные</button></div>
+                    <div class="search-bar"><input type="text" class="search-input" id="search-decks" placeholder="🔍 Поиск колод..."></div>
                     <button class="new-deck-btn" id="new-deck-btn">+ Новая колода</button>
                 </div>
                 <div class="decks-grid" id="decks-grid"></div>
             </div>
-
-            <!-- Профиль -->
             <div id="profile-page" class="hidden">
-                <div class="profile-header">
-                    <button class="edit-profile-btn" id="edit-profile-btn">✎ Редактировать</button>
-                    <button class="auth-btn" id="auth-btn">🔑 Войти</button>
-                </div>
-                <div class="avatar-container">
-                    <img id="profile-avatar" class="avatar-img" src="/static/images/default.png" alt="avatar">
-                    <div class="user-info">
-                        <div class="user-name" id="profile-username">Гость</div>
-                        <div class="user-email" id="profile-email">Не авторизован</div>
-                    </div>
-                </div>
+                <div class="profile-header"><button class="edit-profile-btn" id="edit-profile-btn">✎ Редактировать</button><button class="auth-btn" id="auth-btn">🔑 Войти</button></div>
+                <div class="avatar-container"><img id="profile-avatar" class="avatar-img" src="/static/images/default.png" alt="avatar"><div class="user-info"><div class="user-name" id="profile-username">Гость</div><div class="user-email" id="profile-email">Не авторизован</div></div></div>
                 <div class="profile-stats-row">
-                    <div class="profile-stat-card">
-                        <div class="profile-stat-number" id="profile-streak">0</div>
-                        <div class="profile-stat-label">дней подряд</div>
-                    </div>
-                    <div class="profile-stat-card">
-                        <div class="profile-stat-number" id="profile-total-studied">0</div>
-                        <div class="profile-stat-label">всего изучено карточек</div>
-                    </div>
-                    <div class="profile-stat-card">
-                        <div class="profile-stat-number" id="profile-total-days">0</div>
-                        <div class="profile-stat-label">дней в приложении</div>
-                    </div>
+                    <div class="profile-stat-card"><div class="profile-stat-number" id="profile-streak">0</div><div class="profile-stat-label">дней подряд</div></div>
+                    <div class="profile-stat-card"><div class="profile-stat-number" id="profile-total-studied">0</div><div class="profile-stat-label">всего изучено карточек</div></div>
+                    <div class="profile-stat-card"><div class="profile-stat-number" id="profile-total-days">0</div><div class="profile-stat-label">дней в приложении</div></div>
                 </div>
-                <div class="level-card">
-                    <div class="level-header">
-                        <span class="level-title">Уровень</span>
-                        <span class="level-number" id="profile-level">1</span>
-                    </div>
-                    <div class="exp-bar-container">
-                        <div class="exp-bar-fill" id="exp-bar-fill" style="width: 0%"></div>
-                    </div>
-                    <div class="exp-text" id="exp-text">0 / 100 опыта</div>
-                </div>
+                <div class="level-card"><div class="level-header"><span class="level-title">Уровень</span><span class="level-number" id="profile-level">1</span></div><div class="exp-bar-container"><div class="exp-bar-fill" id="exp-bar-fill" style="width: 0%"></div></div><div class="exp-text" id="exp-text">0 / 100 опыта</div></div>
             </div>
         </div>
     </div>
 
-    <!-- Модальное окно для создания колоды -->
-    <div id="new-deck-modal" class="modal">
-        <div class="modal-content" style="max-width: 700px;">
-            <h3>📚 Создать новую колоду</h3>
-            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                <div style="flex: 1; min-width: 200px;">
-                    <label>Название колоды</label>
-                    <input type="text" id="new-deck-name" placeholder="Например: My Verbs" maxlength="50">
-                </div>
-            </div>
-            <div style="margin-top: 20px; border-top: 1px solid #ccc; padding-top: 15px;">
-                <h4>➕ Добавить слово</h4>
-                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 200px;">
-                        <label>Слово *</label>
-                        <input type="text" id="new-word" placeholder="Например: Awesome">
-                    </div>
-                    <div style="flex: 1; min-width: 200px;">
-                        <label>Перевод *</label>
-                        <input type="text" id="new-translation" placeholder="Например: потрясающий">
-                    </div>
-                </div>
-                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 200px;">
-                        <label>Транскрипция UK</label>
-                        <input type="text" id="new-transcription-uk" placeholder="/ˈɔː.səm/">
-                    </div>
-                    <div style="flex: 1; min-width: 200px;">
-                        <label>Транскрипция US</label>
-                        <input type="text" id="new-transcription-us" placeholder="/ˈɑː.səm/">
-                    </div>
-                </div>
-                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 200px;">
-                        <label>Аудио UK (MP3)</label>
-                        <input type="file" id="new-audio-uk" accept=".mp3">
-                    </div>
-                    <div style="flex: 1; min-width: 200px;">
-                        <label>Аудио US (MP3)</label>
-                        <input type="file" id="new-audio-us" accept=".mp3">
-                    </div>
-                </div>
-                <div style="margin-top: 10px;">
-                    <label>Пример предложения</label>
-                    <textarea id="new-example" rows="2" placeholder="This is awesome!"></textarea>
-                </div>
-                <div style="margin-top: 10px;">
-                    <label>Перевод примера</label>
-                    <textarea id="new-example-translation" rows="2" placeholder="Это потрясающе!"></textarea>
-                </div>
-                <div style="margin-top: 15px;">
-                    <button id="add-word-btn">➕ Добавить слово в колоду</button>
-                </div>
-            </div>
-            <div style="margin-top: 20px; border-top: 1px solid #ccc; padding-top: 15px;">
-                <h4>📝 Слова в колоде (<span id="words-count">0</span>/30)</h4>
-                <div id="words-preview-list" class="words-preview">
-                    <div style="color: #666; text-align: center;">Нет добавленных слов</div>
-                </div>
-            </div>
-            <div class="modal-buttons">
-                <button class="modal-cancel" id="modal-cancel">Отмена</button>
-                <button class="modal-save" id="modal-save">💾 Сохранить колоду</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Модальное окно выбора колод для смешанного режима -->
-    <div id="mixed-mode-modal" class="modal deck-selector-modal">
-        <div class="modal-content">
-            <h3>🎲 Смешанный режим</h3>
-            <p style="margin-bottom: 15px;">Выберите колоды для изучения:</p>
-            <div>
-                <button class="select-all-btn" id="select-all-decks">✅ Выбрать все</button>
-                <button class="select-all-btn" id="deselect-all-decks" style="background-color: #F8D9D7;">⬜ Снять все</button>
-            </div>
-            <div id="deck-selector-list" class="deck-checkbox-list"></div>
-            <div class="modal-buttons">
-                <button class="modal-cancel" id="mixed-mode-cancel">Отмена</button>
-                <button class="modal-save" id="mixed-mode-start">🚀 Начать изучение</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Модальное окно аутентификации -->
-    <div id="auth-modal" class="modal">
-        <div class="modal-content auth-modal-content">
-            <h3 id="auth-title">🔑 Вход в аккаунт</h3>
-            <button id="google-signin" class="google-btn">🌐 Войти через Google</button>
-            <div class="divider">или</div>
-            <input type="email" id="auth-email" placeholder="Email">
-            <input type="password" id="auth-password" placeholder="Пароль (минимум 6 символов)">
-            <div class="modal-buttons">
-                <button class="modal-cancel" id="auth-modal-cancel">Отмена</button>
-                <button class="modal-save" id="auth-submit">Войти</button>
-            </div>
-            <p style="text-align: center; margin-top: 15px;">
-                <a href="#" id="toggle-auth-mode" style="color: #174E9C;">Нет аккаунта? Зарегистрироваться</a>
-            </p>
-        </div>
-    </div>
-
-    <!-- Модальное окно редактирования профиля -->
-    <div id="profile-edit-modal" class="modal">
-        <div class="modal-content profile-modal-content">
-            <h3>✎ Редактировать профиль</h3>
-            <label>Имя пользователя</label>
-            <input type="text" id="edit-username" placeholder="Ваше имя">
-            <label>Электронная почта</label>
-            <input type="email" id="edit-email" placeholder="Email">
-            <label>Выберите аватар</label>
-            <div class="avatar-options">
-                <img src="/static/images/default.png" class="avatar-option" data-avatar="default">
-                <img src="/static/images/1.png" class="avatar-option" data-avatar="1">
-                <img src="/static/images/2.png" class="avatar-option" data-avatar="2">
-                <img src="/static/images/3.png" class="avatar-option" data-avatar="3">
-                <img src="/static/images/4.png" class="avatar-option" data-avatar="4">
-            </div>
-            <div class="modal-buttons">
-                <button class="modal-cancel" id="profile-modal-cancel">Отмена</button>
-                <button class="modal-save" id="profile-modal-save">Сохранить</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- SRS индикатор -->
-    <div class="srs-indicator" id="srs-indicator" style="display: none;">⏰ Слова для повторения</div>
+    <div id="new-deck-modal" class="modal"><div class="modal-content" style="max-width:700px"><h3>📚 Создать новую колоду</h3><div style="display:flex;gap:15px;flex-wrap:wrap"><div style="flex:1;min-width:200px"><label>Название колоды</label><input type="text" id="new-deck-name" placeholder="Например: My Verbs" maxlength="50"></div></div><div style="margin-top:20px;border-top:1px solid #ccc;padding-top:15px"><h4>➕ Добавить слово</h4><div style="display:flex;gap:15px;flex-wrap:wrap"><div style="flex:1;min-width:200px"><label>Слово *</label><input type="text" id="new-word" placeholder="Например: Awesome"></div><div style="flex:1;min-width:200px"><label>Перевод *</label><input type="text" id="new-translation" placeholder="Например: потрясающий"></div></div><div style="display:flex;gap:15px;flex-wrap:wrap"><div style="flex:1;min-width:200px"><label>Транскрипция UK</label><input type="text" id="new-transcription-uk" placeholder="/ˈɔː.səm/"></div><div style="flex:1;min-width:200px"><label>Транскрипция US</label><input type="text" id="new-transcription-us" placeholder="/ˈɑː.səm/"></div></div><div style="display:flex;gap:15px;flex-wrap:wrap"><div style="flex:1;min-width:200px"><label>Аудио UK (MP3)</label><input type="file" id="new-audio-uk" accept=".mp3"></div><div style="flex:1;min-width:200px"><label>Аудио US (MP3)</label><input type="file" id="new-audio-us" accept=".mp3"></div></div><div style="margin-top:10px"><label>Пример предложения</label><textarea id="new-example" rows="2" placeholder="This is awesome!"></textarea></div><div style="margin-top:10px"><label>Перевод примера</label><textarea id="new-example-translation" rows="2" placeholder="Это потрясающе!"></textarea></div><div style="margin-top:15px"><button id="add-word-btn">➕ Добавить слово в колоду</button></div></div><div style="margin-top:20px;border-top:1px solid #ccc;padding-top:15px"><h4>📝 Слова в колоде (<span id="words-count">0</span>/30)</h4><div id="words-preview-list" class="words-preview"><div style="color:#666;text-align:center">Нет добавленных слов</div></div></div><div class="modal-buttons"><button class="modal-cancel" id="modal-cancel">Отмена</button><button class="modal-save" id="modal-save">💾 Сохранить колоду</button></div></div></div>
+    <div id="mixed-mode-modal" class="modal deck-selector-modal"><div class="modal-content"><h3>🎲 Смешанный режим</h3><p style="margin-bottom:15px">Выберите колоды для изучения:</p><div><button class="select-all-btn" id="select-all-decks">✅ Выбрать все</button><button class="select-all-btn" id="deselect-all-decks" style="background-color:#F8D9D7">⬜ Снять все</button></div><div id="deck-selector-list" class="deck-checkbox-list"></div><div class="modal-buttons"><button class="modal-cancel" id="mixed-mode-cancel">Отмена</button><button class="modal-save" id="mixed-mode-start">🚀 Начать изучение</button></div></div></div>
+    <div id="auth-modal" class="modal"><div class="modal-content auth-modal-content"><h3 id="auth-title">🔑 Вход в аккаунт</h3><button id="google-signin" class="google-btn">🌐 Войти через Google</button><div class="divider">или</div><input type="email" id="auth-email" placeholder="Email"><input type="password" id="auth-password" placeholder="Пароль (минимум 6 символов)"><div class="modal-buttons"><button class="modal-cancel" id="auth-modal-cancel">Отмена</button><button class="modal-save" id="auth-submit">Войти</button></div><p style="text-align:center;margin-top:15px"><a href="#" id="toggle-auth-mode" style="color:#174E9C">Нет аккаунта? Зарегистрироваться</a></p></div></div>
+    <div id="profile-edit-modal" class="modal"><div class="modal-content profile-modal-content"><h3>✎ Редактировать профиль</h3><label>Имя пользователя</label><input type="text" id="edit-username" placeholder="Ваше имя"><label>Электронная почта</label><input type="email" id="edit-email" placeholder="Email"><label>Выберите аватар</label><div class="avatar-options"><img src="/static/images/default.png" class="avatar-option" data-avatar="default"><img src="/static/images/1.png" class="avatar-option" data-avatar="1"><img src="/static/images/2.png" class="avatar-option" data-avatar="2"><img src="/static/images/3.png" class="avatar-option" data-avatar="3"><img src="/static/images/4.png" class="avatar-option" data-avatar="4"></div><div class="modal-buttons"><button class="modal-cancel" id="profile-modal-cancel">Отмена</button><button class="modal-save" id="profile-modal-save">Сохранить</button></div></div></div>
+    <div class="srs-indicator" id="srs-indicator" style="display:none">⏰ Слова для повторения</div>
 
     <script>
-        // ========== 1. ОСНОВНЫЕ ПЕРЕМЕННЫЕ И УТИЛИТЫ ==========
-        const leafTextures = [
-            '/static/images/leaf_1.png', '/static/images/leaf_2.png', '/static/images/leaf_3.png',
-            '/static/images/leaf_4.png', '/static/images/leaf_5.png', '/static/images/leaf_6.png'
-        ];
-        
+        // ========== 1. ОСНОВНЫЕ ПЕРЕМЕННЫЕ ==========
+        const leafTextures = ['/static/images/leaf_1.png','/static/images/leaf_2.png','/static/images/leaf_3.png','/static/images/leaf_4.png','/static/images/leaf_5.png','/static/images/leaf_6.png'];
         let defaultDecks = [
-            { name: "Linking Words", count: 20, isDefault: true, isFavorite: false },
-            { name: "Medicine", count: 30, isDefault: true, isFavorite: false },
-            { name: "Slang", count: 15, isDefault: true, isFavorite: false },
-            { name: "Phrasal Verbs", count: 25, isDefault: true, isFavorite: false },
-            { name: "Top 30 Verbs", count: 30, isDefault: true, isFavorite: false },
-            { name: "Travel", count: 30, isDefault: true, isFavorite: false }
+            {name:"Linking Words",count:20,isDefault:true,isFavorite:false},
+            {name:"Medicine",count:30,isDefault:true,isFavorite:false},
+            {name:"Slang",count:15,isDefault:true,isFavorite:false},
+            {name:"Phrasal Verbs",count:25,isDefault:true,isFavorite:false},
+            {name:"Top 30 Verbs",count:30,isDefault:true,isFavorite:false},
+            {name:"Travel",count:30,isDefault:true,isFavorite:false}
         ];
-        
-        let customDecks = [];
-        let currentTab = "all";
-        let searchQuery = "";
-        let tempWords = [];
-        
-        // Текущее состояние
-        let currentDeck = "Linking Words";
-        let cards = [];
-        let currentIndex = 0;
-        let currentCard = null;
-        let todayStats = { studied: 0, mistakes: 0 };
-        let todayWords = [];
-        let mistakesList = [];
-        
-        // SRS
-        let srsQueue = [];
-        let srsInterval = null;
-        
-        // Смешанный режим
-        let isMixedMode = false;
-        let mixedCards = [];
-        let mixedCardsShuffled = [];
-        let originalMixedDeck = null;
-        let originalMixedIndex = null;
-        
-        // Firebase
-        let currentUser = null;
-        let isAuthModeLogin = true;
-        let selectedAvatar = "default";
-        
-        // Уровни опыта (20 уровней)
-        const levelRequirements = [0, 100, 250, 450, 700, 1000, 1350, 1750, 2200, 2700, 3300, 4000, 4800, 5700, 6700, 7800, 9000, 10300, 11700, 13200];
-        
-        function getLevelAndProgress(exp) {
-            let level = 1;
-            for (let i = 1; i < levelRequirements.length; i++) {
-                if (exp >= levelRequirements[i]) level = i + 1;
-                else break;
-            }
-            const currentLevelExp = levelRequirements[level - 1];
-            const nextLevelExp = levelRequirements[level] || levelRequirements[levelRequirements.length - 1] + 500;
-            const expForNext = nextLevelExp - currentLevelExp;
-            const currentExp = exp - currentLevelExp;
-            const progress = Math.min(100, Math.max(0, (currentExp / expForNext) * 100));
-            return { level, progress, currentExp, expForNext, nextLevelExp };
+        let customDecks = [], currentTab = "all", searchQuery = "", tempWords = [];
+        let currentDeck = "Linking Words", cards = [], currentIndex = 0, currentCard = null;
+        let todayStats = {studied:0,mistakes:0}, todayWords = [], mistakesList = [];
+        let srsQueue = [], srsInterval = null;
+        let isMixedMode = false, mixedCards = [], mixedCardsShuffled = [], originalMixedDeck = null, originalMixedIndex = null;
+        let currentUser = null, isAuthModeLogin = true, selectedAvatar = "default";
+        const levelRequirements = [0,100,250,450,700,1000,1350,1750,2200,2700,3300,4000,4800,5700,6700,7800,9000,10300,11700,13200];
+        // ========== 2. УТИЛИТЫ ==========
+        function getLevelAndProgress(exp){
+            let level=1;
+            for(let i=1;i<levelRequirements.length;i++){if(exp>=levelRequirements[i])level=i+1;else break}
+            const currentLevelExp=levelRequirements[level-1],nextLevelExp=levelRequirements[level]||levelRequirements[levelRequirements.length-1]+500;
+            const expForNext=nextLevelExp-currentLevelExp,currentExp=exp-currentLevelExp,progress=Math.min(100,Math.max(0,(currentExp/expForNext)*100));
+            return{level,progress,currentExp,expForNext,nextLevelExp};
+        }
+        function showSRSNotification(message){
+            const oldNotif=document.querySelector('.srs-notification');if(oldNotif)oldNotif.remove();
+            const notif=document.createElement('div');notif.className='srs-notification';notif.textContent=message;
+            document.body.appendChild(notif);setTimeout(()=>notif.remove(),5000);
         }
         
-        function showSRSNotification(message) {
-            const oldNotif = document.querySelector('.srs-notification');
-            if (oldNotif) oldNotif.remove();
-            const notif = document.createElement('div');
-            notif.className = 'srs-notification';
-            notif.textContent = message;
-            document.body.appendChild(notif);
-            setTimeout(() => notif.remove(), 5000);
+        // ========== 3. SRS ФУНКЦИИ (ИНТЕРВАЛЬНЫЕ ПОВТОРЕНИЯ) ==========
+        function loadSRS(){const saved=localStorage.getItem('srsQueue');if(saved){srsQueue=JSON.parse(saved);updateSRSIndicator();}}
+        function saveSRS(){localStorage.setItem('srsQueue',JSON.stringify(srsQueue));updateSRSIndicator();}
+        function addToSRS(deckName,wordData){
+            const existing=srsQueue.find(item=>item.deck===deckName&&item.word===wordData.word);
+            if(existing){existing.nextReview=Date.now()+10*60*1000;existing.correctCount=0;}
+            else{srsQueue.push({deck:deckName,word:wordData.word,nextReview:Date.now()+10*60*1000,correctCount:0});}
+            saveSRS();showSRSNotification(`📚 "${wordData.word}" добавлено в очередь повторений (через 10 минут)`);
         }
-        
-        // ========== 2. SRS ФУНКЦИИ ==========
-        function loadSRS() {
-            const saved = localStorage.getItem('srsQueue');
-            if (saved) {
-                srsQueue = JSON.parse(saved);
-                updateSRSIndicator();
-            }
-        }
-        
-        function saveSRS() {
-            localStorage.setItem('srsQueue', JSON.stringify(srsQueue));
-            updateSRSIndicator();
-        }
-        
-        function addToSRS(deckName, wordData) {
-            const existing = srsQueue.find(item => item.deck === deckName && item.word === wordData.word);
-            if (existing) {
-                existing.nextReview = Date.now() + 10 * 60 * 1000;
-                existing.correctCount = 0;
-            } else {
-                srsQueue.push({
-                    deck: deckName,
-                    word: wordData.word,
-                    nextReview: Date.now() + 10 * 60 * 1000,
-                    correctCount: 0
-                });
-            }
-            saveSRS();
-            showSRSNotification(`📚 "${wordData.word}" добавлено в очередь повторений (через 10 минут)`);
-        }
-        
-        function markInSRS(deckName, word, isCorrect) {
-            const index = srsQueue.findIndex(item => item.deck === deckName && item.word === word);
-            if (index !== -1) {
-                if (isCorrect) {
+        function markInSRS(deckName,word,isCorrect){
+            const index=srsQueue.findIndex(item=>item.deck===deckName&&item.word===word);
+            if(index!==-1){
+                if(isCorrect){
                     srsQueue[index].correctCount++;
-                    if (srsQueue[index].correctCount >= 3) {
-                        srsQueue.splice(index, 1);
-                        showSRSNotification(`✅ "${word}" выучено! Оно больше не будет повторяться.`);
-                    } else {
-                        srsQueue[index].nextReview = Date.now() + 10 * 60 * 1000;
-                        showSRSNotification(`👍 "${word}" повторено! Следующее повторение через 10 минут.`);
-                    }
-                } else {
-                    srsQueue[index].correctCount = 0;
-                    srsQueue[index].nextReview = Date.now() + 10 * 60 * 1000;
-                    showSRSNotification(`🔄 "${word}" будет повторено через 10 минут`);
+                    if(srsQueue[index].correctCount>=3){srsQueue.splice(index,1);showSRSNotification(`✅ "${word}" выучено!`);}
+                    else{srsQueue[index].nextReview=Date.now()+10*60*1000;showSRSNotification(`👍 "${word}" повторено! Через 10 минут.`);}
                 }
+                else{srsQueue[index].correctCount=0;srsQueue[index].nextReview=Date.now()+10*60*1000;showSRSNotification(`🔄 "${word}" будет повторено через 10 минут`);}
                 saveSRS();
             }
         }
-        
-        function getDueWords() {
-            const now = Date.now();
-            return srsQueue.filter(item => item.nextReview <= now);
+        function getDueWords(){return srsQueue.filter(item=>item.nextReview<=Date.now());}
+        function updateSRSIndicator(){
+            const dueWords=getDueWords();const indicator=document.getElementById('srs-indicator');
+            if(dueWords.length>0){indicator.style.display='flex';indicator.innerHTML=`⏰ ${dueWords.length} слово(а) для повторения`;}
+            else{indicator.style.display='none';}
         }
+        function startSRSWatcher(){if(srsInterval)clearInterval(srsInterval);srsInterval=setInterval(()=>updateSRSIndicator(),60000);}
+        function suggestReview(){const dueWords=getDueWords();if(dueWords.length>0)showSRSNotification(`📢 У вас ${dueWords.length} слово(а) для повторения! Нажмите на индикатор.`);}
         
-        function updateSRSIndicator() {
-            const dueWords = getDueWords();
-            const indicator = document.getElementById('srs-indicator');
-            if (dueWords.length > 0) {
-                indicator.style.display = 'flex';
-                indicator.innerHTML = `⏰ ${dueWords.length} слово(а) для повторения`;
-            } else {
-                indicator.style.display = 'none';
-            }
-        }
-        
-        function startSRSWatcher() {
-            if (srsInterval) clearInterval(srsInterval);
-            srsInterval = setInterval(() => updateSRSIndicator(), 60000);
-        }
-        
-        function suggestReview() {
-            const dueWords = getDueWords();
-            if (dueWords.length > 0) {
-                showSRSNotification(`📢 У вас ${dueWords.length} слово(а) для повторения! Нажмите на индикатор.`);
-            }
-        }
-        
-        async function startReviewSession() {
-            const dueWords = getDueWords();
-            if (dueWords.length === 0) {
-                showSRSNotification("✨ Нет слов для повторения!");
-                return;
-            }
-            const reviewWords = [];
-            for (const item of dueWords) {
-                if (defaultDecks.some(d => d.name === item.deck)) {
-                    const res = await fetch(`/api/cards/${item.deck}`);
-                    const cardsData = await res.json();
-                    const found = cardsData.find(c => c.word === item.word);
-                    if (found && !reviewWords.find(r => r.word === item.word)) {
-                        reviewWords.push({ ...found, sourceDeck: item.deck });
-                    }
-                } else if (window.customCardsData && window.customCardsData[item.deck]) {
-                    const found = window.customCardsData[item.deck].find(c => c.word === item.word);
-                    if (found && !reviewWords.find(r => r.word === item.word)) {
-                        reviewWords.push({ ...found, sourceDeck: item.deck });
-                    }
+        async function startReviewSession(){
+            const dueWords=getDueWords();if(dueWords.length===0){showSRSNotification("✨ Нет слов для повторения!");return;}
+            const reviewWords=[];
+            for(const item of dueWords){
+                if(defaultDecks.some(d=>d.name===item.deck)){
+                    const res=await fetch(`/api/cards/${item.deck}`);const cardsData=await res.json();
+                    const found=cardsData.find(c=>c.word===item.word);
+                    if(found&&!reviewWords.find(r=>r.word===item.word))reviewWords.push({...found,sourceDeck:item.deck});
+                }
+                else if(window.customCardsData&&window.customCardsData[item.deck]){
+                    const found=window.customCardsData[item.deck].find(c=>c.word===item.word);
+                    if(found&&!reviewWords.find(r=>r.word===item.word))reviewWords.push({...found,sourceDeck:item.deck});
                 }
             }
-            if (reviewWords.length === 0 && dueWords.length > 0) {
-                setTimeout(() => startReviewSession(), 500);
-                return;
-            }
-            if (!isMixedMode) {
-                window.previousDeck = currentDeck;
-                window.previousCards = cards;
-                window.previousIndex = currentIndex;
-            }
-            const reviewDeckName = "__SRS_Review__";
-            if (!window.customCardsData) window.customCardsData = {};
-            window.customCardsData[reviewDeckName] = reviewWords;
-            currentDeck = reviewDeckName;
-            cards = reviewWords;
-            currentIndex = 0;
-            updateCard();
-            showPage('home');
+            if(reviewWords.length===0&&dueWords.length>0){setTimeout(()=>startReviewSession(),500);return;}
+            if(!isMixedMode){window.previousDeck=currentDeck;window.previousCards=cards;window.previousIndex=currentIndex;}
+            const reviewDeckName="__SRS_Review__";
+            if(!window.customCardsData)window.customCardsData={};
+            window.customCardsData[reviewDeckName]=reviewWords;
+            currentDeck=reviewDeckName;cards=reviewWords;currentIndex=0;updateCard();showPage('home');
             showSRSNotification(`📖 Начинаем повторение ${reviewWords.length} слов!`);
         }
-        
-        function finishReview() {
-            if (window.previousDeck) {
-                currentDeck = window.previousDeck;
-                cards = window.previousCards;
-                currentIndex = window.previousIndex;
-                updateCard();
-                window.previousDeck = null;
-                window.previousCards = null;
-                window.previousIndex = null;
-            }
+        function finishReview(){
+            if(window.previousDeck){currentDeck=window.previousDeck;cards=window.previousCards;currentIndex=window.previousIndex;updateCard();window.previousDeck=null;window.previousCards=null;window.previousIndex=null;}
             showSRSNotification("✅ Сеанс повторения завершён!");
         }
         
-        // ========== 3. СМЕШАННЫЙ РЕЖИМ ==========
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
-        
-        async function loadAllCardsFromSelectedDecks(selectedDeckNames) {
-            const allWords = [];
-            for (const deckName of selectedDeckNames) {
-                let deckCards = [];
-                if (window.customCardsData && window.customCardsData[deckName]) {
-                    deckCards = window.customCardsData[deckName];
-                } else {
-                    try {
-                        const res = await fetch(`/api/cards/${deckName}`);
-                        deckCards = await res.json();
-                    } catch(e) { continue; }
-                }
-                deckCards.forEach(card => {
-                    allWords.push({ ...card, sourceDeck: deckName });
-                });
+        // ========== 4. СМЕШАННЫЙ РЕЖИМ ==========
+        function shuffleArray(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
+        async function loadAllCardsFromSelectedDecks(selectedDeckNames){
+            const allWords=[];
+            for(const deckName of selectedDeckNames){
+                let deckCards=[];
+                if(window.customCardsData&&window.customCardsData[deckName])deckCards=window.customCardsData[deckName];
+                else{try{const res=await fetch(`/api/cards/${deckName}`);deckCards=await res.json();}catch(e){continue;}}
+                deckCards.forEach(card=>{allWords.push({...card,sourceDeck:deckName});});
             }
             return allWords;
         }
-        
-        async function startMixedMode(selectedDecks) {
-            if (!selectedDecks || selectedDecks.length === 0) {
-                alert("Выберите хотя бы одну колоду!");
-                return false;
-            }
-            if (!isMixedMode) {
-                originalMixedDeck = currentDeck;
-                originalMixedIndex = currentIndex;
-            }
-            const allWords = await loadAllCardsFromSelectedDecks(selectedDecks);
-            if (allWords.length === 0) {
-                alert("В выбранных колодах нет слов!");
-                return false;
-            }
-            mixedCards = allWords;
-            mixedCardsShuffled = shuffleArray([...allWords]);
-            isMixedMode = true;
-            currentDeck = "__MIXED_MODE__";
-            cards = mixedCardsShuffled;
-            currentIndex = 0;
-            updateCard();
-            const mixedBtn = document.getElementById('mixed-mode-btn');
-            if (mixedBtn) {
-                mixedBtn.textContent = '🎲 Выйти из смешанного режима';
-                mixedBtn.classList.add('mixed-mode-active');
-            }
+        async function startMixedMode(selectedDecks){
+            if(!selectedDecks||selectedDecks.length===0){alert("Выберите хотя бы одну колоду!");return false;}
+            if(!isMixedMode){originalMixedDeck=currentDeck;originalMixedIndex=currentIndex;}
+            const allWords=await loadAllCardsFromSelectedDecks(selectedDecks);
+            if(allWords.length===0){alert("В выбранных колодах нет слов!");return false;}
+            mixedCards=allWords;mixedCardsShuffled=shuffleArray([...allWords]);
+            isMixedMode=true;currentDeck="__MIXED_MODE__";cards=mixedCardsShuffled;currentIndex=0;updateCard();
+            const mixedBtn=document.getElementById('mixed-mode-btn');
+            if(mixedBtn){mixedBtn.textContent='🎲 Выйти из смешанного режима';mixedBtn.classList.add('mixed-mode-active');}
             showSRSNotification(`🎲 Смешанный режим: ${mixedCardsShuffled.length} слов из ${selectedDecks.length} колод`);
             return true;
         }
-        
-        function exitMixedMode() {
-            if (originalMixedDeck) {
-                isMixedMode = false;
-                currentDeck = originalMixedDeck;
-                cards = window.__savedCardsForDeck?.[originalMixedDeck] || [];
-                currentIndex = originalMixedIndex || 0;
-                updateCard();
-                originalMixedDeck = null;
-                originalMixedIndex = null;
-            } else {
-                isMixedMode = false;
-                location.reload();
-            }
-            const mixedBtn = document.getElementById('mixed-mode-btn');
-            if (mixedBtn) {
-                mixedBtn.textContent = '🎲 Смешанный режим';
-                mixedBtn.classList.remove('mixed-mode-active');
-            }
+        function exitMixedMode(){
+            if(originalMixedDeck){isMixedMode=false;currentDeck=originalMixedDeck;cards=window.__savedCardsForDeck?.[originalMixedDeck]||[];currentIndex=originalMixedIndex||0;updateCard();originalMixedDeck=null;originalMixedIndex=null;}
+            else{isMixedMode=false;location.reload();}
+            const mixedBtn=document.getElementById('mixed-mode-btn');
+            if(mixedBtn){mixedBtn.textContent='🎲 Смешанный режим';mixedBtn.classList.remove('mixed-mode-active');}
             showSRSNotification("🎲 Выход из смешанного режима");
         }
-        
-        function openDeckSelector() {
-            const allDecksList = [...defaultDecks, ...customDecks];
-            const container = document.getElementById('deck-selector-list');
-            container.innerHTML = allDecksList.map(deck => `
-                <div class="deck-checkbox-item">
-                    <input type="checkbox" id="deck_${deck.name.replace(/[^a-zA-Z0-9]/g, '_')}" value="${deck.name}" class="deck-checkbox">
-                    <label for="deck_${deck.name.replace(/[^a-zA-Z0-9]/g, '_')}">${deck.name}</label>
-                    <span class="deck-count">${deck.count} слов</span>
-                </div>
-            `).join('');
-            document.getElementById('mixed-mode-modal').style.display = 'flex';
+        function openDeckSelector(){
+            const allDecksList=[...defaultDecks,...customDecks];
+            const container=document.getElementById('deck-selector-list');
+            container.innerHTML=allDecksList.map(deck=>`<div class="deck-checkbox-item"><input type="checkbox" id="deck_${deck.name.replace(/[^a-zA-Z0-9]/g,'_')}" value="${deck.name}" class="deck-checkbox"><label for="deck_${deck.name.replace(/[^a-zA-Z0-9]/g,'_')}">${deck.name}</label><span class="deck-count">${deck.count} слов</span></div>`).join('');
+            document.getElementById('mixed-mode-modal').style.display='flex';
         }
         
-        // ========== 4. ПРОФИЛЬ И СТАТИСТИКА ==========
-        function loadUserProfile() {
-            const savedProfile = localStorage.getItem('userProfile');
-            if (savedProfile) {
-                const profile = JSON.parse(savedProfile);
-                document.getElementById('profile-username').textContent = profile.username || "Гость";
-                document.getElementById('profile-email').textContent = profile.email || "Не авторизован";
-                document.getElementById('profile-avatar').src = profile.avatar ? `/static/images/${profile.avatar}.png` : '/static/images/default.png';
-                document.getElementById('edit-username').value = profile.username || "";
-                document.getElementById('edit-email').value = profile.email || "";
+        // ========== 5. ПРОФИЛЬ И СТАТИСТИКА ==========
+        function loadUserProfile(){
+            const savedProfile=localStorage.getItem('userProfile');
+            if(savedProfile){
+                const profile=JSON.parse(savedProfile);
+                document.getElementById('profile-username').textContent=profile.username||"Гость";
+                document.getElementById('profile-email').textContent=profile.email||"Не авторизован";
+                document.getElementById('profile-avatar').src=profile.avatar?`/static/images/${profile.avatar}.png`:'/static/images/default.png';
+                document.getElementById('edit-username').value=profile.username||"";document.getElementById('edit-email').value=profile.email||"";
                 return profile;
             }
-            return { username: "Гость", email: "Не авторизован", avatar: "default" };
+            return{username:"Гость",email:"Не авторизован",avatar:"default"};
+        }
+        function saveUserProfile(username,email,avatar){
+            const profile={username,email,avatar};localStorage.setItem('userProfile',JSON.stringify(profile));
+            document.getElementById('profile-username').textContent=username;document.getElementById('profile-email').textContent=email;
+            document.getElementById('profile-avatar').src=`/static/images/${avatar}.png`;
+        }
+        async function loadProfileStats(){
+            const res=await fetch('/api/stats');const stats=await res.json();
+            document.getElementById('profile-streak').textContent=stats.streak_days||0;
+            document.getElementById('profile-total-studied').textContent=stats.cards_studied||0;
+            document.getElementById('profile-total-days').textContent=stats.total_days||0;
+            document.getElementById('profile-level').textContent=stats.level||1;
+            const exp=stats.experience||0;const{level,progress,currentExp,expForNext,nextLevelExp}=getLevelAndProgress(exp);
+            document.getElementById('exp-bar-fill').style.width=`${progress}%`;
+            document.getElementById('exp-text').textContent=`${currentExp} / ${expForNext} опыта (до ${nextLevelExp})`;
+        }
+        async function loadStats(){
+            const res=await fetch('/api/stats');const stats=await res.json();
+            document.getElementById('streak-days-review').textContent=stats.streak_days;
+            document.getElementById('streak-days-profile').innerHTML=`🔥 ${stats.streak_days} дней подряд`;
+            document.getElementById('cards-studied').innerHTML=`📖 ${stats.cards_studied} Карточек изучено`;
+            document.getElementById('total-days').innerHTML=`📅 ${stats.total_days} дней в приложении`;
+            document.getElementById('level').innerHTML=`⭐ Уровень: ${stats.level}`;
+            document.getElementById('exp').innerHTML=`📊 Опыт: ${stats.experience} / ${stats.max_exp}`;
         }
         
-        function saveUserProfile(username, email, avatar) {
-            const profile = { username, email, avatar };
-            localStorage.setItem('userProfile', JSON.stringify(profile));
-            document.getElementById('profile-username').textContent = username;
-            document.getElementById('profile-email').textContent = email;
-            document.getElementById('profile-avatar').src = `/static/images/${avatar}.png`;
-        }
+        // ========== 6. ИЗБРАННОЕ ==========
+        function loadFavorites(){const favorites=localStorage.getItem('favoriteDecks');if(favorites){const favNames=JSON.parse(favorites);defaultDecks.forEach(deck=>{deck.isFavorite=favNames.includes(deck.name);});customDecks.forEach(deck=>{deck.isFavorite=favNames.includes(deck.name);});}}
+        function saveFavorites(){const allDecks=[...defaultDecks,...customDecks];const favorites=allDecks.filter(deck=>deck.isFavorite).map(deck=>deck.name);localStorage.setItem('favoriteDecks',JSON.stringify(favorites));}
         
-        async function loadProfileStats() {
-            const res = await fetch('/api/stats');
-            const stats = await res.json();
-            document.getElementById('profile-streak').textContent = stats.streak_days || 0;
-            document.getElementById('profile-total-studied').textContent = stats.cards_studied || 0;
-            document.getElementById('profile-total-days').textContent = stats.total_days || 0;
-            document.getElementById('profile-level').textContent = stats.level || 1;
-            const exp = stats.experience || 0;
-            const { level, progress, currentExp, expForNext, nextLevelExp } = getLevelAndProgress(exp);
-            document.getElementById('exp-bar-fill').style.width = `${progress}%`;
-            document.getElementById('exp-text').textContent = `${currentExp} / ${expForNext} опыта (до ${nextLevelExp})`;
+        // ========== 7. ПОЛЬЗОВАТЕЛЬСКИЕ КОЛОДЫ ==========
+        function loadCustomDecks(){const saved=localStorage.getItem('customDecks');if(saved){customDecks=JSON.parse(saved);const favorites=JSON.parse(localStorage.getItem('favoriteDecks')||'[]');customDecks.forEach(deck=>{deck.isFavorite=favorites.includes(deck.name);deck.isDefault=false;});}}
+        function saveCustomDecks(){localStorage.setItem('customDecks',JSON.stringify(customDecks));}
+        function getAllDecks(){let allDecks=[...defaultDecks,...customDecks];if(currentTab==="my")allDecks=customDecks;else if(currentTab==="favorites")allDecks=allDecks.filter(deck=>deck.isFavorite);if(searchQuery)allDecks=allDecks.filter(deck=>deck.name.toLowerCase().includes(searchQuery.toLowerCase()));return allDecks;}
+        function renderDecks(){
+            const grid=document.getElementById('decks-grid');const decks=getAllDecks();if(!grid)return;
+            if(decks.length===0){grid.innerHTML=`<div class="no-mistakes" style="grid-column:1/-1;">📭 Нет колод. Создайте новую!</div>`;return;}
+            grid.innerHTML=decks.map((deck,idx)=>{const texture=leafTextures[idx%leafTextures.length];return`<div class="deck-card" style="background-image:url('${texture}');" data-deck-name="${deck.name}"><div class="deck-name">${deck.name}</div><div class="deck-card-count">📖 ${deck.count} карточек</div><div class="favorite-icon ${deck.isFavorite?'favorited':''}" onclick="event.stopPropagation();toggleFavorite('${deck.name}')">${deck.isFavorite?'★':'☆'}</div></div>`;}).join('');
+            document.querySelectorAll('.deck-card').forEach(card=>{card.addEventListener('click',(e)=>{if(e.target.classList.contains('favorite-icon'))return;if(isMixedMode)exitMixedMode();currentDeck=card.dataset.deckName;currentIndex=0;loadCards();showPage('home');});});
         }
+        function toggleFavorite(deckName){let deck=[...defaultDecks,...customDecks].find(d=>d.name===deckName);if(deck){deck.isFavorite=!deck.isFavorite;saveFavorites();renderDecks();}}
+        async function loadDeckStats(){const res=await fetch('/api/decks');const deckNames=await res.json();for(let deck of defaultDecks){if(deckNames.includes(deck.name)){const cardsRes=await fetch(`/api/cards/${deck.name}`);const cardsData=await cardsRes.json();deck.count=cardsData.length;}}renderDecks();}
         
-        async function loadStats() {
-            const res = await fetch('/api/stats');
-            const stats = await res.json();
-            document.getElementById('streak-days-review').textContent = stats.streak_days;
-            document.getElementById('streak-days-profile').innerHTML = `🔥 ${stats.streak_days} дней подряд`;
-            document.getElementById('cards-studied').innerHTML = `📖 ${stats.cards_studied} Карточек изучено`;
-            document.getElementById('total-days').innerHTML = `📅 ${stats.total_days} дней в приложении`;
-            document.getElementById('level').innerHTML = `⭐ Уровень: ${stats.level}`;
-            document.getElementById('exp').innerHTML = `📊 Опыт: ${stats.experience} / ${stats.max_exp}`;
-        }
-        
-        // ========== 5. ИЗБРАННОЕ ==========
-        function loadFavorites() {
-            const favorites = localStorage.getItem('favoriteDecks');
-            if (favorites) {
-                const favNames = JSON.parse(favorites);
-                defaultDecks.forEach(deck => { deck.isFavorite = favNames.includes(deck.name); });
-                customDecks.forEach(deck => { deck.isFavorite = favNames.includes(deck.name); });
-            }
-        }
-        
-        function saveFavorites() {
-            const allDecks = [...defaultDecks, ...customDecks];
-            const favorites = allDecks.filter(deck => deck.isFavorite).map(deck => deck.name);
-            localStorage.setItem('favoriteDecks', JSON.stringify(favorites));
-        }
-        
-        // ========== 6. ПОЛЬЗОВАТЕЛЬСКИЕ КОЛОДЫ ==========
-        function loadCustomDecks() {
-            const saved = localStorage.getItem('customDecks');
-            if (saved) {
-                customDecks = JSON.parse(saved);
-                const favorites = JSON.parse(localStorage.getItem('favoriteDecks') || '[]');
-                customDecks.forEach(deck => {
-                    deck.isFavorite = favorites.includes(deck.name);
-                    deck.isDefault = false;
-                });
-            }
-        }
-        
-        function saveCustomDecks() {
-            localStorage.setItem('customDecks', JSON.stringify(customDecks));
-        }
-        
-        function getAllDecks() {
-            let allDecks = [...defaultDecks, ...customDecks];
-            if (currentTab === "my") allDecks = customDecks;
-            else if (currentTab === "favorites") allDecks = allDecks.filter(deck => deck.isFavorite);
-            if (searchQuery) allDecks = allDecks.filter(deck => deck.name.toLowerCase().includes(searchQuery.toLowerCase()));
-            return allDecks;
-        }
-        
-        function renderDecks() {
-            const grid = document.getElementById('decks-grid');
-            const decks = getAllDecks();
-            if (!grid) return;
-            if (decks.length === 0) {
-                grid.innerHTML = `<div class="no-mistakes" style="grid-column: 1/-1;">📭 Нет колод. Создайте новую!</div>`;
-                return;
-            }
-            grid.innerHTML = decks.map((deck, idx) => {
-                const texture = leafTextures[idx % leafTextures.length];
-                return `
-                    <div class="deck-card" style="background-image: url('${texture}');" data-deck-name="${deck.name}">
-                        <div class="deck-name">${deck.name}</div>
-                        <div class="deck-card-count">📖 ${deck.count} карточек</div>
-                        <div class="favorite-icon ${deck.isFavorite ? 'favorited' : ''}" onclick="event.stopPropagation(); toggleFavorite('${deck.name}')">${deck.isFavorite ? '★' : '☆'}</div>
-                    </div>
-                `;
-            }).join('');
-            document.querySelectorAll('.deck-card').forEach(card => {
-                card.addEventListener('click', (e) => {
-                    if (e.target.classList.contains('favorite-icon')) return;
-                    if (isMixedMode) exitMixedMode();
-                    currentDeck = card.dataset.deckName;
-                    currentIndex = 0;
-                    loadCards();
-                    showPage('home');
-                });
-            });
-        }
-        
-        function toggleFavorite(deckName) {
-            let deck = [...defaultDecks, ...customDecks].find(d => d.name === deckName);
-            if (deck) {
-                deck.isFavorite = !deck.isFavorite;
-                saveFavorites();
-                renderDecks();
-            }
-        }
-        
-        async function loadDeckStats() {
-            const res = await fetch('/api/decks');
-            const deckNames = await res.json();
-            for (let deck of defaultDecks) {
-                if (deckNames.includes(deck.name)) {
-                    const cardsRes = await fetch(`/api/cards/${deck.name}`);
-                    const cardsData = await cardsRes.json();
-                    deck.count = cardsData.length;
-                }
-            }
-            renderDecks();
-        }
-        
-        // ========== 7. СОЗДАНИЕ НОВОЙ КОЛОДЫ ==========
-        function renderWordsPreview() {
-            const container = document.getElementById('words-preview-list');
-            const countSpan = document.getElementById('words-count');
-            countSpan.textContent = tempWords.length;
-            if (tempWords.length === 0) {
-                container.innerHTML = '<div style="color: #666; text-align: center;">Нет добавленных слов</div>';
-                return;
-            }
-            container.innerHTML = tempWords.map((word, idx) => `
-                <div class="word-preview-item">
-                    <div style="flex: 1;">
-                        <strong>${word.word}</strong> — ${word.translation}
-                        <div style="font-size: 12px; color: #666;">UK: ${word.transcription_uk || '-'} | US: ${word.transcription_us || '-'}</div>
-                    </div>
-                    <button class="remove-word-btn" data-index="${idx}">✗</button>
-                </div>
-            `).join('');
-            document.querySelectorAll('.remove-word-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const idx = parseInt(btn.dataset.index);
-                    tempWords.splice(idx, 1);
-                    renderWordsPreview();
-                });
-            });
-        }
-        
-        function readFileAsBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        }
-        
-        document.getElementById('add-word-btn')?.addEventListener('click', async () => {
-            const word = document.getElementById('new-word').value.trim();
-            const translation = document.getElementById('new-translation').value.trim();
-            if (!word || !translation) {
-                alert('Введите слово и перевод!');
-                return;
-            }
-            if (tempWords.length >= 30) {
-                alert('Максимум 30 слов в колоде');
-                return;
-            }
-            const transcription_uk = document.getElementById('new-transcription-uk').value.trim();
-            const transcription_us = document.getElementById('new-transcription-us').value.trim();
-            const example = document.getElementById('new-example').value.trim() || `${word} is great!`;
-            const example_translation = document.getElementById('new-example-translation').value.trim() || `${translation} — это здорово!`;
-            
-            let audio_uk_data = null;
-            let audio_us_data = null;
-            const audioUkFile = document.getElementById('new-audio-uk').files[0];
-            const audioUsFile = document.getElementById('new-audio-us').files[0];
-            if (audioUkFile) audio_uk_data = await readFileAsBase64(audioUkFile);
-            if (audioUsFile) audio_us_data = await readFileAsBase64(audioUsFile);
-            
-            tempWords.push({
-                word, translation, transcription_uk, transcription_us,
-                example, example_translation, audio_uk: audio_uk_data, audio_us: audio_us_data
-            });
-            
-            document.getElementById('new-word').value = '';
-            document.getElementById('new-translation').value = '';
-            document.getElementById('new-transcription-uk').value = '';
-            document.getElementById('new-transcription-us').value = '';
-            document.getElementById('new-example').value = '';
-            document.getElementById('new-example-translation').value = '';
-            document.getElementById('new-audio-uk').value = '';
-            document.getElementById('new-audio-us').value = '';
+        // ========== 8. СОЗДАНИЕ НОВОЙ КОЛОДЫ ==========
+        function renderWordsPreview(){const container=document.getElementById('words-preview-list');const countSpan=document.getElementById('words-count');countSpan.textContent=tempWords.length;if(tempWords.length===0){container.innerHTML='<div style="color:#666;text-align:center;">Нет добавленных слов</div>';return;}container.innerHTML=tempWords.map((word,idx)=>`<div class="word-preview-item"><div style="flex:1;"><strong>${word.word}</strong> — ${word.translation}<div style="font-size:12px;color:#666;">UK: ${word.transcription_uk||'-'} | US: ${word.transcription_us||'-'}</div></div><button class="remove-word-btn" data-index="${idx}">✗</button></div>`).join('');document.querySelectorAll('.remove-word-btn').forEach(btn=>{btn.addEventListener('click',(e)=>{const idx=parseInt(btn.dataset.index);tempWords.splice(idx,1);renderWordsPreview();});});}
+        function readFileAsBase64(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(file);});}
+document.getElementById('add-word-btn')?.addEventListener('click',async()=>{
+            const word=document.getElementById('new-word').value.trim();const translation=document.getElementById('new-translation').value.trim();
+            if(!word||!translation){alert('Введите слово и перевод!');return;}
+            if(tempWords.length>=30){alert('Максимум 30 слов в колоде');return;}
+            const transcription_uk=document.getElementById('new-transcription-uk').value.trim();const transcription_us=document.getElementById('new-transcription-us').value.trim();
+            const example=document.getElementById('new-example').value.trim()||`${word} is great!`;const example_translation=document.getElementById('new-example-translation').value.trim()||`${translation} — это здорово!`;
+            let audio_uk_data=null,audio_us_data=null;const audioUkFile=document.getElementById('new-audio-uk').files[0];const audioUsFile=document.getElementById('new-audio-us').files[0];
+            if(audioUkFile)audio_uk_data=await readFileAsBase64(audioUkFile);if(audioUsFile)audio_us_data=await readFileAsBase64(audioUsFile);
+            tempWords.push({word,translation,transcription_uk,transcription_us,example,example_translation,audio_uk:audio_uk_data,audio_us:audio_us_data});
+            document.getElementById('new-word').value='';document.getElementById('new-translation').value='';document.getElementById('new-transcription-uk').value='';document.getElementById('new-transcription-us').value='';
+            document.getElementById('new-example').value='';document.getElementById('new-example-translation').value='';document.getElementById('new-audio-uk').value='';document.getElementById('new-audio-us').value='';
             renderWordsPreview();
         });
-        
-        function createNewDeck() {
-            const deckName = document.getElementById('new-deck-name').value.trim();
-            if (!deckName) { alert('Введите название колоды'); return; }
-            const existing = [...defaultDecks, ...customDecks].find(d => d.name === deckName);
-            if (existing) { alert('Колода с таким названием уже существует'); return; }
-            if (tempWords.length === 0) { alert('Добавьте хотя бы одно слово в колоду'); return; }
-            
-            const wordsWithAudio = tempWords.map(word => {
-                const newWord = { ...word };
-                if (newWord.audio_uk) {
-                    if (!window.customAudioData) window.customAudioData = {};
-                    window.customAudioData[`${deckName}_${newWord.word}_uk`] = newWord.audio_uk;
-                    delete newWord.audio_uk;
-                }
-                if (newWord.audio_us) {
-                    if (!window.customAudioData) window.customAudioData = {};
-                    window.customAudioData[`${deckName}_${newWord.word}_us`] = newWord.audio_us;
-                    delete newWord.audio_us;
-                }
-                return newWord;
-            });
-            
-            const newDeck = { name: deckName, count: wordsWithAudio.length, isDefault: false, isFavorite: false, words: wordsWithAudio };
-            customDecks.push(newDeck);
-            saveCustomDecks();
-            saveFavorites();
-            if (!window.customCardsData) window.customCardsData = {};
-            window.customCardsData[deckName] = wordsWithAudio;
-            if (window.customAudioData) localStorage.setItem('customAudioData', JSON.stringify(window.customAudioData));
-            
-            document.getElementById('new-deck-modal').style.display = 'none';
-            document.getElementById('new-deck-name').value = '';
-            tempWords = [];
-            renderWordsPreview();
-            renderDecks();
+        function createNewDeck(){
+            const deckName=document.getElementById('new-deck-name').value.trim();if(!deckName){alert('Введите название колоды');return;}
+            const existing=[...defaultDecks,...customDecks].find(d=>d.name===deckName);if(existing){alert('Колода с таким названием уже существует');return;}
+            if(tempWords.length===0){alert('Добавьте хотя бы одно слово в колоду');return;}
+            const wordsWithAudio=tempWords.map(word=>{const newWord={...word};if(newWord.audio_uk){if(!window.customAudioData)window.customAudioData={};window.customAudioData[`${deckName}_${newWord.word}_uk`]=newWord.audio_uk;delete newWord.audio_uk;}if(newWord.audio_us){if(!window.customAudioData)window.customAudioData={};window.customAudioData[`${deckName}_${newWord.word}_us`]=newWord.audio_us;delete newWord.audio_us;}return newWord;});
+            const newDeck={name:deckName,count:wordsWithAudio.length,isDefault:false,isFavorite:false,words:wordsWithAudio};
+            customDecks.push(newDeck);saveCustomDecks();saveFavorites();
+            if(!window.customCardsData)window.customCardsData={};window.customCardsData[deckName]=wordsWithAudio;
+            if(window.customAudioData)localStorage.setItem('customAudioData',JSON.stringify(window.customAudioData));
+            document.getElementById('new-deck-modal').style.display='none';document.getElementById('new-deck-name').value='';tempWords=[];renderWordsPreview();renderDecks();
         }
         
-        // ========== 8. ОСНОВНЫЕ ФУНКЦИИ КАРТОЧЕК ==========
-        async function loadCards() {
-            if (window.customCardsData && window.customCardsData[currentDeck]) {
-                cards = window.customCardsData[currentDeck];
-                currentIndex = 0;
-                if (cards.length > 0) updateCard();
-                return;
-            }
-            const res = await fetch(`/api/cards/${currentDeck}`);
-            cards = await res.json();
-            currentIndex = 0;
-            if (cards.length > 0) updateCard();
+        // ========== 9. ОСНОВНЫЕ ФУНКЦИИ КАРТОЧЕК ==========
+        async function loadCards(){
+            if(window.customCardsData&&window.customCardsData[currentDeck]){cards=window.customCardsData[currentDeck];currentIndex=0;if(cards.length>0)updateCard();return;}
+            const res=await fetch(`/api/cards/${currentDeck}`);cards=await res.json();currentIndex=0;if(cards.length>0)updateCard();
         }
-        
-        function updateCard() {
-            if (!cards.length) return;
-            currentCard = cards[currentIndex];
-            document.getElementById('current-word').textContent = currentCard.word;
-            document.getElementById('transcription-uk').textContent = currentCard.transcription_uk;
-            document.getElementById('example').textContent = currentCard.example;
-            document.getElementById('example-translation').textContent = currentCard.example_translation;
-            document.getElementById('translation').textContent = currentCard.translation;
-            document.getElementById('card-counter').textContent = `${currentIndex + 1}/${cards.length}`;
-            const progress = ((currentIndex + 1) / cards.length) * 100;
-            document.getElementById('progress-bar').style.width = `${progress}%`;
+        function updateCard(){
+            if(!cards.length)return;currentCard=cards[currentIndex];
+            document.getElementById('current-word').textContent=currentCard.word;
+            document.getElementById('transcription-uk').textContent=currentCard.transcription_uk;
+            document.getElementById('example').textContent=currentCard.example;
+            document.getElementById('example-translation').textContent=currentCard.example_translation;
+            document.getElementById('translation').textContent=currentCard.translation;
+            document.getElementById('card-counter').textContent=`${currentIndex+1}/${cards.length}`;
+            const progress=((currentIndex+1)/cards.length)*100;document.getElementById('progress-bar').style.width=`${progress}%`;
         }
-        
-        function playAudio(type) {
-            if (!currentCard) return;
-            const audioKey = `${currentDeck}_${currentCard.word}_${type}`;
-            if (window.customAudioData && window.customAudioData[audioKey]) {
-                const audio = new Audio(window.customAudioData[audioKey]);
-                audio.play().catch(e => console.log('Audio play error:', e));
-                return;
-            }
-            let word = currentCard.word.toLowerCase().trim();
-            const specialCases = {
-                "on the other hand": "on_the_other_hand", "in addition": "in_addition",
-                "as a result": "as_a_result", "for instance": "for_instance",
-                "in contrast": "in_contrast", "in order to": "in_order_to",
-                "boarding pass": "boarding_pass", "carry-on": "carry_on",
-                "check-in desk": "check_in_desk", "currency exchange": "currency_exchange",
-                "jet lag": "jet_lag", "all-inclusive": "all_inclusive", "low-key": "low_key"
-            };
-            if (specialCases[word]) word = specialCases[word];
-            else word = word.replace(/ /g, "_").replace(/-/g, "_");
-            const typeUpper = type.toUpperCase();
-            const typeLower = type.toLowerCase();
-            const urls = [
-                `/static/audio/${word}_${typeUpper}.mp3`,
-                `/static/audio/${word}_${typeLower}.mp3`,
-                `/static/audio/${word}.mp3`
-            ];
-            function tryPlay(idx) {
-                if (idx >= urls.length) { console.log("Audio not found for:", word); return; }
-                const audio = new Audio(urls[idx]);
-                audio.play().catch(() => tryPlay(idx + 1));
-            }
+        function playAudio(type){
+            if(!currentCard)return;
+            const audioKey=`${currentDeck}_${currentCard.word}_${type}`;
+            if(window.customAudioData&&window.customAudioData[audioKey]){const audio=new Audio(window.customAudioData[audioKey]);audio.play().catch(e=>console.log('Audio play error:',e));return;}
+            let word=currentCard.word.toLowerCase().trim();
+            const specialCases={"on the other hand":"on_the_other_hand","in addition":"in_addition","as a result":"as_a_result","for instance":"for_instance","in contrast":"in_contrast","in order to":"in_order_to","boarding pass":"boarding_pass","carry-on":"carry_on","check-in desk":"check_in_desk","currency exchange":"currency_exchange","jet lag":"jet_lag","all-inclusive":"all_inclusive","low-key":"low_key"};
+            if(specialCases[word])word=specialCases[word];else word=word.replace(/ /g,"_").replace(/-/g,"_");
+            const typeUpper=type.toUpperCase();const typeLower=type.toLowerCase();
+            const urls=[`/static/audio/${word}_${typeUpper}.mp3`,`/static/audio/${word}_${typeLower}.mp3`,`/static/audio/${word}.mp3`];
+            function tryPlay(idx){if(idx>=urls.length){console.log("Audio not found for:",word);return;}const audio=new Audio(urls[idx]);audio.play().catch(()=>tryPlay(idx+1));}
             tryPlay(0);
         }
-        
-        function addToTodayStats(word, isCorrect) {
-            const status = isCorrect ? 'correct' : 'wrong';
-            const existingIndex = todayWords.findIndex(w => w.word === word);
-            if (existingIndex !== -1) {
-                if (todayWords[existingIndex].status === 'wrong' && isCorrect) {
-                    todayWords[existingIndex].status = 'correct';
-                    todayStats.mistakes--;
-                    todayStats.studied++;
-                }
-            } else {
-                todayWords.push({ word, status });
-                if (isCorrect) todayStats.studied++;
-                else {
-                    todayStats.mistakes++;
-                    if (!mistakesList.includes(word)) mistakesList.push(word);
-                }
-            }
+        function addToTodayStats(word,isCorrect){
+            const status=isCorrect?'correct':'wrong';const existingIndex=todayWords.findIndex(w=>w.word===word);
+            if(existingIndex!==-1){if(todayWords[existingIndex].status==='wrong'&&isCorrect){todayWords[existingIndex].status='correct';todayStats.mistakes--;todayStats.studied++;}}
+            else{todayWords.push({word,status});if(isCorrect)todayStats.studied++;else{todayStats.mistakes++;if(!mistakesList.includes(word))mistakesList.push(word);}}
             updateReviewPage();
         }
-        
-        function updateReviewPage() {
-            document.getElementById('today-studied').textContent = todayStats.studied;
-            document.getElementById('today-mistakes').textContent = todayStats.mistakes;
-            const todayWordsContainer = document.getElementById('today-words-list');
-            if (todayWordsContainer) {
-                if (todayWords.length === 0) todayWordsContainer.innerHTML = '<div class="no-mistakes">Пока нет изученных слов</div>';
-                else {
-                    todayWordsContainer.innerHTML = todayWords.map(item => `
-                        <div class="today-word-item">
-                            <div class="word-info">
-                                <div class="word-status-icon ${item.status}"></div>
-                                <span class="word-text">${item.word}</span>
-                            </div>
-                            <button class="repeat-btn" onclick="window.repeatWord('${item.word}')">📖</button>
-                        </div>
-                    `).join('');
-                }
-            }
-            const mistakesContainer = document.getElementById('mistakes-list');
-            if (mistakesContainer) {
-                if (mistakesList.length === 0) mistakesContainer.innerHTML = '<div class="no-mistakes">✨ Пока нет ошибок! Так держать!</div>';
-                else {
-                    mistakesContainer.innerHTML = mistakesList.map(word => `
-                        <div class="mistake-item">
-                            <span class="mistake-word">${word}</span>
-                            <button class="repeat-mistake-btn" onclick="window.repeatMistake('${word}')">Повторить</button>
-                        </div>
-                    `).join('');
-                }
-            }
+        function updateReviewPage(){
+            document.getElementById('today-studied').textContent=todayStats.studied;document.getElementById('today-mistakes').textContent=todayStats.mistakes;
+            const todayWordsContainer=document.getElementById('today-words-list');
+            if(todayWordsContainer){if(todayWords.length===0)todayWordsContainer.innerHTML='<div class="no-mistakes">Пока нет изученных слов</div>';else{todayWordsContainer.innerHTML=todayWords.map(item=>`<div class="today-word-item"><div class="word-info"><div class="word-status-icon ${item.status}"></div><span class="word-text">${item.word}</span></div><button class="repeat-btn" onclick="window.repeatWord('${item.word}')">📖</button></div>`).join('');}}
+            const mistakesContainer=document.getElementById('mistakes-list');
+            if(mistakesContainer){if(mistakesList.length===0)mistakesContainer.innerHTML='<div class="no-mistakes">✨ Пока нет ошибок! Так держать!</div>';else{mistakesContainer.innerHTML=mistakesList.map(word=>`<div class="mistake-item"><span class="mistake-word">${word}</span><button class="repeat-mistake-btn" onclick="window.repeatMistake('${word}')">Повторить</button></div>`).join('');}}
+        }
+        window.repeatWord=function(word){const cardIndex=cards.findIndex(c=>c.word===word);if(cardIndex!==-1){currentIndex=cardIndex;updateCard();showPage('home');}};
+        window.repeatMistake=function(word){const cardIndex=cards.findIndex(c=>c.word===word);if(cardIndex!==-1){currentIndex=cardIndex;updateCard();showPage('home');}};
+        async function handleAnswer(know){
+            if(!currentCard)return;const deckForSRS=currentCard.sourceDeck||currentDeck;
+            if(!know){addToSRS(deckForSRS,currentCard);}else{const srsItem=srsQueue.find(item=>item.deck===deckForSRS&&item.word===currentCard.word);if(srsItem)markInSRS(deckForSRS,currentCard.word,true);}
+            addToTodayStats(currentCard.word,know);
+            const action=know?'know':'dont_know';await fetch('/api/update_progress',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action})});
+            loadStats();loadProfileStats();
+            if(currentIndex+1<cards.length){currentIndex++;updateCard();}
+            else{if(currentDeck==="__SRS_Review__"){finishReview();}else if(currentDeck==="__MIXED_MODE__"){alert('🎉 Поздравляем! Вы завершили все слова в смешанном режиме! 🎉');currentIndex=0;updateCard();}else{alert('🎉 Поздравляем! Вы завершили колоду! 🎉');currentIndex=0;updateCard();}}
+        }
+        function showPage(page){
+            const pages=['home-page','review-page','decks-page','profile-page'];pages.forEach(p=>{const el=document.getElementById(p);if(el)el.classList.add('hidden');});
+            if(page==='home')document.getElementById('home-page').classList.remove('hidden');
+            if(page==='review'){document.getElementById('review-page').classList.remove('hidden');updateReviewPage();}
+            if(page==='decks'){document.getElementById('decks-page').classList.remove('hidden');loadDeckStats();}
+            if(page==='profile'){document.getElementById('profile-page').classList.remove('hidden');loadProfileStats();}
+            document.querySelectorAll('.nav-item').forEach((item,idx)=>{const circle=item.querySelector('.circle-icon');const pagesArr=['home','review','decks','profile'];if(pagesArr[idx]===page)circle.style.backgroundImage="url('/static/images/circle_1.png')";else circle.style.backgroundImage="url('/static/images/circle.png')";});
         }
         
-        window.repeatWord = function(word) {
-            const cardIndex = cards.findIndex(c => c.word === word);
-            if (cardIndex !== -1) { currentIndex = cardIndex; updateCard(); showPage('home'); }
-        };
+        // ========== 10. ОБРАБОТЧИКИ СОБЫТИЙ ==========
+        document.querySelectorAll('.tab-btn').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentTab=btn.dataset.tab;renderDecks();});});
+        document.getElementById('search-decks')?.addEventListener('input',(e)=>{searchQuery=e.target.value;renderDecks();});
+        document.getElementById('new-deck-btn')?.addEventListener('click',()=>{document.getElementById('new-deck-modal').style.display='flex';});
+        document.getElementById('modal-cancel')?.addEventListener('click',()=>{document.getElementById('new-deck-modal').style.display='none';tempWords=[];renderWordsPreview();});
+        document.getElementById('modal-save')?.addEventListener('click',createNewDeck);
+        document.getElementById('mixed-mode-btn')?.addEventListener('click',()=>{if(isMixedMode)exitMixedMode();else openDeckSelector();});
+        document.getElementById('srs-indicator')?.addEventListener('click',()=>startReviewSession());
+        document.getElementById('mixed-mode-start')?.addEventListener('click',async()=>{const checkboxes=document.querySelectorAll('.deck-checkbox');const selectedDecks=[];checkboxes.forEach(cb=>{if(cb.checked)selectedDecks.push(cb.value);});document.getElementById('mixed-mode-modal').style.display='none';await startMixedMode(selectedDecks);});
+        document.getElementById('select-all-decks')?.addEventListener('click',()=>{document.querySelectorAll('.deck-checkbox').forEach(cb=>cb.checked=true);});
+        document.getElementById('deselect-all-decks')?.addEventListener('click',()=>{document.querySelectorAll('.deck-checkbox').forEach(cb=>cb.checked=false);});
+        document.getElementById('mixed-mode-cancel')?.addEventListener('click',()=>{document.getElementById('mixed-mode-modal').style.display='none';});
+        // ========== 11. РЕДАКТИРОВАНИЕ ПРОФИЛЯ ==========
+        const editProfileBtn=document.getElementById('edit-profile-btn');const profileModal=document.getElementById('profile-edit-modal');const profileModalCancel=document.getElementById('profile-modal-cancel');const profileModalSave=document.getElementById('profile-modal-save');
+        if(editProfileBtn){editProfileBtn.addEventListener('click',()=>{const profile=loadUserProfile();selectedAvatar=profile.avatar||"default";document.querySelectorAll('.avatar-option').forEach(opt=>{opt.classList.remove('selected');if(opt.dataset.avatar===selectedAvatar)opt.classList.add('selected');});profileModal.style.display='flex';});}
+        document.querySelectorAll('.avatar-option').forEach(opt=>{opt.addEventListener('click',()=>{document.querySelectorAll('.avatar-option').forEach(o=>o.classList.remove('selected'));opt.classList.add('selected');selectedAvatar=opt.dataset.avatar;});});
+        if(profileModalCancel)profileModalCancel.addEventListener('click',()=>{profileModal.style.display='none';});
+        if(profileModalSave){profileModalSave.addEventListener('click',()=>{const newUsername=document.getElementById('edit-username').value.trim()||"Гость";const newEmail=document.getElementById('edit-email').value.trim()||"Не авторизован";saveUserProfile(newUsername,newEmail,selectedAvatar);profileModal.style.display='none';});}
         
-        window.repeatMistake = function(word) {
-            const cardIndex = cards.findIndex(c => c.word === word);
-            if (cardIndex !== -1) { currentIndex = cardIndex; updateCard(); showPage('home'); }
-        };
+        document.querySelectorAll('.nav-item').forEach((item,idx)=>{const pages=['home','review','decks','profile'];item.addEventListener('click',()=>{showPage(pages[idx]);});});
+        document.getElementById('know-btn').onclick=()=>handleAnswer(true);document.getElementById('dont-know-btn').onclick=()=>handleAnswer(false);
+        document.getElementById('play-uk').onclick=()=>playAudio('uk');document.getElementById('play-us').onclick=()=>playAudio('us');
         
-        async function handleAnswer(know) {
-            if (!currentCard) return;
-            const deckForSRS = currentCard.sourceDeck || currentDeck;
-            if (!know) {
-                addToSRS(deckForSRS, currentCard);
-            } else {
-                const srsItem = srsQueue.find(item => item.deck === deckForSRS && item.word === currentCard.word);
-                if (srsItem) markInSRS(deckForSRS, currentCard.word, true);
-            }
-            addToTodayStats(currentCard.word, know);
-            const action = know ? 'know' : 'dont_know';
-            await fetch('/api/update_progress', {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action })
-            });
-            loadStats();
-            loadProfileStats();
-            if (currentIndex + 1 < cards.length) {
-                currentIndex++;
-                updateCard();
-            } else {
-                if (currentDeck === "__SRS_Review__") {
-                    finishReview();
-                } else if (currentDeck === "__MIXED_MODE__") {
-                    alert('🎉 Поздравляем! Вы завершили все слова в смешанном режиме! 🎉');
-                    currentIndex = 0;
-                    updateCard();
-                } else {
-                    alert('🎉 Поздравляем! Вы завершили колоду! 🎉');
-                    currentIndex = 0;
-                    updateCard();
-                }
-            }
-        }
+        function loadCustomAudioData(){const saved=localStorage.getItem('customAudioData');if(saved)window.customAudioData=JSON.parse(saved);}
+        window.__savedCardsForDeck={};
         
-        function showPage(page) {
-            const homePage = document.getElementById('home-page');
-            const reviewPage = document.getElementById('review-page');
-            const decksPage = document.getElementById('decks-page');
-            const profilePage = document.getElementById('profile-page');
-            if (homePage) homePage.classList.add('hidden');
-            if (reviewPage) reviewPage.classList.add('hidden');
-            if (decksPage) decksPage.classList.add('hidden');
-            if (profilePage) profilePage.classList.add('hidden');
-            if (page === 'home') homePage.classList.remove('hidden');
-            if (page === 'review') { reviewPage.classList.remove('hidden'); updateReviewPage(); }
-            if (page === 'decks') { decksPage.classList.remove('hidden'); loadDeckStats(); }
-            if (page === 'profile') { profilePage.classList.remove('hidden'); loadProfileStats(); }
-            document.querySelectorAll('.nav-item').forEach((item, idx) => {
-                const circle = item.querySelector('.circle-icon');
-                const pages = ['home', 'review', 'decks', 'profile'];
-                if (pages[idx] === page) circle.style.backgroundImage = "url('/static/images/circle_1.png')";
-                else circle.style.backgroundImage = "url('/static/images/circle.png')";
-            });
-        }
-        
-        // ========== 9. ОБРАБОТЧИКИ СОБЫТИЙ ==========
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentTab = btn.dataset.tab;
-                renderDecks();
-            });
-        });
-        
-        document.getElementById('search-decks')?.addEventListener('input', (e) => { searchQuery = e.target.value; renderDecks(); });
-        document.getElementById('new-deck-btn')?.addEventListener('click', () => { document.getElementById('new-deck-modal').style.display = 'flex'; });
-        document.getElementById('modal-cancel')?.addEventListener('click', () => { document.getElementById('new-deck-modal').style.display = 'none'; tempWords = []; renderWordsPreview(); });
-        document.getElementById('modal-save')?.addEventListener('click', createNewDeck);
-        document.getElementById('mixed-mode-btn')?.addEventListener('click', () => { if (isMixedMode) exitMixedMode(); else openDeckSelector(); });
-        document.getElementById('srs-indicator')?.addEventListener('click', () => startReviewSession());
-        document.getElementById('mixed-mode-start')?.addEventListener('click', async () => {
-            const checkboxes = document.querySelectorAll('.deck-checkbox');
-            const selectedDecks = [];
-            checkboxes.forEach(cb => { if (cb.checked) selectedDecks.push(cb.value); });
-            document.getElementById('mixed-mode-modal').style.display = 'none';
-            await startMixedMode(selectedDecks);
-        });
-        document.getElementById('select-all-decks')?.addEventListener('click', () => { document.querySelectorAll('.deck-checkbox').forEach(cb => cb.checked = true); });
-        document.getElementById('deselect-all-decks')?.addEventListener('click', () => { document.querySelectorAll('.deck-checkbox').forEach(cb => cb.checked = false); });
-        document.getElementById('mixed-mode-cancel')?.addEventListener('click', () => { document.getElementById('mixed-mode-modal').style.display = 'none'; });
-        
-        // ========== 10. ПРОФИЛЬ (РЕДАКТИРОВАНИЕ) ==========
-        const editProfileBtn = document.getElementById('edit-profile-btn');
-        const profileModal = document.getElementById('profile-edit-modal');
-        const profileModalCancel = document.getElementById('profile-modal-cancel');
-        const profileModalSave = document.getElementById('profile-modal-save');
-        
-        if (editProfileBtn) {
-            editProfileBtn.addEventListener('click', () => {
-                const profile = loadUserProfile();
-                selectedAvatar = profile.avatar || "default";
-                document.querySelectorAll('.avatar-option').forEach(opt => {
-                    opt.classList.remove('selected');
-                    if (opt.dataset.avatar === selectedAvatar) opt.classList.add('selected');
-                });
-                profileModal.style.display = 'flex';
-            });
-        }
-        
-        document.querySelectorAll('.avatar-option').forEach(opt => {
-            opt.addEventListener('click', () => {
-                document.querySelectorAll('.avatar-option').forEach(o => o.classList.remove('selected'));
-                opt.classList.add('selected');
-                selectedAvatar = opt.dataset.avatar;
-            });
-        });
-        
-        if (profileModalCancel) profileModalCancel.addEventListener('click', () => { profileModal.style.display = 'none'; });
-        if (profileModalSave) {
-            profileModalSave.addEventListener('click', () => {
-                const newUsername = document.getElementById('edit-username').value.trim() || "Гость";
-                const newEmail = document.getElementById('edit-email').value.trim() || "Не авторизован";
-                saveUserProfile(newUsername, newEmail, selectedAvatar);
-                profileModal.style.display = 'none';
-            });
-        }
-        
-        document.querySelectorAll('.nav-item').forEach((item, idx) => {
-            const pages = ['home', 'review', 'decks', 'profile'];
-            item.addEventListener('click', () => { showPage(pages[idx]); });
-        });
-        
-        document.getElementById('know-btn').onclick = () => handleAnswer(true);
-        document.getElementById('dont-know-btn').onclick = () => handleAnswer(false);
-        document.getElementById('play-uk').onclick = () => playAudio('uk');
-        document.getElementById('play-us').onclick = () => playAudio('us');
-        
-        function loadCustomAudioData() {
-            const saved = localStorage.getItem('customAudioData');
-            if (saved) window.customAudioData = JSON.parse(saved);
-        }
-        
-        window.__savedCardsForDeck = {};
-        
-        // ========== 11. FIREBASE АУТЕНТИФИКАЦИЯ ==========
-        function initFirebaseAuth() {
-            console.log("Initializing Firebase...");
-            
-            // Функции для работы с Firebase
-            window.signInWithEmail = async (email, password) => {
-                const auth = window.FirebaseAuth;
-                if (!auth) throw new Error("Firebase not ready");
-                return signInWithEmailAndPassword(auth, email, password);
-            };
-            
-            window.createUserWithEmail = async (email, password) => {
-                const auth = window.FirebaseAuth;
-                if (!auth) throw new Error("Firebase not ready");
-                return createUserWithEmailAndPassword(auth, email, password);
-            };
-            
-            window.signOutUser = async () => {
-                const auth = window.FirebaseAuth;
-                if (!auth) throw new Error("Firebase not ready");
-                return signOut(auth);
-            };
-            
-            window.onAuthStateChanged = (callback) => {
-                const auth = window.FirebaseAuth;
-                if (!auth) throw new Error("Firebase not ready");
-                return onAuthStateChanged(auth, callback);
-            };
-            
-            window.signInWithGoogle = async () => {
-                const auth = window.FirebaseAuth;
-                const provider = new GoogleAuthProvider();
-                if (!auth) throw new Error("Firebase not ready");
-                return signInWithPopup(auth, provider);
-            };
-            
-            window.setDocFirestore = (docRef, data) => setDoc(docRef, data, { merge: true });
-            window.getDocFirestore = (docRef) => getDoc(docRef);
-            window.docFirestore = (path, id) => doc(db, path, id);
-            
-            // Элементы аутентификации
-            const authModal = document.getElementById('auth-modal');
-            const authBtn = document.getElementById('auth-btn');
-            const authModalCancel = document.getElementById('auth-modal-cancel');
-            const authSubmit = document.getElementById('auth-submit');
-            const authEmail = document.getElementById('auth-email');
-            const authPassword = document.getElementById('auth-password');
-            const authTitle = document.getElementById('auth-title');
-            const toggleAuthMode = document.getElementById('toggle-auth-mode');
-            const googleSignin = document.getElementById('google-signin');
-            
-            function updateAuthUI() {
-                if (currentUser) {
-                    authBtn.textContent = "🚪 Выйти";
-                    authBtn.classList.add('authenticated');
-                    document.getElementById('profile-username').textContent = currentUser.displayName || currentUser.email.split('@')[0] || "Пользователь";
-                    document.getElementById('profile-email').textContent = currentUser.email;
-                } else {
-                    authBtn.textContent = "🔑 Войти";
-                    authBtn.classList.remove('authenticated');
-                }
-            }
-            
-            async function signInWithEmailHandler(email, password) {
-                try {
-                    const userCredential = await window.signInWithEmail(email, password);
-                    currentUser = userCredential.user;
-                    updateAuthUI();
-                    authModal.style.display = 'none';
-                    showSRSNotification(`✅ Добро пожаловать, ${currentUser.email}!`);
-                } catch (error) {
-                    alert("Ошибка входа: " + error.message);
-                }
-            }
-            
-            async function signUpWithEmailHandler(email, password) {
-                try {
-                    const userCredential = await window.createUserWithEmail(email, password);
-                    currentUser = userCredential.user;
-                    updateAuthUI();
-                    authModal.style.display = 'none';
-                    showSRSNotification(`🎉 Аккаунт создан для ${currentUser.email}`);
-                } catch (error) {
-                    alert("Ошибка регистрации: " + error.message);
-                }
-            }
-            
-            async function signInWithGoogleHandler() {
-                try {
-                    const result = await window.signInWithGoogle();
-                    currentUser = result.user;
-                    updateAuthUI();
-                    authModal.style.display = 'none';
-                    showSRSNotification(`✅ Добро пожаловать, ${currentUser.displayName || currentUser.email}!`);
-                } catch (error) {
-                    alert("Ошибка входа через Google: " + error.message);
-                }
-            }
-            
-            async function signOutHandler() {
-                try {
-                    await window.signOutUser();
-                    currentUser = null;
-                    updateAuthUI();
-                    showSRSNotification("👋 Вы вышли из аккаунта");
-                } catch (error) {
-                    alert("Ошибка выхода: " + error.message);
-                }
-            }
-            
-            function handleAuthButtonClick() {
-                if (currentUser) {
-                    signOutHandler();
-                } else {
-                    authEmail.value = '';
-                    authPassword.value = '';
-                    authModal.style.display = 'flex';
-                }
-            }
-            
-            async function handleAuthSubmit() {
-                const email = authEmail.value.trim();
-                const password = authPassword.value;
-                if (!email || !password) { alert("Введите email и пароль"); return; }
-                if (isAuthModeLogin) {
-                    await signInWithEmailHandler(email, password);
-                } else {
-                    await signUpWithEmailHandler(email, password);
-                }
-            }
-            
-            function toggleAuthModeFunc() {
-                isAuthModeLogin = !isAuthModeLogin;
-                if (isAuthModeLogin) {
-                    authTitle.textContent = "🔑 Вход в аккаунт";
-                    toggleAuthMode.textContent = "Нет аккаунта? Зарегистрироваться";
-                    authSubmit.textContent = "Войти";
-                } else {
-                    authTitle.textContent = "📝 Регистрация";
-                    toggleAuthMode.textContent = "Уже есть аккаунт? Войти";
-                    authSubmit.textContent = "Зарегистрироваться";
-                }
-            }
-            
-            window.onAuthStateChanged((user) => {
-                currentUser = user;
-                updateAuthUI();
-            });
-            
-            authBtn?.addEventListener('click', handleAuthButtonClick);
-            authModalCancel?.addEventListener('click', () => { authModal.style.display = 'none'; });
-            authSubmit?.addEventListener('click', handleAuthSubmit);
-            toggleAuthMode?.addEventListener('click', (e) => { e.preventDefault(); toggleAuthModeFunc(); });
-            googleSignin?.addEventListener('click', async () => { authModal.style.display = 'none'; await signInWithGoogleHandler(); });
-            
-            window.addEventListener('click', (e) => {
-                if (e.target === authModal) authModal.style.display = 'none';
-            });
-        }
-        
-        // Загружаем Firebase скрипт динамически
-        const firebaseScript = document.createElement('script');
-        firebaseScript.type = 'module';
-        firebaseScript.innerHTML = `
+        // ========== 12. FIREBASE АУТЕНТИФИКАЦИЯ ==========
+        const firebaseScript=document.createElement('script');
+        firebaseScript.type='module';
+        firebaseScript.innerHTML=`
             import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
             import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
-            import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
-            
-            const firebaseConfig = {
-                apiKey: "AIzaSyD2T9e_S9uLq51tLBBlSYmIhNs45aG9mvE",
-                authDomain: "c5notes-language-cards.firebaseapp.com",
-                projectId: "c5notes-language-cards",
-                storageBucket: "c5notes-language-cards.firebasestorage.app",
-                messagingSenderId: "857023559106",
-                appId: "1:857023559106:web:0976fa8b5f873c4737125b",
-                measurementId: "G-4PCCK9BMPS"
-            };
-            
-            const app = initializeApp(firebaseConfig);
-            const auth = getAuth(app);
-            const db = getFirestore(app);
-            const googleProvider = new GoogleAuthProvider();
-            
-            window.FirebaseAuth = auth;
-            window.FirebaseDB = db;
-            window.signInWithEmailAndPassword = signInWithEmailAndPassword;
-            window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
-            window.signOut = signOut;
-            window.onAuthStateChanged = onAuthStateChanged;
-            window.GoogleAuthProvider = GoogleAuthProvider;
-            window.signInWithPopup = signInWithPopup;
-            window.doc = doc;
-            window.setDoc = setDoc;
-            window.getDoc = getDoc;
-            
+            const firebaseConfig={apiKey:"AIzaSyD2T9e_S9uLq51tLBBlSYmIhNs45aG9mvE",authDomain:"c5notes-language-cards.firebaseapp.com",projectId:"c5notes-language-cards",storageBucket:"c5notes-language-cards.firebasestorage.app",messagingSenderId:"857023559106",appId:"1:857023559106:web:0976fa8b5f873c4737125b"};
+            const app=initializeApp(firebaseConfig);const auth=getAuth(app);const googleProvider=new GoogleAuthProvider();
+            window.FirebaseAuth=auth;window.signInWithEmail=(email,password)=>signInWithEmailAndPassword(auth,email,password);
+            window.createUserWithEmail=(email,password)=>createUserWithEmailAndPassword(auth,email,password);
+            window.signOutUser=()=>signOut(auth);window.signInWithGoogle=()=>signInWithPopup(auth,googleProvider);
             window.dispatchEvent(new Event('firebase-loaded'));
         `;
         document.head.appendChild(firebaseScript);
         
-        window.addEventListener('firebase-loaded', () => {
-            console.log("Firebase loaded, initializing auth...");
-            initFirebaseAuth();
+        window.addEventListener('firebase-loaded',()=>{
+            console.log("Firebase loaded");
+            const authBtn=document.getElementById('auth-btn');const authModal=document.getElementById('auth-modal');
+            const authModalCancel=document.getElementById('auth-modal-cancel');const authSubmit=document.getElementById('auth-submit');
+            const authEmail=document.getElementById('auth-email');const authPassword=document.getElementById('auth-password');
+            const authTitle=document.getElementById('auth-title');const toggleAuthMode=document.getElementById('toggle-auth-mode');
+            const googleSignin=document.getElementById('google-signin');
+            let currentUser=null;let isAuthModeLogin=true;
+            function updateAuthUI(){if(currentUser){authBtn.textContent="🚪 Выйти";authBtn.classList.add('authenticated');document.getElementById('profile-username').textContent=currentUser.displayName||currentUser.email.split('@')[0]||"Пользователь";document.getElementById('profile-email').textContent=currentUser.email;}else{authBtn.textContent="🔑 Войти";authBtn.classList.remove('authenticated');}}
+            async function signInWithEmailHandler(email,password){try{const userCredential=await window.signInWithEmail(email,password);currentUser=userCredential.user;updateAuthUI();authModal.style.display='none';showSRSNotification(`✅ Добро пожаловать, ${currentUser.email}!`);}catch(error){alert("Ошибка входа: "+error.message);}}
+            async function signUpWithEmailHandler(email,password){try{const userCredential=await window.createUserWithEmail(email,password);currentUser=userCredential.user;updateAuthUI();authModal.style.display='none';showSRSNotification(`🎉 Аккаунт создан для ${currentUser.email}`);}catch(error){alert("Ошибка регистрации: "+error.message);}}
+            async function signInWithGoogleHandler(){try{const result=await window.signInWithGoogle();currentUser=result.user;updateAuthUI();authModal.style.display='none';showSRSNotification(`✅ Добро пожаловать, ${currentUser.displayName||currentUser.email}!`);}catch(error){alert("Ошибка входа через Google: "+error.message);}}
+            async function signOutHandler(){try{await window.signOutUser();currentUser=null;updateAuthUI();showSRSNotification("👋 Вы вышли из аккаунта");}catch(error){alert("Ошибка выхода: "+error.message);}}
+            function handleAuthButtonClick(){if(currentUser){signOutHandler();}else{authEmail.value='';authPassword.value='';authModal.style.display='flex';}}
+            async function handleAuthSubmit(){const email=authEmail.value.trim();const password=authPassword.value;if(!email||!password){alert("Введите email и пароль");return;}if(isAuthModeLogin){await signInWithEmailHandler(email,password);}else{await signUpWithEmailHandler(email,password);}}
+            function toggleAuthModeFunc(){isAuthModeLogin=!isAuthModeLogin;if(isAuthModeLogin){authTitle.textContent="🔑 Вход в аккаунт";toggleAuthMode.textContent="Нет аккаунта? Зарегистрироваться";authSubmit.textContent="Войти";}else{authTitle.textContent="📝 Регистрация";toggleAuthMode.textContent="Уже есть аккаунт? Войти";authSubmit.textContent="Зарегистрироваться";}}
+            authBtn?.addEventListener('click',handleAuthButtonClick);
+            authModalCancel?.addEventListener('click',()=>{authModal.style.display='none';});
+            authSubmit?.addEventListener('click',handleAuthSubmit);
+            toggleAuthMode?.addEventListener('click',(e)=>{e.preventDefault();toggleAuthModeFunc();});
+            googleSignin?.addEventListener('click',async()=>{authModal.style.display='none';await signInWithGoogleHandler();});
+            window.addEventListener('click',(e)=>{if(e.target===authModal)authModal.style.display='none';});
         });
         
-        // ========== 12. ЗАПУСК ПРИЛОЖЕНИЯ ==========
-        loadSRS();
-        startSRSWatcher();
-        setInterval(() => suggestReview(), 10 * 60 * 1000);
-        loadCustomAudioData();
-        loadCustomDecks();
-        loadFavorites();
-        loadUserProfile();
-        loadCards();
-        showPage('home');
-        loadStats();
-        loadProfileStats();
+        // ========== 13. ЗАПУСК ПРИЛОЖЕНИЯ ==========
+        loadSRS();startSRSWatcher();setInterval(()=>suggestReview(),10*60*1000);
+        loadCustomAudioData();loadCustomDecks();loadFavorites();loadUserProfile();loadCards();showPage('home');loadStats();loadProfileStats();
     </script>
 </body>
 </html>

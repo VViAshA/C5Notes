@@ -1,1103 +1,181 @@
+Я заменил конфигурацию Firebase в вашем коде. Вот исправленный полный файл:
+
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Language Cards</title>
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+        import { getFirestore, doc, setDoc, getDoc, updateDoc, collection, query, where, getDocs } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+        
+        // ВАША КОНФИГУРАЦИЯ FIREBASE (ВСТАВЛЕНА)
+        const firebaseConfig = {
+            apiKey: "AIzaSyD2T9e_S9uLq51tLBBlSYmIhNs45aG9mvE",
+            authDomain: "c5notes-language-cards.firebaseapp.com",
+            projectId: "c5notes-language-cards",
+            storageBucket: "c5notes-language-cards.firebasestorage.app",
+            messagingSenderId: "857023559106",
+            appId: "1:857023559106:web:0976fa8b5f873c4737125b",
+            measurementId: "G-4PCCK9BMPS"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const googleProvider = new GoogleAuthProvider();
+        
+        window.firebase = { auth, db, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, googleProvider, signInWithPopup, doc, setDoc, getDoc, updateDoc, collection, query, where, getDocs };
+    </script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: #051F42;
-            font-family: 'Playpen Sans', cursive;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 0;
-            margin: 0;
-        }
-
-        .app-container {
-            width: 100vw;
-            min-height: 100vh;
-            background-color: #051F42;
-            display: flex;
-            gap: 0;
-            margin: 0;
-            padding: 0;
-        }
-
-        .sidebar {
-            width: 280px;
-            background-color: #021939;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            padding: 40px 0;
-            position: sticky;
-            top: 0;
-            height: 100vh;
-        }
-
-        .logo-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px 20px 30px 20px;
-            border-bottom: 1px solid rgba(154, 220, 222, 0.3);
-            margin-bottom: 20px;
-        }
-
-        .app-logo {
-            width: 180px;
-            height: auto;
-            max-width: 100%;
-            border-radius: 15px;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            padding: 15px 30px;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .nav-item:hover {
-            background-color: rgba(154, 220, 222, 0.2);
-        }
-
-        .circle-icon {
-            width: 28px;
-            height: 28px;
-            background-size: contain;
-            background-repeat: no-repeat;
-        }
-
-        .main-content {
-            flex: 1;
-            background-color: #051F42;
-            padding: 30px 40px;
-            min-height: 100vh;
-            overflow-y: auto;
-        }
-
-        .card-container {
-            position: relative;
-            min-height: 70vh;
-            border-radius: 30px;
-            background-image: url('/static/images/leaf.png');
-            background-size: 100% 100%;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        .card-content {
-            position: relative;
-            z-index: 2;
-            padding: 100px 70px 70px 70px;
-            display: flex;
-            flex-direction: column;
-            min-height: 70vh;
-        }
-
-        .card-counter {
-            position: absolute;
-            top: 25px;
-            left: 40px;
-            color: #021939;
-            font-size: 18px;
-            font-weight: bold;
-            background: rgba(217, 217, 217, 0.7);
-            padding: 8px 18px;
-            border-radius: 30px;
-            backdrop-filter: blur(3px);
-            z-index: 3;
-        }
-
-        /* Смешанный режим - кнопка */
-        .mixed-mode-btn {
-            position: absolute;
-            top: 25px;
-            right: 40px;
-            background-color: #174E9C;
-            color: white;
-            border: none;
-            padding: 8px 18px;
-            border-radius: 30px;
-            font-family: 'Playpen Sans', cursive;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            z-index: 3;
-        }
-
-        .mixed-mode-btn:hover {
-            background-color: #0f3a73;
-            transform: scale(1.02);
-        }
-
-        .mixed-mode-active {
-            background-color: #9ADCDE;
-            color: #021939;
-        }
-
-        .word {
-            text-align: center;
-            font-size: 72px;
-            font-weight: bold;
-            color: #021939;
-            margin: 30px 0 25px;
-        }
-
-        .transcription {
-            text-align: center;
-            font-size: 24px;
-            color: #021939;
-            margin-bottom: 50px;
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .pronounce-btn {
-            background: rgba(217, 217, 217, 0.8);
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-            padding: 10px 20px;
-            border-radius: 40px;
-            transition: 0.3s;
-            font-family: 'Playpen Sans', cursive;
-            font-weight: bold;
-        }
-
-        .pronounce-btn:hover {
-            background-color: rgba(154, 220, 222, 0.9);
-            transform: scale(1.02);
-        }
-
-        .info-column {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 30px;
-            margin: 30px auto 0 auto;
-            width: 85%;
-            max-width: 750px;
-        }
-
-        .example-section {
-            width: 100%;
-            text-align: center;
-            background: rgba(217, 217, 217, 0.75);
-            padding: 25px 30px;
-            border-radius: 25px;
-            backdrop-filter: blur(2px);
-        }
-
-        .translation-section {
-            width: 100%;
-            text-align: center;
-            background: rgba(217, 217, 217, 0.75);
-            padding: 25px 30px;
-            border-radius: 25px;
-            backdrop-filter: blur(2px);
-        }
-
-        .example-label {
-            color: #174E9C;
-            font-size: 18px;
-            margin-bottom: 12px;
-            font-weight: 600;
-        }
-
-        .example-text {
-            color: #021939;
-            font-size: 20px;
-            line-height: 1.5;
-            margin-bottom: 12px;
-            font-weight: 500;
-        }
-
-        .example-translation {
-            color: #174E9C;
-            font-size: 18px;
-            line-height: 1.4;
-            font-weight: 500;
-        }
-
-        .translation-label {
-            color: #174E9C;
-            font-size: 18px;
-            margin-bottom: 12px;
-            font-weight: 600;
-        }
-
-        .translation-text {
-            color: #021939;
-            font-size: 32px;
-            font-weight: bold;
-            line-height: 1.3;
-        }
-
-        .action-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin-top: 40px;
-        }
-
-        .action-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            padding: 18px 45px;
-            border-radius: 60px;
-            border: none;
-            cursor: pointer;
-            transition: transform 0.2s;
-            font-family: 'Playpen Sans', cursive;
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .action-btn:hover {
-            transform: scale(1.03);
-            opacity: 0.95;
-        }
-
-        .btn-know {
-            background-color: #9ADCDE;
-            color: #021939;
-        }
-
-        .btn-dont-know {
-            background-color: #F8D9D7;
-            color: #021939;
-        }
-
-        .check-mark {
-            font-size: 32px;
-            font-weight: bold;
-        }
-
-        .cross-mark {
-            font-size: 36px;
-            font-weight: bold;
-        }
-
-        .progress-section {
-            margin-top: 40px;
-            background-color: #021939;
-            border-radius: 20px;
-            padding: 20px 25px;
-            color: white;
-            font-size: 18px;
-        }
-
-        .progress-bar {
-            background-color: #9ADCDE;
-            height: 12px;
-            border-radius: 10px;
-            transition: width 0.3s;
-            margin-top: 12px;
-        }
-
-        .srs-indicator {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #174E9C;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-size: 14px;
-            font-weight: bold;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .srs-indicator:hover {
-            background-color: #0f3a73;
-            transform: scale(1.02);
-        }
-
-        .review-stats {
-            display: flex;
-            gap: 25px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-
-        .stat-card {
-            flex: 1;
-            min-width: 220px;
-            background-color: #D9D9D9;
-            border-radius: 25px;
-            padding: 30px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.12;
-            border-radius: 25px;
-        }
-
-        .stat-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .stat-number {
-            font-size: 64px;
-            font-weight: bold;
-            margin: 15px 0;
-        }
-
-        .stat-label {
-            font-size: 18px;
-            font-weight: 500;
-        }
-
-        .stat-card.studied .stat-number {
-            color: #021939;
-        }
-
-        .stat-card.mistakes .stat-number {
-            color: #e74c3c;
-        }
-
-        .stat-card.streak .stat-number {
-            color: #174E9C;
-        }
-
-        .today-words-section {
-            background-color: #D9D9D9;
-            border-radius: 25px;
-            padding: 25px;
-            margin-bottom: 40px;
-        }
-
-        .today-words-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #021939;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid #021939;
-        }
-
-        .words-scroll {
-            max-height: 400px;
-            overflow-y: auto;
-            padding-right: 15px;
-        }
-
-        .words-scroll::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        .words-scroll::-webkit-scrollbar-track {
-            background: #e0e0e0;
-            border-radius: 10px;
-        }
-
-        .words-scroll::-webkit-scrollbar-thumb {
-            background: #9ADCDE;
-            border-radius: 10px;
-        }
-
-        .today-word-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px 20px;
-            border-bottom: 1px solid rgba(2, 25, 57, 0.1);
-            font-size: 18px;
-        }
-
-        .today-word-item .word-info {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .word-status-icon {
-            width: 32px;
-            height: 32px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-
-        .word-status-icon.correct {
-            background-image: url('/static/images/correct');
-        }
-
-        .word-status-icon.wrong {
-            background-image: url('/static/images/wrong');
-        }
-
-        .word-text {
-            color: #021939;
-            font-weight: 500;
-            font-size: 18px;
-        }
-
-        .repeat-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 28px;
-            transition: transform 0.2s;
-            padding: 5px 12px;
-            border-radius: 12px;
-        }
-
-        .repeat-btn:hover {
-            background-color: rgba(154, 220, 222, 0.3);
-            transform: scale(1.05);
-        }
-
-        .mistakes-section {
-            background-color: #D9D9D9;
-            border-radius: 25px;
-            padding: 25px;
-        }
-
-        .mistakes-header {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid #e74c3c;
-        }
-
-        .mistakes-icon {
-            width: 50px;
-            height: 50px;
-            background-image: url('/static/images/my_card_today');
-            background-size: contain;
-            background-repeat: no-repeat;
-        }
-
-        .mistakes-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #e74c3c;
-        }
-
-        .mistake-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px 20px;
-            border-bottom: 1px solid rgba(231, 76, 60, 0.2);
-        }
-
-        .mistake-word {
-            font-size: 18px;
-            color: #021939;
-            font-weight: 500;
-        }
-
-        .repeat-mistake-btn {
-            background-color: #9ADCDE;
-            border: none;
-            padding: 8px 22px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-family: 'Playpen Sans', cursive;
-            font-size: 15px;
-            font-weight: bold;
-            transition: 0.2s;
-        }
-
-        .repeat-mistake-btn:hover {
-            background-color: #7bc0c2;
-            transform: scale(1.02);
-        }
-
-        .no-mistakes {
-            text-align: center;
-            padding: 40px;
-            color: #021939;
-            font-size: 18px;
-        }
-
-        .decks-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .decks-tabs {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .tab-btn {
-            background-color: #D9D9D9;
-            color: #021939;
-            border: none;
-            padding: 14px 32px;
-            border-radius: 40px;
-            font-family: 'Playpen Sans', cursive;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .tab-btn.active {
-            background-color: #9ADCDE;
-            color: #021939;
-        }
-
-        .tab-btn:hover {
-            transform: scale(1.02);
-            opacity: 0.9;
-        }
-
-        .search-bar {
-            flex: 1;
-            max-width: 350px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .search-input {
-            flex: 1;
-            padding: 14px 22px;
-            border-radius: 40px;
-            border: none;
-            background-color: #D9D9D9;
-            font-family: 'Playpen Sans', cursive;
-            font-size: 16px;
-            outline: none;
-        }
-
-        .search-input::placeholder {
-            color: #888;
-        }
-
-        .new-deck-btn {
-            background-color: #174E9C;
-            color: white;
-            border: none;
-            padding: 14px 32px;
-            border-radius: 40px;
-            font-family: 'Playpen Sans', cursive;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .new-deck-btn:hover {
-            background-color: #0f3a73;
-            transform: scale(1.02);
-        }
-
-        .decks-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin-top: 30px;
-        }
-
-        .deck-card {
-            position: relative;
-            background-size: 100% 100%;
-            background-position: center;
-            background-repeat: no-repeat;
-            border-radius: 20px;
-            min-height: 260px;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 30px;
-        }
-
-        .deck-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
-        }
-
-        .deck-name {
-            font-size: 26px;
-            font-weight: bold;
-            color: #021939;
-            margin-bottom: 15px;
-            word-break: break-word;
-            max-width: 90%;
-        }
-
-        .deck-card-count {
-            font-size: 17px;
-            color: #174E9C;
-            font-weight: 500;
-            margin-bottom: 20px;
-        }
-
-        .favorite-icon {
-            font-size: 32px;
-            cursor: pointer;
-            background: rgba(217, 217, 217, 0.5);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.2s;
-        }
-
-        .favorite-icon:hover {
-            transform: scale(1.1);
-            background: rgba(217, 217, 217, 0.8);
-        }
-
-        .favorite-icon.favorited {
-            color: #ffc107;
-            text-shadow: 0 0 2px #000;
-        }
-
-        .profile-header {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 40px;
-        }
-
-        .edit-profile-btn {
-            background-color: #D9D9D9;
-            color: #021939;
-            border: 2px solid #021939;
-            padding: 12px 28px;
-            border-radius: 40px;
-            font-family: 'Playpen Sans', cursive;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .edit-profile-btn:hover {
-            background-color: #9ADCDE;
-            transform: scale(1.02);
-        }
-
-        .profile-stats-row {
-            display: flex;
-            gap: 25px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-
-        .profile-stat-card {
-            flex: 1;
-            min-width: 220px;
-            background-color: #D9D9D9;
-            border: 2px solid #021939;
-            border-radius: 25px;
-            padding: 30px 20px;
-            text-align: center;
-        }
-
-        .profile-stat-number {
-            font-size: 56px;
-            font-weight: bold;
-            color: #021939;
-            margin-bottom: 10px;
-        }
-
-        .profile-stat-label {
-            font-size: 16px;
-            color: #174E9C;
-            font-weight: 600;
-        }
-
-        .level-card {
-            background-color: #D9D9D9;
-            border: 2px solid #021939;
-            border-radius: 25px;
-            padding: 30px;
-            margin-top: 20px;
-        }
-
-        .level-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .level-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #174E9C;
-        }
-
-        .level-number {
-            font-size: 28px;
-            font-weight: bold;
-            color: #021939;
-        }
-
-        .exp-bar-container {
-            background-color: #e0e0e0;
-            border-radius: 30px;
-            height: 20px;
-            overflow: hidden;
-            margin: 15px 0;
-        }
-
-        .exp-bar-fill {
-            background-color: #9ADCDE;
-            height: 100%;
-            border-radius: 30px;
-            transition: width 0.5s;
-        }
-
-        .exp-text {
-            text-align: right;
-            font-size: 14px;
-            color: #174E9C;
-            font-weight: 500;
-        }
-
-        .avatar-container {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .avatar-img {
-            width: 120px;
-            height: 120px;
-            border-radius: 60px;
-            object-fit: cover;
-            border: 3px solid #174E9C;
-        }
-
-        .user-info {
-            flex: 1;
-        }
-
-        .user-name {
-            font-size: 32px;
-            font-weight: bold;
-            color: white;
-            margin-bottom: 10px;
-        }
-
-        .user-email {
-            font-size: 18px;
-            color: white;
-        }
-
-        .avatar-options {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin: 20px 0;
-            justify-content: center;
-        }
-
-        .avatar-option {
-            width: 80px;
-            height: 80px;
-            border-radius: 40px;
-            cursor: pointer;
-            border: 3px solid transparent;
-            transition: 0.2s;
-            object-fit: cover;
-        }
-
-        .avatar-option:hover {
-            transform: scale(1.05);
-            border-color: #9ADCDE;
-        }
-
-        .avatar-option.selected {
-            border-color: #174E9C;
-            box-shadow: 0 0 0 2px #9ADCDE;
-        }
-
-        .profile-modal-content {
-            max-width: 500px;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background-color: #D9D9D9;
-            border-radius: 30px;
-            padding: 40px;
-            width: 90%;
-            max-width: 600px;
-            max-height: 85vh;
-            overflow-y: auto;
-        }
-
-        .modal-content h3 {
-            color: #021939;
-            margin-bottom: 25px;
-            font-size: 28px;
-        }
-
-        .modal-content h4 {
-            color: #021939;
-            margin-bottom: 15px;
-            font-size: 20px;
-        }
-
-        .modal-content input, .modal-content textarea {
-            width: 100%;
-            padding: 12px;
-            margin: 5px 0 10px 0;
-            border-radius: 15px;
-            border: none;
-            font-family: 'Playpen Sans', cursive;
-            background-color: white;
-            font-size: 15px;
-        }
-
-        .modal-content label {
-            color: #021939;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .modal-buttons {
-            display: flex;
-            justify-content: flex-end;
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .modal-buttons button {
-            padding: 12px 28px;
-            border-radius: 40px;
-            border: none;
-            cursor: pointer;
-            font-family: 'Playpen Sans', cursive;
-            font-weight: bold;
-            font-size: 16px;
-        }
-
-        .modal-save {
-            background-color: #9ADCDE;
-            color: #021939;
-        }
-
-        .modal-cancel {
-            background-color: #F8D9D7;
-            color: #021939;
-        }
-
-        #add-word-btn {
-            background-color: #9ADCDE;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: bold;
-            font-family: 'Playpen Sans', cursive;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-
-        #add-word-btn:hover {
-            background-color: #7bc0c2;
-        }
-
-        .remove-word-btn {
-            background: #F8D9D7;
-            border: none;
-            padding: 5px 12px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-family: 'Playpen Sans', cursive;
-        }
-
-        .words-preview {
-            max-height: 200px;
-            overflow-y: auto;
-            background: rgba(255,255,255,0.5);
-            border-radius: 15px;
-            padding: 10px;
-            margin-top: 10px;
-        }
-
-        .word-preview-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px;
-            border-bottom: 1px solid #ccc;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .srs-notification {
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            background-color: #9ADCDE;
-            color: #021939;
-            padding: 12px 20px;
-            border-radius: 30px;
-            font-size: 14px;
-            font-weight: bold;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            animation: fadeInOut 5s ease-in-out;
-        }
-
-        @keyframes fadeInOut {
-            0% { opacity: 0; transform: translateY(20px); }
-            10% { opacity: 1; transform: translateY(0); }
-            90% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(-20px); }
-        }
-
-        /* Модальное окно выбора колод для смешанного режима */
-        .deck-selector-modal .modal-content {
-            max-width: 500px;
-        }
-
-        .deck-checkbox-list {
-            max-height: 400px;
-            overflow-y: auto;
-            margin: 20px 0;
-        }
-
-        .deck-checkbox-item {
-            display: flex;
-            align-items: center;
-            padding: 12px;
-            border-bottom: 1px solid #ccc;
-        }
-
-        .deck-checkbox-item input {
-            width: 20px;
-            height: 20px;
-            margin-right: 15px;
-            cursor: pointer;
-        }
-
-        .deck-checkbox-item label {
-            flex: 1;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .deck-checkbox-item .deck-count {
-            color: #174E9C;
-            font-size: 14px;
-        }
-
-        .select-all-btn {
-            background-color: #9ADCDE;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-family: 'Playpen Sans', cursive;
-            font-size: 14px;
-            margin-right: 10px;
-        }
-
-        @media (max-width: 1100px) {
-            .sidebar { width: 240px; }
-            .nav-item { padding: 12px 20px; font-size: 18px; }
-            .decks-grid { grid-template-columns: repeat(2, 1fr); }
-            .main-content { padding: 20px 25px; }
-            .word { font-size: 56px; }
-            .profile-stats-row { gap: 15px; }
-            .profile-stat-number { font-size: 42px; }
-        }
-
-        @media (max-width: 800px) {
-            .sidebar { width: 80px; padding: 20px 0; }
-            .nav-item span { display: none; }
-            .nav-item { justify-content: center; padding: 15px 0; }
-            .logo-container { padding: 10px; }
-            .app-logo { width: 50px; }
-            .decks-grid { grid-template-columns: 1fr; }
-            .card-content { padding: 80px 30px 40px 30px; }
-            .word { font-size: 40px; }
-            .action-btn { padding: 12px 28px; font-size: 18px; }
-            .profile-stats-row { flex-direction: column; }
-            .avatar-container { flex-direction: column; text-align: center; }
-            .user-name { font-size: 24px; }
-            .modal-content { padding: 20px; }
-            .mixed-mode-btn { top: 15px; right: 15px; font-size: 12px; padding: 6px 12px; }
-        }
-
-        @media (max-width: 600px) {
-            .main-content { padding: 15px; }
-            .card-container { min-height: 60vh; }
-            .card-content { min-height: 60vh; padding: 70px 20px 30px 20px; }
-            .word { font-size: 32px; }
-            .transcription { font-size: 16px; gap: 12px; }
-            .pronounce-btn { font-size: 14px; padding: 6px 12px; }
-            .example-text { font-size: 15px; }
-            .translation-text { font-size: 22px; }
-            .action-btn { padding: 10px 20px; font-size: 16px; }
-            .deck-name { font-size: 20px; }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #051F42; font-family: 'Playpen Sans', cursive; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 0; margin: 0; }
+        .app-container { width: 100vw; min-height: 100vh; background-color: #051F42; display: flex; gap: 0; margin: 0; padding: 0; }
+        .sidebar { width: 280px; background-color: #021939; display: flex; flex-direction: column; gap: 20px; padding: 40px 0; position: sticky; top: 0; height: 100vh; }
+        .logo-container { display: flex; justify-content: center; align-items: center; padding: 10px 20px 30px 20px; border-bottom: 1px solid rgba(154, 220, 222, 0.3); margin-bottom: 20px; }
+        .app-logo { width: 180px; height: auto; max-width: 100%; border-radius: 15px; }
+        .nav-item { display: flex; align-items: center; gap: 18px; padding: 15px 30px; color: white; font-size: 20px; cursor: pointer; transition: all 0.3s; }
+        .nav-item:hover { background-color: rgba(154, 220, 222, 0.2); }
+        .circle-icon { width: 28px; height: 28px; background-size: contain; background-repeat: no-repeat; }
+        .main-content { flex: 1; background-color: #051F42; padding: 30px 40px; min-height: 100vh; overflow-y: auto; }
+        .card-container { position: relative; min-height: 70vh; border-radius: 30px; background-image: url('/static/images/leaf.png'); background-size: 100% 100%; background-position: center; background-repeat: no-repeat; }
+        .card-content { position: relative; z-index: 2; padding: 100px 70px 70px 70px; display: flex; flex-direction: column; min-height: 70vh; }
+        .card-counter { position: absolute; top: 25px; left: 40px; color: #021939; font-size: 18px; font-weight: bold; background: rgba(217, 217, 217, 0.7); padding: 8px 18px; border-radius: 30px; backdrop-filter: blur(3px); z-index: 3; }
+        .mixed-mode-btn { position: absolute; top: 25px; right: 40px; background-color: #174E9C; color: white; border: none; padding: 8px 18px; border-radius: 30px; font-family: 'Playpen Sans', cursive; font-size: 14px; font-weight: bold; cursor: pointer; transition: 0.3s; z-index: 3; }
+        .mixed-mode-btn:hover { background-color: #0f3a73; transform: scale(1.02); }
+        .mixed-mode-active { background-color: #9ADCDE; color: #021939; }
+        .word { text-align: center; font-size: 72px; font-weight: bold; color: #021939; margin: 30px 0 25px; }
+        .transcription { text-align: center; font-size: 24px; color: #021939; margin-bottom: 50px; display: flex; justify-content: center; gap: 30px; align-items: center; flex-wrap: wrap; }
+        .pronounce-btn { background: rgba(217, 217, 217, 0.8); border: none; font-size: 20px; cursor: pointer; padding: 10px 20px; border-radius: 40px; transition: 0.3s; font-family: 'Playpen Sans', cursive; font-weight: bold; }
+        .pronounce-btn:hover { background-color: rgba(154, 220, 222, 0.9); transform: scale(1.02); }
+        .info-column { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px; margin: 30px auto 0 auto; width: 85%; max-width: 750px; }
+        .example-section { width: 100%; text-align: center; background: rgba(217, 217, 217, 0.75); padding: 25px 30px; border-radius: 25px; backdrop-filter: blur(2px); }
+        .translation-section { width: 100%; text-align: center; background: rgba(217, 217, 217, 0.75); padding: 25px 30px; border-radius: 25px; backdrop-filter: blur(2px); }
+        .example-label { color: #174E9C; font-size: 18px; margin-bottom: 12px; font-weight: 600; }
+        .example-text { color: #021939; font-size: 20px; line-height: 1.5; margin-bottom: 12px; font-weight: 500; }
+        .example-translation { color: #174E9C; font-size: 18px; line-height: 1.4; font-weight: 500; }
+        .translation-label { color: #174E9C; font-size: 18px; margin-bottom: 12px; font-weight: 600; }
+        .translation-text { color: #021939; font-size: 32px; font-weight: bold; line-height: 1.3; }
+        .action-buttons { display: flex; justify-content: center; gap: 40px; margin-top: 40px; }
+        .action-btn { display: flex; align-items: center; justify-content: center; gap: 15px; padding: 18px 45px; border-radius: 60px; border: none; cursor: pointer; transition: transform 0.2s; font-family: 'Playpen Sans', cursive; font-size: 24px; font-weight: bold; }
+        .action-btn:hover { transform: scale(1.03); opacity: 0.95; }
+        .btn-know { background-color: #9ADCDE; color: #021939; }
+        .btn-dont-know { background-color: #F8D9D7; color: #021939; }
+        .check-mark { font-size: 32px; font-weight: bold; }
+        .cross-mark { font-size: 36px; font-weight: bold; }
+        .progress-section { margin-top: 40px; background-color: #021939; border-radius: 20px; padding: 20px 25px; color: white; font-size: 18px; }
+        .progress-bar { background-color: #9ADCDE; height: 12px; border-radius: 10px; transition: width 0.3s; margin-top: 12px; }
+        .srs-indicator { position: fixed; bottom: 20px; right: 20px; background-color: #174E9C; color: white; padding: 8px 16px; border-radius: 30px; font-size: 14px; font-weight: bold; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.2); cursor: pointer; transition: 0.3s; }
+        .srs-indicator:hover { background-color: #0f3a73; transform: scale(1.02); }
+        .review-stats { display: flex; gap: 25px; margin-bottom: 40px; flex-wrap: wrap; }
+        .stat-card { flex: 1; min-width: 220px; background-color: #D9D9D9; border-radius: 25px; padding: 30px; text-align: center; position: relative; overflow: hidden; }
+        .stat-card img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.12; border-radius: 25px; }
+        .stat-content { position: relative; z-index: 2; }
+        .stat-number { font-size: 64px; font-weight: bold; margin: 15px 0; }
+        .stat-label { font-size: 18px; font-weight: 500; }
+        .stat-card.studied .stat-number { color: #021939; }
+        .stat-card.mistakes .stat-number { color: #e74c3c; }
+        .stat-card.streak .stat-number { color: #174E9C; }
+        .today-words-section { background-color: #D9D9D9; border-radius: 25px; padding: 25px; margin-bottom: 40px; }
+        .today-words-title { font-size: 24px; font-weight: bold; color: #021939; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid #021939; }
+        .words-scroll { max-height: 400px; overflow-y: auto; padding-right: 15px; }
+        .words-scroll::-webkit-scrollbar { width: 10px; }
+        .words-scroll::-webkit-scrollbar-track { background: #e0e0e0; border-radius: 10px; }
+        .words-scroll::-webkit-scrollbar-thumb { background: #9ADCDE; border-radius: 10px; }
+        .today-word-item { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; border-bottom: 1px solid rgba(2, 25, 57, 0.1); font-size: 18px; }
+        .today-word-item .word-info { display: flex; align-items: center; gap: 20px; }
+        .word-status-icon { width: 32px; height: 32px; background-size: contain; background-repeat: no-repeat; background-position: center; }
+        .word-status-icon.correct { background-image: url('/static/images/correct'); }
+        .word-status-icon.wrong { background-image: url('/static/images/wrong'); }
+        .word-text { color: #021939; font-weight: 500; font-size: 18px; }
+        .repeat-btn { background: none; border: none; cursor: pointer; font-size: 28px; transition: transform 0.2s; padding: 5px 12px; border-radius: 12px; }
+        .repeat-btn:hover { background-color: rgba(154, 220, 222, 0.3); transform: scale(1.05); }
+        .mistakes-section { background-color: #D9D9D9; border-radius: 25px; padding: 25px; }
+        .mistakes-header { display: flex; align-items: center; gap: 20px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid #e74c3c; }
+        .mistakes-icon { width: 50px; height: 50px; background-image: url('/static/images/my_card_today'); background-size: contain; background-repeat: no-repeat; }
+        .mistakes-title { font-size: 24px; font-weight: bold; color: #e74c3c; }
+        .mistake-item { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; border-bottom: 1px solid rgba(231, 76, 60, 0.2); }
+        .mistake-word { font-size: 18px; color: #021939; font-weight: 500; }
+        .repeat-mistake-btn { background-color: #9ADCDE; border: none; padding: 8px 22px; border-radius: 30px; cursor: pointer; font-family: 'Playpen Sans', cursive; font-size: 15px; font-weight: bold; transition: 0.2s; }
+        .repeat-mistake-btn:hover { background-color: #7bc0c2; transform: scale(1.02); }
+        .no-mistakes { text-align: center; padding: 40px; color: #021939; font-size: 18px; }
+        .decks-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; flex-wrap: wrap; gap: 20px; }
+        .decks-tabs { display: flex; gap: 20px; flex-wrap: wrap; }
+        .tab-btn { background-color: #D9D9D9; color: #021939; border: none; padding: 14px 32px; border-radius: 40px; font-family: 'Playpen Sans', cursive; font-size: 18px; font-weight: bold; cursor: pointer; transition: all 0.3s; }
+        .tab-btn.active { background-color: #9ADCDE; color: #021939; }
+        .tab-btn:hover { transform: scale(1.02); opacity: 0.9; }
+        .search-bar { flex: 1; max-width: 350px; display: flex; gap: 10px; }
+        .search-input { flex: 1; padding: 14px 22px; border-radius: 40px; border: none; background-color: #D9D9D9; font-family: 'Playpen Sans', cursive; font-size: 16px; outline: none; }
+        .search-input::placeholder { color: #888; }
+        .new-deck-btn { background-color: #174E9C; color: white; border: none; padding: 14px 32px; border-radius: 40px; font-family: 'Playpen Sans', cursive; font-size: 18px; font-weight: bold; cursor: pointer; transition: all 0.3s; }
+        .new-deck-btn:hover { background-color: #0f3a73; transform: scale(1.02); }
+        .decks-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 30px; }
+        .deck-card { position: relative; background-size: 100% 100%; background-position: center; background-repeat: no-repeat; border-radius: 20px; min-height: 260px; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 30px; }
+        .deck-card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25); }
+        .deck-name { font-size: 26px; font-weight: bold; color: #021939; margin-bottom: 15px; word-break: break-word; max-width: 90%; }
+        .deck-card-count { font-size: 17px; color: #174E9C; font-weight: 500; margin-bottom: 20px; }
+        .favorite-icon { font-size: 32px; cursor: pointer; background: rgba(217, 217, 217, 0.5); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .favorite-icon:hover { transform: scale(1.1); background: rgba(217, 217, 217, 0.8); }
+        .favorite-icon.favorited { color: #ffc107; text-shadow: 0 0 2px #000; }
+        .profile-header { display: flex; justify-content: flex-end; gap: 15px; margin-bottom: 40px; flex-wrap: wrap; }
+        .edit-profile-btn, .auth-btn { background-color: #D9D9D9; color: #021939; border: 2px solid #021939; padding: 12px 28px; border-radius: 40px; font-family: 'Playpen Sans', cursive; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.3s; }
+        .edit-profile-btn:hover, .auth-btn:hover { background-color: #9ADCDE; transform: scale(1.02); }
+        .profile-stats-row { display: flex; gap: 25px; margin-bottom: 40px; flex-wrap: wrap; }
+        .profile-stat-card { flex: 1; min-width: 220px; background-color: #D9D9D9; border: 2px solid #021939; border-radius: 25px; padding: 30px 20px; text-align: center; }
+        .profile-stat-number { font-size: 56px; font-weight: bold; color: #021939; margin-bottom: 10px; }
+        .profile-stat-label { font-size: 16px; color: #174E9C; font-weight: 600; }
+        .level-card { background-color: #D9D9D9; border: 2px solid #021939; border-radius: 25px; padding: 30px; margin-top: 20px; }
+        .level-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; }
+        .level-title { font-size: 24px; font-weight: bold; color: #174E9C; }
+        .level-number { font-size: 28px; font-weight: bold; color: #021939; }
+        .exp-bar-container { background-color: #e0e0e0; border-radius: 30px; height: 20px; overflow: hidden; margin: 15px 0; }
+        .exp-bar-fill { background-color: #9ADCDE; height: 100%; border-radius: 30px; transition: width 0.5s; }
+        .exp-text { text-align: right; font-size: 14px; color: #174E9C; font-weight: 500; }
+        .avatar-container { display: flex; align-items: center; gap: 30px; margin-bottom: 30px; flex-wrap: wrap; }
+        .avatar-img { width: 120px; height: 120px; border-radius: 60px; object-fit: cover; border: 3px solid #174E9C; }
+        .user-info { flex: 1; }
+        .user-name { font-size: 32px; font-weight: bold; color: white; margin-bottom: 10px; }
+        .user-email { font-size: 18px; color: white; }
+        .avatar-options { display: flex; gap: 15px; flex-wrap: wrap; margin: 20px 0; justify-content: center; }
+        .avatar-option { width: 80px; height: 80px; border-radius: 40px; cursor: pointer; border: 3px solid transparent; transition: 0.2s; object-fit: cover; }
+        .avatar-option:hover { transform: scale(1.05); border-color: #9ADCDE; }
+        .avatar-option.selected { border-color: #174E9C; box-shadow: 0 0 0 2px #9ADCDE; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background-color: #D9D9D9; border-radius: 30px; padding: 40px; width: 90%; max-width: 600px; max-height: 85vh; overflow-y: auto; }
+        .modal-content h3 { color: #021939; margin-bottom: 25px; font-size: 28px; }
+        .modal-content h4 { color: #021939; margin-bottom: 15px; font-size: 20px; }
+        .modal-content input, .modal-content textarea { width: 100%; padding: 12px; margin: 5px 0 10px 0; border-radius: 15px; border: none; font-family: 'Playpen Sans', cursive; background-color: white; font-size: 15px; }
+        .modal-content label { color: #021939; font-weight: bold; font-size: 14px; }
+        .modal-buttons { display: flex; justify-content: flex-end; gap: 20px; margin-top: 30px; }
+        .modal-buttons button { padding: 12px 28px; border-radius: 40px; border: none; cursor: pointer; font-family: 'Playpen Sans', cursive; font-weight: bold; font-size: 16px; }
+        .modal-save { background-color: #9ADCDE; color: #021939; }
+        .modal-cancel { background-color: #F8D9D7; color: #021939; }
+        .google-btn { background-color: #4285F4; color: white; border: none; padding: 12px 24px; border-radius: 40px; cursor: pointer; font-family: 'Playpen Sans', cursive; font-size: 16px; font-weight: bold; width: 100%; margin-bottom: 15px; }
+        .google-btn:hover { background-color: #357ae8; }
+        .divider { text-align: center; margin: 15px 0; color: #666; }
+        #add-word-btn { background-color: #9ADCDE; border: none; padding: 10px 20px; border-radius: 30px; cursor: pointer; font-weight: bold; font-family: 'Playpen Sans', cursive; font-size: 14px; margin-top: 5px; }
+        #add-word-btn:hover { background-color: #7bc0c2; }
+        .remove-word-btn { background: #F8D9D7; border: none; padding: 5px 12px; border-radius: 20px; cursor: pointer; font-family: 'Playpen Sans', cursive; }
+        .words-preview { max-height: 200px; overflow-y: auto; background: rgba(255,255,255,0.5); border-radius: 15px; padding: 10px; margin-top: 10px; }
+        .word-preview-item { display: flex; justify-content: space-between; align-items: center; padding: 8px; border-bottom: 1px solid #ccc; }
+        .hidden { display: none; }
+        .srs-notification { position: fixed; bottom: 80px; right: 20px; background-color: #9ADCDE; color: #021939; padding: 12px 20px; border-radius: 30px; font-size: 14px; font-weight: bold; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.2); animation: fadeInOut 5s ease-in-out; }
+        @keyframes fadeInOut { 0% { opacity: 0; transform: translateY(20px); } 10% { opacity: 1; transform: translateY(0); } 90% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-20px); } }
+        .deck-selector-modal .modal-content { max-width: 500px; }
+        .deck-checkbox-list { max-height: 400px; overflow-y: auto; margin: 20px 0; }
+        .deck-checkbox-item { display: flex; align-items: center; padding: 12px; border-bottom: 1px solid #ccc; }
+        .deck-checkbox-item input { width: 20px; height: 20px; margin-right: 15px; cursor: pointer; }
+        .deck-checkbox-item label { flex: 1; cursor: pointer; font-size: 16px; }
+        .deck-checkbox-item .deck-count { color: #174E9C; font-size: 14px; }
+        .select-all-btn { background-color: #9ADCDE; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-family: 'Playpen Sans', cursive; font-size: 14px; margin-right: 10px; }
+        .profile-modal-content, .auth-modal-content { max-width: 500px; }
+        @media (max-width: 1100px) { .sidebar { width: 240px; } .nav-item { padding: 12px 20px; font-size: 18px; } .decks-grid { grid-template-columns: repeat(2, 1fr); } .main-content { padding: 20px 25px; } .word { font-size: 56px; } .profile-stats-row { gap: 15px; } .profile-stat-number { font-size: 42px; } }
+        @media (max-width: 800px) { .sidebar { width: 80px; padding: 20px 0; } .nav-item span { display: none; } .nav-item { justify-content: center; padding: 15px 0; } .logo-container { padding: 10px; } .app-logo { width: 50px; } .decks-grid { grid-template-columns: 1fr; } .card-content { padding: 80px 30px 40px 30px; } .word { font-size: 40px; } .action-btn { padding: 12px 28px; font-size: 18px; } .profile-stats-row { flex-direction: column; } .avatar-container { flex-direction: column; text-align: center; } .user-name { font-size: 24px; } .modal-content { padding: 20px; } .mixed-mode-btn { top: 15px; right: 15px; font-size: 12px; padding: 6px 12px; } }
+        @media (max-width: 600px) { .main-content { padding: 15px; } .card-container { min-height: 60vh; } .card-content { min-height: 60vh; padding: 70px 20px 30px 20px; } .word { font-size: 32px; } .transcription { font-size: 16px; gap: 12px; } .pronounce-btn { font-size: 14px; padding: 6px 12px; } .example-text { font-size: 15px; } .translation-text { font-size: 22px; } .action-btn { padding: 10px 20px; font-size: 16px; } .deck-name { font-size: 20px; } }
     </style>
 </head>
 <body>
@@ -1228,12 +306,13 @@
             <div id="profile-page" class="hidden">
                 <div class="profile-header">
                     <button class="edit-profile-btn" id="edit-profile-btn">✎ Редактировать</button>
+                    <button class="auth-btn" id="auth-btn">🔑 Войти</button>
                 </div>
                 <div class="avatar-container">
                     <img id="profile-avatar" class="avatar-img" src="/static/images/default.png" alt="avatar">
                     <div class="user-info">
-                        <div class="user-name" id="profile-username">C5 Notes</div>
-                        <div class="user-email" id="profile-email">C5NotesPochta@gmail.com</div>
+                        <div class="user-name" id="profile-username">Гость</div>
+                        <div class="user-email" id="profile-email">Не авторизован</div>
                     </div>
                 </div>
                 <div class="profile-stats-row">
@@ -1268,17 +347,14 @@
     <div id="new-deck-modal" class="modal">
         <div class="modal-content" style="max-width: 700px;">
             <h3>📚 Создать новую колоду</h3>
-            
             <div style="display: flex; gap: 15px; flex-wrap: wrap;">
                 <div style="flex: 1; min-width: 200px;">
                     <label>Название колоды</label>
                     <input type="text" id="new-deck-name" placeholder="Например: My Verbs" maxlength="50">
                 </div>
             </div>
-            
             <div style="margin-top: 20px; border-top: 1px solid #ccc; padding-top: 15px;">
                 <h4>➕ Добавить слово</h4>
-                
                 <div style="display: flex; gap: 15px; flex-wrap: wrap;">
                     <div style="flex: 1; min-width: 200px;">
                         <label>Слово *</label>
@@ -1289,7 +365,6 @@
                         <input type="text" id="new-translation" placeholder="Например: потрясающий">
                     </div>
                 </div>
-                
                 <div style="display: flex; gap: 15px; flex-wrap: wrap;">
                     <div style="flex: 1; min-width: 200px;">
                         <label>Транскрипция UK</label>
@@ -1300,7 +375,6 @@
                         <input type="text" id="new-transcription-us" placeholder="/ˈɑː.səm/">
                     </div>
                 </div>
-                
                 <div style="display: flex; gap: 15px; flex-wrap: wrap;">
                     <div style="flex: 1; min-width: 200px;">
                         <label>Аудио UK (MP3)</label>
@@ -1311,29 +385,24 @@
                         <input type="file" id="new-audio-us" accept=".mp3">
                     </div>
                 </div>
-                
                 <div style="margin-top: 10px;">
                     <label>Пример предложения</label>
                     <textarea id="new-example" rows="2" placeholder="This is awesome!"></textarea>
                 </div>
-                
                 <div style="margin-top: 10px;">
                     <label>Перевод примера</label>
                     <textarea id="new-example-translation" rows="2" placeholder="Это потрясающе!"></textarea>
                 </div>
-                
                 <div style="margin-top: 15px;">
                     <button id="add-word-btn">➕ Добавить слово в колоду</button>
                 </div>
             </div>
-            
             <div style="margin-top: 20px; border-top: 1px solid #ccc; padding-top: 15px;">
                 <h4>📝 Слова в колоде (<span id="words-count">0</span>/30)</h4>
                 <div id="words-preview-list" class="words-preview">
                     <div style="color: #666; text-align: center;">Нет добавленных слов</div>
                 </div>
             </div>
-            
             <div class="modal-buttons">
                 <button class="modal-cancel" id="modal-cancel">Отмена</button>
                 <button class="modal-save" id="modal-save">💾 Сохранить колоду</button>
@@ -1346,20 +415,33 @@
         <div class="modal-content">
             <h3>🎲 Смешанный режим</h3>
             <p style="margin-bottom: 15px;">Выберите колоды для изучения:</p>
-            
             <div>
                 <button class="select-all-btn" id="select-all-decks">✅ Выбрать все</button>
                 <button class="select-all-btn" id="deselect-all-decks" style="background-color: #F8D9D7;">⬜ Снять все</button>
             </div>
-            
-            <div id="deck-selector-list" class="deck-checkbox-list">
-                <!-- Список колод будет загружен сюда -->
-            </div>
-            
+            <div id="deck-selector-list" class="deck-checkbox-list"></div>
             <div class="modal-buttons">
                 <button class="modal-cancel" id="mixed-mode-cancel">Отмена</button>
                 <button class="modal-save" id="mixed-mode-start">🚀 Начать изучение</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно аутентификации -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content auth-modal-content">
+            <h3 id="auth-title">🔑 Вход в аккаунт</h3>
+            <button id="google-signin" class="google-btn">🌐 Войти через Google</button>
+            <div class="divider">или</div>
+            <input type="email" id="auth-email" placeholder="Email">
+            <input type="password" id="auth-password" placeholder="Пароль (минимум 6 символов)">
+            <div class="modal-buttons">
+                <button class="modal-cancel" id="auth-modal-cancel">Отмена</button>
+                <button class="modal-save" id="auth-submit">Войти</button>
+            </div>
+            <p style="text-align: center; margin-top: 15px;">
+                <a href="#" id="toggle-auth-mode" style="color: #174E9C;">Нет аккаунта? Зарегистрироваться</a>
+            </p>
         </div>
     </div>
 
@@ -1370,7 +452,7 @@
             <label>Имя пользователя</label>
             <input type="text" id="edit-username" placeholder="Ваше имя">
             <label>Электронная почта</label>
-            <input type="email" id="edit-email" placeholder="Email для сохранения прогресса">
+            <input type="email" id="edit-email" placeholder="Email">
             <label>Выберите аватар</label>
             <div class="avatar-options">
                 <img src="/static/images/default.png" class="avatar-option" data-avatar="default">
@@ -1389,12 +471,14 @@
     <!-- SRS индикатор -->
     <div class="srs-indicator" id="srs-indicator" style="display: none;">⏰ Слова для повторения</div>
 
-    <script>
+    <script type="module">
+        // ========== ТЕКСТУРКИ ДЛЯ ЛИСТОЧКОВ ==========
         const leafTextures = [
             '/static/images/leaf_1.png', '/static/images/leaf_2.png', '/static/images/leaf_3.png',
             '/static/images/leaf_4.png', '/static/images/leaf_5.png', '/static/images/leaf_6.png'
         ];
         
+        // ========== ДЕФОЛТНЫЕ КОЛОДЫ ==========
         let defaultDecks = [
             { name: "Linking Words", count: 20, isDefault: true, isFavorite: false },
             { name: "Medicine", count: 30, isDefault: true, isFavorite: false },
@@ -1408,157 +492,6 @@
         let currentTab = "all";
         let searchQuery = "";
         let tempWords = [];
-        
-        // ========== СМЕШАННЫЙ РЕЖИМ (MIXED MODE) ==========
-        let isMixedMode = false;
-        let mixedCards = [];      // Все слова из выбранных колод
-        let mixedCardsShuffled = []; // Перемешанные слова
-        let originalMixedDeck = null; // Сохраняем исходную колоду для выхода
-        let originalMixedIndex = null;
-        
-        // Функция загрузки всех слов из выбранных колод
-        async function loadAllCardsFromSelectedDecks(selectedDeckNames) {
-            const allWords = [];
-            for (const deckName of selectedDeckNames) {
-                let deckCards = [];
-                // Проверяем, пользовательская ли колода
-                if (window.customCardsData && window.customCardsData[deckName]) {
-                    deckCards = window.customCardsData[deckName];
-                } else {
-                    try {
-                        const res = await fetch(`/api/cards/${deckName}`);
-                        deckCards = await res.json();
-                    } catch(e) {
-                        console.error("Error loading deck:", deckName, e);
-                        continue;
-                    }
-                }
-                // Добавляем все слова с указанием колоды (для SRS)
-                deckCards.forEach(card => {
-                    allWords.push({
-                        ...card,
-                        sourceDeck: deckName
-                    });
-                });
-            }
-            return allWords;
-        }
-        
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
-        
-        async function startMixedMode(selectedDecks) {
-            if (!selectedDecks || selectedDecks.length === 0) {
-                alert("Выберите хотя бы одну колоду!");
-                return false;
-            }
-            
-            // Сохраняем текущую колоду для возможности выхода
-            if (!isMixedMode) {
-                originalMixedDeck = currentDeck;
-                originalMixedIndex = currentIndex;
-            }
-            
-            // Загружаем все слова
-            const allWords = await loadAllCardsFromSelectedDecks(selectedDecks);
-            if (allWords.length === 0) {
-                alert("В выбранных колодах нет слов!");
-                return false;
-            }
-            
-            // Перемешиваем
-            mixedCards = allWords;
-            mixedCardsShuffled = shuffleArray([...allWords]);
-            
-            // Активируем смешанный режим
-            isMixedMode = true;
-            currentDeck = "__MIXED_MODE__";
-            cards = mixedCardsShuffled;
-            currentIndex = 0;
-            updateCard();
-            
-            // Меняем вид кнопки
-            const mixedBtn = document.getElementById('mixed-mode-btn');
-            if (mixedBtn) {
-                mixedBtn.textContent = '🎲 Выйти из смешанного режима';
-                mixedBtn.classList.add('mixed-mode-active');
-            }
-            
-            showSRSNotification(`🎲 Смешанный режим: ${mixedCardsShuffled.length} слов из ${selectedDecks.length} колод`);
-            return true;
-        }
-        
-        function exitMixedMode() {
-            if (originalMixedDeck) {
-                isMixedMode = false;
-                currentDeck = originalMixedDeck;
-                cards = window.__savedCardsForDeck?.[originalMixedDeck] || [];
-                currentIndex = originalMixedIndex || 0;
-                updateCard();
-                originalMixedDeck = null;
-                originalMixedIndex = null;
-            } else {
-                // Если нет сохранённой колоды, просто обновляем страницу
-                isMixedMode = false;
-                location.reload();
-            }
-            
-            const mixedBtn = document.getElementById('mixed-mode-btn');
-            if (mixedBtn) {
-                mixedBtn.textContent = '🎲 Смешанный режим';
-                mixedBtn.classList.remove('mixed-mode-active');
-            }
-            
-            showSRSNotification("🎲 Выход из смешанного режима");
-        }
-        
-        // Открыть модальное окно выбора колод
-        function openDeckSelector() {
-            // Собираем все колоды
-            const allDecksList = [...defaultDecks, ...customDecks];
-            
-            const container = document.getElementById('deck-selector-list');
-            container.innerHTML = allDecksList.map(deck => `
-                <div class="deck-checkbox-item">
-                    <input type="checkbox" id="deck_${deck.name.replace(/[^a-zA-Z0-9]/g, '_')}" value="${deck.name}" class="deck-checkbox">
-                    <label for="deck_${deck.name.replace(/[^a-zA-Z0-9]/g, '_')}">${deck.name}</label>
-                    <span class="deck-count">${deck.count} слов</span>
-                </div>
-            `).join('');
-            
-            document.getElementById('mixed-mode-modal').style.display = 'flex';
-        }
-        
-        // Запуск смешанного режима из модального окна
-        document.getElementById('mixed-mode-start')?.addEventListener('click', async () => {
-            const checkboxes = document.querySelectorAll('.deck-checkbox');
-            const selectedDecks = [];
-            checkboxes.forEach(cb => {
-                if (cb.checked) selectedDecks.push(cb.value);
-            });
-            
-            document.getElementById('mixed-mode-modal').style.display = 'none';
-            await startMixedMode(selectedDecks);
-        });
-        
-        document.getElementById('select-all-decks')?.addEventListener('click', () => {
-            document.querySelectorAll('.deck-checkbox').forEach(cb => cb.checked = true);
-        });
-        
-        document.getElementById('deselect-all-decks')?.addEventListener('click', () => {
-            document.querySelectorAll('.deck-checkbox').forEach(cb => cb.checked = false);
-        });
-        
-        document.getElementById('mixed-mode-cancel')?.addEventListener('click', () => {
-            document.getElementById('mixed-mode-modal').style.display = 'none';
-        });
-        
-        // ========== КОНЕЦ СМЕШАННОГО РЕЖИМА ==========
         
         // ========== SRS (ИНТЕРВАЛЬНЫЕ ПОВТОРЕНИЯ) ==========
         let srsQueue = [];
@@ -1634,7 +567,6 @@
         function showSRSNotification(message) {
             const oldNotif = document.querySelector('.srs-notification');
             if (oldNotif) oldNotif.remove();
-            
             const notif = document.createElement('div');
             notif.className = 'srs-notification';
             notif.textContent = message;
@@ -1644,15 +576,13 @@
         
         function startSRSWatcher() {
             if (srsInterval) clearInterval(srsInterval);
-            srsInterval = setInterval(() => {
-                updateSRSIndicator();
-            }, 60000);
+            srsInterval = setInterval(() => updateSRSIndicator(), 60000);
         }
         
         function suggestReview() {
             const dueWords = getDueWords();
             if (dueWords.length > 0) {
-                showSRSNotification(`📢 У вас ${dueWords.length} слово(а) для повторения! Нажмите на индикатор в правом нижнем углу.`);
+                showSRSNotification(`📢 У вас ${dueWords.length} слово(а) для повторения! Нажмите на индикатор.`);
             }
         }
         
@@ -1662,10 +592,8 @@
                 showSRSNotification("✨ Нет слов для повторения!");
                 return;
             }
-            
             const reviewWords = [];
             for (const item of dueWords) {
-                let fullCards = [];
                 if (defaultDecks.some(d => d.name === item.deck)) {
                     const res = await fetch(`/api/cards/${item.deck}`);
                     const cardsData = await res.json();
@@ -1680,19 +608,15 @@
                     }
                 }
             }
-            
             if (reviewWords.length === 0 && dueWords.length > 0) {
                 setTimeout(() => startReviewSession(), 500);
                 return;
             }
-            
-            // Сохраняем текущую колоду
             if (!isMixedMode) {
                 window.previousDeck = currentDeck;
                 window.previousCards = cards;
                 window.previousIndex = currentIndex;
             }
-            
             const reviewDeckName = "__SRS_Review__";
             if (!window.customCardsData) window.customCardsData = {};
             window.customCardsData[reviewDeckName] = reviewWords;
@@ -1717,8 +641,105 @@
             showSRSNotification("✅ Сеанс повторения завершён!");
         }
         
-        // ========== КОНЕЦ SRS ==========
+        // ========== СМЕШАННЫЙ РЕЖИМ ==========
+        let isMixedMode = false;
+        let mixedCards = [];
+        let mixedCardsShuffled = [];
+        let originalMixedDeck = null;
+        let originalMixedIndex = null;
         
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        
+        async function loadAllCardsFromSelectedDecks(selectedDeckNames) {
+            const allWords = [];
+            for (const deckName of selectedDeckNames) {
+                let deckCards = [];
+                if (window.customCardsData && window.customCardsData[deckName]) {
+                    deckCards = window.customCardsData[deckName];
+                } else {
+                    try {
+                        const res = await fetch(`/api/cards/${deckName}`);
+                        deckCards = await res.json();
+                    } catch(e) { continue; }
+                }
+                deckCards.forEach(card => {
+                    allWords.push({ ...card, sourceDeck: deckName });
+                });
+            }
+            return allWords;
+        }
+        
+        async function startMixedMode(selectedDecks) {
+            if (!selectedDecks || selectedDecks.length === 0) {
+                alert("Выберите хотя бы одну колоду!");
+                return false;
+            }
+            if (!isMixedMode) {
+                originalMixedDeck = currentDeck;
+                originalMixedIndex = currentIndex;
+            }
+            const allWords = await loadAllCardsFromSelectedDecks(selectedDecks);
+            if (allWords.length === 0) {
+                alert("В выбранных колодах нет слов!");
+                return false;
+            }
+            mixedCards = allWords;
+            mixedCardsShuffled = shuffleArray([...allWords]);
+            isMixedMode = true;
+            currentDeck = "__MIXED_MODE__";
+            cards = mixedCardsShuffled;
+            currentIndex = 0;
+            updateCard();
+            const mixedBtn = document.getElementById('mixed-mode-btn');
+            if (mixedBtn) {
+                mixedBtn.textContent = '🎲 Выйти из смешанного режима';
+                mixedBtn.classList.add('mixed-mode-active');
+            }
+            showSRSNotification(`🎲 Смешанный режим: ${mixedCardsShuffled.length} слов из ${selectedDecks.length} колод`);
+            return true;
+        }
+        
+        function exitMixedMode() {
+            if (originalMixedDeck) {
+                isMixedMode = false;
+                currentDeck = originalMixedDeck;
+                cards = window.__savedCardsForDeck?.[originalMixedDeck] || [];
+                currentIndex = originalMixedIndex || 0;
+                updateCard();
+                originalMixedDeck = null;
+                originalMixedIndex = null;
+            } else {
+                isMixedMode = false;
+                location.reload();
+            }
+            const mixedBtn = document.getElementById('mixed-mode-btn');
+            if (mixedBtn) {
+                mixedBtn.textContent = '🎲 Смешанный режим';
+                mixedBtn.classList.remove('mixed-mode-active');
+            }
+            showSRSNotification("🎲 Выход из смешанного режима");
+        }
+        
+        function openDeckSelector() {
+            const allDecksList = [...defaultDecks, ...customDecks];
+            const container = document.getElementById('deck-selector-list');
+            container.innerHTML = allDecksList.map(deck => `
+                <div class="deck-checkbox-item">
+                    <input type="checkbox" id="deck_${deck.name.replace(/[^a-zA-Z0-9]/g, '_')}" value="${deck.name}" class="deck-checkbox">
+                    <label for="deck_${deck.name.replace(/[^a-zA-Z0-9]/g, '_')}">${deck.name}</label>
+                    <span class="deck-count">${deck.count} слов</span>
+                </div>
+            `).join('');
+            document.getElementById('mixed-mode-modal').style.display = 'flex';
+        }
+        
+        // ========== УРОВНИ ОПЫТА ==========
         const levelRequirements = [0, 100, 250, 450, 700, 1000, 1350, 1750, 2200, 2700, 3300, 4000, 4800, 5700, 6700, 7800, 9000, 10300, 11700, 13200];
         
         function getLevelAndProgress(exp) {
@@ -1735,18 +756,19 @@
             return { level, progress, currentExp, expForNext, nextLevelExp };
         }
         
+        // ========== ПРОФИЛЬ (LOCALSTORAGE) ==========
         function loadUserProfile() {
             const savedProfile = localStorage.getItem('userProfile');
             if (savedProfile) {
                 const profile = JSON.parse(savedProfile);
-                document.getElementById('profile-username').textContent = profile.username || "C5 Notes";
-                document.getElementById('profile-email').textContent = profile.email || "C5NotesPochta@gmail.com";
+                document.getElementById('profile-username').textContent = profile.username || "Гость";
+                document.getElementById('profile-email').textContent = profile.email || "Не авторизован";
                 document.getElementById('profile-avatar').src = profile.avatar ? `/static/images/${profile.avatar}.png` : '/static/images/default.png';
                 document.getElementById('edit-username').value = profile.username || "";
                 document.getElementById('edit-email').value = profile.email || "";
                 return profile;
             }
-            return { username: "C5 Notes", email: "C5NotesPochta@gmail.com", avatar: "default" };
+            return { username: "Гость", email: "Не авторизован", avatar: "default" };
         }
         
         function saveUserProfile(username, email, avatar) {
@@ -1757,6 +779,7 @@
             document.getElementById('profile-avatar').src = `/static/images/${avatar}.png`;
         }
         
+        // ========== ЗАГРУЗКА СТАТИСТИКИ С СЕРВЕРА ==========
         async function loadProfileStats() {
             const res = await fetch('/api/stats');
             const stats = await res.json();
@@ -1770,6 +793,7 @@
             document.getElementById('exp-text').textContent = `${currentExp} / ${expForNext} опыта (до ${nextLevelExp})`;
         }
         
+        // ========== ИЗБРАННОЕ ==========
         function loadFavorites() {
             const favorites = localStorage.getItem('favoriteDecks');
             if (favorites) {
@@ -1785,6 +809,7 @@
             localStorage.setItem('favoriteDecks', JSON.stringify(favorites));
         }
         
+        // ========== ПОЛЬЗОВАТЕЛЬСКИЕ КОЛОДЫ ==========
         function loadCustomDecks() {
             const saved = localStorage.getItem('customDecks');
             if (saved) {
@@ -1830,10 +855,7 @@
             document.querySelectorAll('.deck-card').forEach(card => {
                 card.addEventListener('click', (e) => {
                     if (e.target.classList.contains('favorite-icon')) return;
-                    // При выборе колоды выходим из смешанного режима, если он был активен
-                    if (isMixedMode) {
-                        exitMixedMode();
-                    }
+                    if (isMixedMode) exitMixedMode();
                     currentDeck = card.dataset.deckName;
                     currentIndex = 0;
                     loadCards();
@@ -1851,6 +873,7 @@
             }
         }
         
+        // ========== СОЗДАНИЕ НОВОЙ КОЛОДЫ ==========
         function renderWordsPreview() {
             const container = document.getElementById('words-preview-list');
             const countSpan = document.getElementById('words-count');
@@ -1975,6 +998,7 @@
             renderDecks();
         }
         
+        // ========== ОСНОВНЫЕ ПЕРЕМЕННЫЕ ==========
         let currentDeck = "Linking Words";
         let cards = [];
         let currentIndex = 0;
@@ -2004,11 +1028,9 @@
             document.getElementById('example').textContent = currentCard.example;
             document.getElementById('example-translation').textContent = currentCard.example_translation;
             document.getElementById('translation').textContent = currentCard.translation;
-            
             const total = cards.length;
             const current = currentIndex + 1;
             document.getElementById('card-counter').textContent = `${current}/${total}`;
-            
             const progress = (current / total) * 100;
             document.getElementById('progress-bar').style.width = `${progress}%`;
         }
@@ -2112,19 +1134,13 @@
         
         async function handleAnswer(know) {
             if (!currentCard) return;
-            
-            // Определяем название колоды для SRS (в смешанном режиме используем sourceDeck)
             const deckForSRS = currentCard.sourceDeck || currentDeck;
-            
             if (!know) {
                 addToSRS(deckForSRS, currentCard);
             } else {
                 const srsItem = srsQueue.find(item => item.deck === deckForSRS && item.word === currentCard.word);
-                if (srsItem) {
-                    markInSRS(deckForSRS, currentCard.word, true);
-                }
+                if (srsItem) markInSRS(deckForSRS, currentCard.word, true);
             }
-            
             addToTodayStats(currentCard.word, know);
             const action = know ? 'know' : 'dont_know';
             await fetch('/api/update_progress', {
@@ -2133,7 +1149,6 @@
             });
             loadStats();
             loadProfileStats();
-            
             if (currentIndex + 1 < cards.length) {
                 currentIndex++;
                 updateCard();
@@ -2141,9 +1156,7 @@
                 if (currentDeck === "__SRS_Review__") {
                     finishReview();
                 } else if (currentDeck === "__MIXED_MODE__") {
-                    alert('🎉 Поздравляем! Вы завершили все слова в смешанном режиме! 🎉\nНажмите "Смешанный режим" для выхода.');
-                    currentIndex = 0;
-                    updateCard();
+                    alert('🎉 Поздравляем! Вы завершили все слова в смешанном режиме! 🎉');
                 } else {
                     alert('🎉 Поздравляем! Вы завершили колоду! 🎉');
                 }
@@ -2190,6 +1203,7 @@
             });
         }
         
+        // ========== ИНИЦИАЛИЗАЦИЯ ОСНОВНЫХ ОБРАБОТЧИКОВ ==========
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -2203,21 +1217,20 @@
         document.getElementById('new-deck-btn')?.addEventListener('click', () => { document.getElementById('new-deck-modal').style.display = 'flex'; });
         document.getElementById('modal-cancel')?.addEventListener('click', () => { document.getElementById('new-deck-modal').style.display = 'none'; tempWords = []; renderWordsPreview(); });
         document.getElementById('modal-save')?.addEventListener('click', createNewDeck);
-        
-        // Кнопка смешанного режима
-        document.getElementById('mixed-mode-btn')?.addEventListener('click', () => {
-            if (isMixedMode) {
-                exitMixedMode();
-            } else {
-                openDeckSelector();
-            }
+        document.getElementById('mixed-mode-btn')?.addEventListener('click', () => { if (isMixedMode) exitMixedMode(); else openDeckSelector(); });
+        document.getElementById('srs-indicator')?.addEventListener('click', () => startReviewSession());
+        document.getElementById('mixed-mode-start')?.addEventListener('click', async () => {
+            const checkboxes = document.querySelectorAll('.deck-checkbox');
+            const selectedDecks = [];
+            checkboxes.forEach(cb => { if (cb.checked) selectedDecks.push(cb.value); });
+            document.getElementById('mixed-mode-modal').style.display = 'none';
+            await startMixedMode(selectedDecks);
         });
+        document.getElementById('select-all-decks')?.addEventListener('click', () => { document.querySelectorAll('.deck-checkbox').forEach(cb => cb.checked = true); });
+        document.getElementById('deselect-all-decks')?.addEventListener('click', () => { document.querySelectorAll('.deck-checkbox').forEach(cb => cb.checked = false); });
+        document.getElementById('mixed-mode-cancel')?.addEventListener('click', () => { document.getElementById('mixed-mode-modal').style.display = 'none'; });
         
-        // SRS индикатор
-        document.getElementById('srs-indicator')?.addEventListener('click', () => {
-            startReviewSession();
-        });
-        
+        // ========== ПРОФИЛЬ (РЕДАКТИРОВАНИЕ) ==========
         const editProfileBtn = document.getElementById('edit-profile-btn');
         const profileModal = document.getElementById('profile-edit-modal');
         const profileModalCancel = document.getElementById('profile-modal-cancel');
@@ -2247,21 +1260,12 @@
         if (profileModalCancel) profileModalCancel.addEventListener('click', () => { profileModal.style.display = 'none'; });
         if (profileModalSave) {
             profileModalSave.addEventListener('click', () => {
-                const newUsername = document.getElementById('edit-username').value.trim() || "C5 Notes";
-                const newEmail = document.getElementById('edit-email').value.trim() || "C5NotesPochta@gmail.com";
+                const newUsername = document.getElementById('edit-username').value.trim() || "Гость";
+                const newEmail = document.getElementById('edit-email').value.trim() || "Не авторизован";
                 saveUserProfile(newUsername, newEmail, selectedAvatar);
                 profileModal.style.display = 'none';
             });
         }
-        
-        window.addEventListener('click', (e) => {
-            const modal = document.getElementById('new-deck-modal');
-            const mixedModal = document.getElementById('mixed-mode-modal');
-            const profileModalElem = document.getElementById('profile-edit-modal');
-            if (e.target === modal) modal.style.display = 'none';
-            if (e.target === mixedModal) mixedModal.style.display = 'none';
-            if (e.target === profileModalElem) profileModalElem.style.display = 'none';
-        });
         
         document.querySelectorAll('.nav-item').forEach((item, idx) => {
             const pages = ['home', 'review', 'decks', 'profile'];
@@ -2278,14 +1282,10 @@
             if (saved) window.customAudioData = JSON.parse(saved);
         }
         
-        // Сохраняем карты для колод, чтобы можно было восстановиться
         window.__savedCardsForDeck = {};
-        
-        // Запуск SRS
         loadSRS();
         startSRSWatcher();
         setInterval(() => suggestReview(), 10 * 60 * 1000);
-        
         loadCustomAudioData();
         loadCustomDecks();
         loadFavorites();
@@ -2294,6 +1294,348 @@
         showPage('home');
         loadStats();
         loadProfileStats();
+        
+        // ========== ЧАСТЬ 3 - FIREBASE АУТЕНТИФИКАЦИЯ И СИНХРОНИЗАЦИЯ ==========
+        
+        // Текущий пользователь
+        let currentUser = null;
+        let isAuthModeLogin = true; // true = вход, false = регистрация
+        
+        // Элементы модального окна аутентификации
+        const authModal = document.getElementById('auth-modal');
+        const authBtn = document.getElementById('auth-btn');
+        const authModalCancel = document.getElementById('auth-modal-cancel');
+        const authSubmit = document.getElementById('auth-submit');
+        const authEmail = document.getElementById('auth-email');
+        const authPassword = document.getElementById('auth-password');
+        const authTitle = document.getElementById('auth-title');
+        const toggleAuthMode = document.getElementById('toggle-auth-mode');
+        const googleSignin = document.getElementById('google-signin');
+        
+        // ========== ФУНКЦИИ СИНХРОНИЗАЦИИ С FIRESTORE ==========
+        
+        // Сохранение всех данных пользователя в Firestore
+        async function syncUserDataToFirestore(userId) {
+            if (!userId) return;
+            
+            const userData = {
+                profile: {
+                    username: document.getElementById('profile-username').textContent,
+                    email: document.getElementById('profile-email').textContent,
+                    avatar: selectedAvatar
+                },
+                customDecks: customDecks,
+                favorites: JSON.parse(localStorage.getItem('favoriteDecks') || '[]'),
+                srsQueue: srsQueue,
+                todayStats: todayStats,
+                todayWords: todayWords,
+                mistakesList: mistakesList,
+                lastUpdated: new Date().toISOString()
+            };
+            
+            try {
+                await setDoc(doc(db, "users", userId), userData, { merge: true });
+                console.log("Data synced to Firestore");
+            } catch (e) {
+                console.error("Error syncing to Firestore:", e);
+            }
+        }
+        
+        // Загрузка данных пользователя из Firestore
+        async function loadUserDataFromFirestore(userId) {
+            if (!userId) return false;
+            
+            try {
+                const docRef = doc(db, "users", userId);
+                const docSnap = await getDoc(docRef);
+                
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    
+                    // Загружаем профиль
+                    if (data.profile) {
+                        document.getElementById('profile-username').textContent = data.profile.username || "Пользователь";
+                        document.getElementById('profile-email').textContent = data.profile.email || currentUser?.email || "Email не указан";
+                        if (data.profile.avatar) {
+                            selectedAvatar = data.profile.avatar;
+                            document.getElementById('profile-avatar').src = `/static/images/${selectedAvatar}.png`;
+                        }
+                    }
+                    
+                    // Загружаем пользовательские колоды
+                    if (data.customDecks) {
+                        customDecks = data.customDecks;
+                        saveCustomDecks();
+                        // Восстанавливаем customCardsData
+                        if (!window.customCardsData) window.customCardsData = {};
+                        customDecks.forEach(deck => {
+                            if (deck.words) {
+                                window.customCardsData[deck.name] = deck.words;
+                            }
+                        });
+                    }
+                    
+                    // Загружаем избранное
+                    if (data.favorites) {
+                        localStorage.setItem('favoriteDecks', JSON.stringify(data.favorites));
+                        loadFavorites();
+                    }
+                    
+                    // Загружаем SRS очередь
+                    if (data.srsQueue) {
+                        srsQueue = data.srsQueue;
+                        saveSRS();
+                    }
+                    
+                    // Загружаем сегодняшнюю статистику
+                    if (data.todayStats) {
+                        todayStats = data.todayStats;
+                    }
+                    if (data.todayWords) {
+                        todayWords = data.todayWords;
+                    }
+                    if (data.mistakesList) {
+                        mistakesList = data.mistakesList;
+                    }
+                    
+                    updateReviewPage();
+                    renderDecks();
+                    updateSRSIndicator();
+                    
+                    console.log("Data loaded from Firestore");
+                    return true;
+                }
+            } catch (e) {
+                console.error("Error loading from Firestore:", e);
+            }
+            return false;
+        }
+        
+        // Автоматическая синхронизация при изменении данных
+        function setupAutoSync() {
+            // Отслеживаем изменения в localStorage и синхронизируем с Firestore
+            const originalSetItem = localStorage.setItem;
+            localStorage.setItem = function(key, value) {
+                originalSetItem.apply(this, arguments);
+                if (currentUser && (key === 'customDecks' || key === 'favoriteDecks' || key === 'srsQueue')) {
+                    syncUserDataToFirestore(currentUser.uid);
+                }
+            };
+        }
+        
+        // ========== ФУНКЦИИ АУТЕНТИФИКАЦИИ ==========
+        
+        // Обновление UI в зависимости от статуса авторизации
+        function updateAuthUI() {
+            if (currentUser) {
+                authBtn.textContent = "🚪 Выйти";
+                authBtn.classList.add('authenticated');
+                // Загружаем email в профиль, если он не был загружен
+                const emailEl = document.getElementById('profile-email');
+                if (emailEl.textContent === "Не авторизован" && currentUser.email) {
+                    emailEl.textContent = currentUser.email;
+                }
+            } else {
+                authBtn.textContent = "🔑 Войти";
+                authBtn.classList.remove('authenticated');
+            }
+        }
+        
+        // Вход по email/паролю
+        async function signInWithEmail(email, password) {
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                currentUser = userCredential.user;
+                await loadUserDataFromFirestore(currentUser.uid);
+                updateAuthUI();
+                authModal.style.display = 'none';
+                showSRSNotification(`✅ Добро пожаловать, ${currentUser.email}!`);
+                return true;
+            } catch (error) {
+                console.error("Sign in error:", error);
+                if (error.code === 'auth/user-not-found') {
+                    alert("Пользователь не найден. Зарегистрируйтесь.");
+                } else if (error.code === 'auth/wrong-password') {
+                    alert("Неверный пароль.");
+                } else {
+                    alert("Ошибка входа: " + error.message);
+                }
+                return false;
+            }
+        }
+        
+        // Регистрация по email/паролю
+        async function signUpWithEmail(email, password) {
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                currentUser = userCredential.user;
+                // Сохраняем начальные данные
+                await syncUserDataToFirestore(currentUser.uid);
+                updateAuthUI();
+                authModal.style.display = 'none';
+                showSRSNotification(`🎉 Добро пожаловать! Аккаунт создан для ${currentUser.email}`);
+                return true;
+            } catch (error) {
+                console.error("Sign up error:", error);
+                if (error.code === 'auth/email-already-in-use') {
+                    alert("Этот email уже используется. Войдите в аккаунт.");
+                } else if (error.code === 'auth/weak-password') {
+                    alert("Пароль должен содержать минимум 6 символов.");
+                } else {
+                    alert("Ошибка регистрации: " + error.message);
+                }
+                return false;
+            }
+        }
+        
+        // Вход через Google
+        async function signInWithGoogle() {
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                currentUser = result.user;
+                await loadUserDataFromFirestore(currentUser.uid);
+                updateAuthUI();
+                authModal.style.display = 'none';
+                showSRSNotification(`✅ Добро пожаловать, ${currentUser.displayName || currentUser.email}!`);
+                return true;
+            } catch (error) {
+                console.error("Google sign in error:", error);
+                alert("Ошибка входа через Google: " + error.message);
+                return false;
+            }
+        }
+        
+        // Выход из аккаунта
+        async function signOutUser() {
+            try {
+                // Синхронизируем данные перед выходом
+                if (currentUser) {
+                    await syncUserDataToFirestore(currentUser.uid);
+                }
+                await signOut(auth);
+                currentUser = null;
+                updateAuthUI();
+                showSRSNotification("👋 Вы вышли из аккаунта. Ваши данные сохранены локально.");
+                
+                // Перезагружаем локальные данные
+                loadCustomDecks();
+                loadFavorites();
+                loadSRS();
+                loadUserProfile();
+                renderDecks();
+                updateReviewPage();
+                updateSRSIndicator();
+            } catch (error) {
+                console.error("Sign out error:", error);
+                alert("Ошибка выхода: " + error.message);
+            }
+        }
+        
+        // Обработка нажатия на кнопку аутентификации
+        function handleAuthButtonClick() {
+            if (currentUser) {
+                signOutUser();
+            } else {
+                // Очищаем поля
+                authEmail.value = '';
+                authPassword.value = '';
+                authModal.style.display = 'flex';
+            }
+        }
+        
+        // Обработка отправки формы (вход/регистрация)
+        async function handleAuthSubmit() {
+            const email = authEmail.value.trim();
+            const password = authPassword.value;
+            
+            if (!email || !password) {
+                alert("Введите email и пароль");
+                return;
+            }
+            
+            if (isAuthModeLogin) {
+                await signInWithEmail(email, password);
+            } else {
+                await signUpWithEmail(email, password);
+            }
+        }
+        
+        // Переключение между входом и регистрацией
+        function toggleAuthModeFunc() {
+            isAuthModeLogin = !isAuthModeLogin;
+            if (isAuthModeLogin) {
+                authTitle.textContent = "🔑 Вход в аккаунт";
+                toggleAuthMode.textContent = "Нет аккаунта? Зарегистрироваться";
+                authSubmit.textContent = "Войти";
+            } else {
+                authTitle.textContent = "📝 Регистрация";
+                toggleAuthMode.textContent = "Уже есть аккаунт? Войти";
+                authSubmit.textContent = "Зарегистрироваться";
+            }
+        }
+        
+        // ========== НАБЛЮДАТЕЛЬ СОСТОЯНИЯ АУТЕНТИФИКАЦИИ ==========
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                updateAuthUI();
+                await loadUserDataFromFirestore(user.uid);
+                // Обновляем email в профиле, если он пустой
+                const emailEl = document.getElementById('profile-email');
+                if (emailEl.textContent === "Не авторизован" && user.email) {
+                    emailEl.textContent = user.email;
+                }
+            } else {
+                currentUser = null;
+                updateAuthUI();
+                // Загружаем локальные данные
+                loadCustomDecks();
+                loadFavorites();
+                loadSRS();
+                loadUserProfile();
+                renderDecks();
+                updateReviewPage();
+                updateSRSIndicator();
+            }
+        });
+        
+        // ========== ПОДКЛЮЧАЕМ ОБРАБОТЧИКИ ==========
+        authBtn?.addEventListener('click', handleAuthButtonClick);
+        authModalCancel?.addEventListener('click', () => { authModal.style.display = 'none'; });
+        authSubmit?.addEventListener('click', handleAuthSubmit);
+        toggleAuthMode?.addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleAuthModeFunc();
+        });
+        googleSignin?.addEventListener('click', async () => {
+            authModal.style.display = 'none';
+            await signInWithGoogle();
+        });
+        
+        // Закрытие модального окна по клику вне его
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('new-deck-modal');
+            const mixedModal = document.getElementById('mixed-mode-modal');
+            const profileModalElem = document.getElementById('profile-edit-modal');
+            const authModalElem = document.getElementById('auth-modal');
+            if (e.target === modal) modal.style.display = 'none';
+            if (e.target === mixedModal) mixedModal.style.display = 'none';
+            if (e.target === profileModalElem) profileModalElem.style.display = 'none';
+            if (e.target === authModalElem) authModalElem.style.display = 'none';
+        });
+        
+        // Настройка автоматической синхронизации
+        setupAutoSync();
+        
+        // Сохраняем данные при закрытии страницы
+        window.addEventListener('beforeunload', () => {
+            if (currentUser) {
+                syncUserDataToFirestore(currentUser.uid);
+            }
+        });
+        
+        console.log("Firebase auth initialized");
     </script>
 </body>
 </html>
+```
